@@ -1,0 +1,91 @@
+{
+  "generatedAt": "2026-04-27T05:22:08.206Z",
+  "skills": [
+    "Overall",
+    "Attack",
+    "Defence",
+    "Strength",
+    "Hitpoints",
+    "Ranged",
+    "Prayer",
+    "Magic",
+    "Cooking",
+    "Woodcutting",
+    "Fletching",
+    "Fishing",
+    "Firemaking",
+    "Crafting",
+    "Smithing",
+    "Mining",
+    "Herblore",
+    "Agility",
+    "Thieving",
+    "Slayer",
+    "Farming",
+    "Runecraft",
+    "Hunter",
+    "Construction"
+  ],
+  "players": [
+    {
+      "rsn": "Insomnolennt",
+      "file": "insomnolennt.json",
+      "totalXp": 132185234,
+      "totalLevel": 2115,
+      "skills99": 2,
+      "lastChecked": "2026-04-27T05:22:08.206Z",
+      "lastChanged": "2026-04-27T05:22:08.206Z",
+      "status": "ok"
+    },
+    {
+      "rsn": "Iron Razekai",
+      "file": "iron_razekai.json",
+      "totalXp": 217251813,
+      "totalLevel": 2228,
+      "skills99": 8,
+      "lastChecked": "2026-04-27T05:22:08.206Z",
+      "lastChanged": "2026-04-27T05:22:08.206Z",
+      "status": "ok"
+    },
+    {
+      "rsn": "Wuckedenergy",
+      "file": "wuckedenergy.json",
+      "totalXp": 299243004,
+      "totalLevel": 2293,
+      "skills99": 12,
+      "lastChecked": "2026-04-27T05:22:08.206Z",
+      "lastChanged": "2026-04-27T05:22:08.206Z",
+      "status": "ok"
+    },
+    {
+      "rsn": "Why jay",
+      "file": "why_jay.json",
+      "totalXp": 180843991,
+      "totalLevel": 2100,
+      "skills99": 3,
+      "lastChecked": "2026-04-27T05:22:08.206Z",
+      "lastChanged": "2026-04-27T05:22:08.206Z",
+      "status": "ok"
+    },
+    {
+      "rsn": "Toke Feend",
+      "file": "toke_feend.json",
+      "totalXp": 128049692,
+      "totalLevel": 2012,
+      "skills99": 6,
+      "lastChecked": "2026-04-27T05:22:08.206Z",
+      "lastChanged": "2026-04-27T05:22:08.206Z",
+      "status": "ok"
+    },
+    {
+      "rsn": "CdeSafeTCam",
+      "file": "cdesafetcam.json",
+      "totalXp": 10992472,
+      "totalLevel": 1389,
+      "skills99": 0,
+      "lastChecked": "2026-04-27T05:22:08.206Z",
+      "lastChanged": "2026-04-27T05:22:08.206Z",
+      "status": "ok"
+    }
+  ]
+}

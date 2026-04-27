@@ -1,0 +1,43 @@
+name: snapshot
+
+on:
+  schedule:
+    # Hourly at :05 to avoid top-of-hour cron contention.
+    - cron: "5 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: snapshot
+  cancel-in-progress: false
+
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - run: npm ci
+
+      - run: npm run snapshot
+
+      - name: Commit snapshot
+        run: |
+          git config user.name "maxdash-bot"
+          git config user.email "maxdash-bot@users.noreply.github.com"
+          git add data
+          if git diff --cached --quiet; then
+            echo "No data changes to commit."
+            exit 0
+          fi
+          git commit -m "data: snapshot $(date -u +%FT%TZ)"
+          git push

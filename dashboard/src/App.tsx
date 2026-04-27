@@ -5,6 +5,7 @@ import { create } from "zustand";
 import { Overall } from "./views/Overall";
 import { SkillRace } from "./views/SkillRace";
 import { PlayerDetail } from "./views/PlayerDetail";
+import { Predictions } from "./views/Predictions";
 import { AccountBadge, type AccountType } from "./components/AccountBadge";
 
 interface UIState {
@@ -51,6 +52,7 @@ export function App() {
         <NavLink to="/" end>Overall</NavLink>
         <NavLink to="/skills">Skills</NavLink>
         <NavLink to="/players">Players</NavLink>
+        <NavLink to="/predictions">Predictions</NavLink>
         <span className="spacer" />
         <div className="range-bar" title="Account-type filter">
           {ACCOUNT_TYPES.map((t) => (
@@ -92,6 +94,8 @@ export function App() {
             <Route path="/skills/:name" element={<SkillRace />} />
             <Route path="/players" element={<PlayerDetail />} />
             <Route path="/players/:rsn" element={<PlayerDetail />} />
+            <Route path="/predictions" element={<Predictions />} />
+            <Route path="/predictions/:rsn" element={<Predictions />} />
           </Routes>
         )}
       </main>

@@ -2,7 +2,6 @@ import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import {
   useData,
-  etaToMaxDays,
   latestSnapshot,
   skills99Count,
   totalLevelFromSnapshot,
@@ -13,7 +12,6 @@ import {
 } from "../store";
 import {
   MAX_TOTAL_LEVEL,
-  MAX_XP,
   TRAINABLE_SKILL_COUNT,
   colorFor,
 } from "../skills";
@@ -30,13 +28,11 @@ interface Row {
   pctMaxed: number;
   hoursActive: number;
   xpGained: number;
-  etaDays: number | null;
-  etaDate: string;
 }
 
 type SortKey = keyof Pick<
   Row,
-  "totalXp" | "totalLevel" | "skills99" | "pctMaxed" | "hoursActive" | "xpGained" | "etaDays"
+  "totalXp" | "totalLevel" | "skills99" | "pctMaxed" | "hoursActive" | "xpGained"
 >;
 
 interface BoardRow {
@@ -63,22 +59,6 @@ export function Overall() {
       const s99 = snap.length ? skills99Count(snap) : 0;
       const hoursActive = pf ? activeHoursInRange(pf, range) : 0;
       const xpGained = pf ? xpGainInRange(pf, 0, range) : 0;
-      let worstEta: number | null = null;
-      if (pf) {
-        for (let i = 1; i < snap.length; i++) {
-          if (snap[i] >= MAX_XP) continue;
-          const d = etaToMaxDays(pf, i);
-          if (d == null) {
-            worstEta = null;
-            break;
-          }
-          if (worstEta == null || d > worstEta) worstEta = d;
-        }
-      }
-      const etaDate =
-        worstEta == null
-          ? "—"
-          : new Date(Date.now() + worstEta * 86400_000).toISOString().slice(0, 10);
       return {
         rsn: p.rsn,
         type: p.type,
@@ -88,8 +68,6 @@ export function Overall() {
         pctMaxed: (s99 / TRAINABLE_SKILL_COUNT) * 100,
         hoursActive,
         xpGained,
-        etaDays: worstEta,
-        etaDate,
       };
     });
   }, [index, players, typeFilter, range]);
@@ -265,8 +243,6 @@ export function Overall() {
               <th onClick={() => setSortKey("pctMaxed")}>% Maxed</th>
               <th onClick={() => setSortKey("xpGained")} className="num">XP gained</th>
               <th onClick={() => setSortKey("hoursActive")} className="num">Hours played</th>
-              <th onClick={() => setSortKey("etaDays")} className="num">ETA</th>
-              <th>Projected max</th>
             </tr>
           </thead>
           <tbody>
@@ -287,8 +263,6 @@ export function Overall() {
                 </td>
                 <td className="num">{r.xpGained.toLocaleString()}</td>
                 <td className="num">{r.hoursActive.toFixed(1)}h</td>
-                <td className="num">{r.etaDays == null ? "—" : `${r.etaDays.toFixed(0)}d`}</td>
-                <td>{r.etaDate}</td>
               </tr>
             ))}
           </tbody>

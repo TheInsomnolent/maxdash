@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-27T05:22:08.206Z",
+  "generatedAt": "2026-04-27T05:37:17.655Z",
   "skills": [
     "Overall",
     "Attack",
@@ -30,11 +30,11 @@
     {
       "rsn": "Insomnolennt",
       "file": "insomnolennt.json",
-      "totalXp": 132185234,
+      "totalXp": 132220388,
       "totalLevel": 2115,
       "skills99": 2,
-      "lastChecked": "2026-04-27T05:22:08.206Z",
-      "lastChanged": "2026-04-27T05:22:08.206Z",
+      "lastChecked": "2026-04-27T05:37:17.655Z",
+      "lastChanged": "2026-04-27T05:37:17.655Z",
       "status": "ok"
     },
     {
@@ -43,7 +43,7 @@
       "totalXp": 217251813,
       "totalLevel": 2228,
       "skills99": 8,
-      "lastChecked": "2026-04-27T05:22:08.206Z",
+      "lastChecked": "2026-04-27T05:37:17.655Z",
       "lastChanged": "2026-04-27T05:22:08.206Z",
       "status": "ok"
     },
@@ -53,7 +53,7 @@
       "totalXp": 299243004,
       "totalLevel": 2293,
       "skills99": 12,
-      "lastChecked": "2026-04-27T05:22:08.206Z",
+      "lastChecked": "2026-04-27T05:37:17.655Z",
       "lastChanged": "2026-04-27T05:22:08.206Z",
       "status": "ok"
     },
@@ -63,7 +63,7 @@
       "totalXp": 180843991,
       "totalLevel": 2100,
       "skills99": 3,
-      "lastChecked": "2026-04-27T05:22:08.206Z",
+      "lastChecked": "2026-04-27T05:37:17.655Z",
       "lastChanged": "2026-04-27T05:22:08.206Z",
       "status": "ok"
     },
@@ -73,7 +73,7 @@
       "totalXp": 128049692,
       "totalLevel": 2012,
       "skills99": 6,
-      "lastChecked": "2026-04-27T05:22:08.206Z",
+      "lastChecked": "2026-04-27T05:37:17.655Z",
       "lastChanged": "2026-04-27T05:22:08.206Z",
       "status": "ok"
     },
@@ -83,7 +83,7 @@
       "totalXp": 10992472,
       "totalLevel": 1389,
       "skills99": 0,
-      "lastChecked": "2026-04-27T05:22:08.206Z",
+      "lastChecked": "2026-04-27T05:37:17.655Z",
       "lastChanged": "2026-04-27T05:22:08.206Z",
       "status": "ok"
     }

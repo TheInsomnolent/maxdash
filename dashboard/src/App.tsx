@@ -5,22 +5,40 @@ import { create } from "zustand";
 import { Overall } from "./views/Overall";
 import { SkillRace } from "./views/SkillRace";
 import { PlayerDetail } from "./views/PlayerDetail";
-import { MVP } from "./views/MVP";
-import { Fun } from "./views/Fun";
+import { AccountBadge, type AccountType } from "./components/AccountBadge";
 
 interface UIState {
   range: RangeKey;
   setRange: (r: RangeKey) => void;
+  /** Account-type filter; empty set ⇒ show all. */
+  typeFilter: Set<AccountType>;
+  toggleType: (t: AccountType) => void;
 }
-export const useUI = create<UIState>((set) => ({
+export const useUI = create<UIState>((set, get) => ({
   range: "7d",
   setRange: (r) => set({ range: r }),
+  typeFilter: new Set(),
+  toggleType: (t) => {
+    const cur = new Set(get().typeFilter);
+    if (cur.has(t)) cur.delete(t);
+    else cur.add(t);
+    set({ typeFilter: cur });
+  },
 }));
+
+/** Helper hook: filter an array of {type} entries by the active type filter. */
+export function useTypeFilter() {
+  return useUI((s) => s.typeFilter);
+}
+
+const ACCOUNT_TYPES: AccountType[] = ["main", "ironman", "gim"];
 
 export function App() {
   const { load, loading, error, index } = useData();
   const range = useUI((s) => s.range);
   const setRange = useUI((s) => s.setRange);
+  const typeFilter = useUI((s) => s.typeFilter);
+  const toggleType = useUI((s) => s.toggleType);
 
   useEffect(() => {
     void load();
@@ -33,9 +51,20 @@ export function App() {
         <NavLink to="/" end>Overall</NavLink>
         <NavLink to="/skills">Skills</NavLink>
         <NavLink to="/players">Players</NavLink>
-        <NavLink to="/mvp">MVP</NavLink>
-        <NavLink to="/fun">Fun</NavLink>
         <span className="spacer" />
+        <div className="range-bar" title="Account-type filter">
+          {ACCOUNT_TYPES.map((t) => (
+            <button
+              key={t}
+              className={typeFilter.has(t) ? "active" : ""}
+              onClick={() => toggleType(t)}
+              style={{ display: "inline-flex", alignItems: "center", gap: "0.3rem" }}
+            >
+              <AccountBadge type={t} size={14} />
+              {t === "gim" ? "GIM" : t}
+            </button>
+          ))}
+        </div>
         <div className="range-bar">
           {RANGE_OPTIONS.map((opt) => (
             <button
@@ -63,8 +92,6 @@ export function App() {
             <Route path="/skills/:name" element={<SkillRace />} />
             <Route path="/players" element={<PlayerDetail />} />
             <Route path="/players/:rsn" element={<PlayerDetail />} />
-            <Route path="/mvp" element={<MVP />} />
-            <Route path="/fun" element={<Fun />} />
           </Routes>
         )}
       </main>

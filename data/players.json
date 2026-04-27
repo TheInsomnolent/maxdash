@@ -1,10 +1,13 @@
 {
   "players": [
-    "Insomnolennt",
-    "Iron Razekai",
-    "Wuckedenergy",
-    "Why jay",
-    "Toke Feend",
-    "CdeSafeTCam"
+    { "rsn": "Insomnolennt", "type": "main" },
+    { "rsn": "Why jay", "type": "main" },
+    { "rsn": "Sir_Newtone", "type": "main" },
+    { "rsn": "Gloryyy Boy", "type": "ironman" },
+    { "rsn": "Iron Razekai", "type": "gim" },
+    { "rsn": "Wuckedenergy", "type": "gim" },
+    { "rsn": "Toke Feend", "type": "gim" },
+    { "rsn": "CdeSafeTCam", "type": "gim" },
+    { "rsn": "Savage32Fe", "type": "gim" }
   ]
 }

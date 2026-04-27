@@ -2,8 +2,8 @@ name: snapshot
 
 on:
   schedule:
-    # Hourly at :05 to avoid top-of-hour cron contention.
-    - cron: "5 * * * *"
+    # Once per day at 05:05 UTC.
+    - cron: "5 5 * * *"
   workflow_dispatch:
 
 permissions:

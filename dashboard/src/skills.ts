@@ -62,11 +62,54 @@ export function xpForLevel(level: number): number {
   return XP_TABLE[level - 1];
 }
 
+/**
+ * 16 hand-tuned, perceptually distinct hues that read well on the dark wood
+ * background. Ordering is intentional — adjacent slots are far apart in hue
+ * and lightness so a small roster gets maximum contrast.
+ */
+const PALETTE: readonly string[] = [
+  "#ffb43b", // amber (OSRS accent)
+  "#4fc3f7", // sky blue
+  "#e57373", // coral red
+  "#81c784", // mint green
+  "#ba68c8", // violet
+  "#ffd54f", // pale yellow
+  "#4dd0e1", // cyan
+  "#f06292", // pink
+  "#aed581", // lime
+  "#9575cd", // lavender
+  "#ff8a65", // salmon
+  "#64b5f6", // blue
+  "#dce775", // chartreuse
+  "#a1887f", // taupe
+  "#7986cb", // periwinkle
+  "#ff7043", // orange
+];
+
+/** Stable color assignments registered by the data loader (sorted RSN ⇒ slot). */
+const colorMap = new Map<string, string>();
+
+/**
+ * Register the full roster so colors are deterministic per RSN AND
+ * collision-free across the known set. Idempotent.
+ */
+export function registerPlayerColors(rsns: readonly string[]): void {
+  const sorted = [...rsns].sort();
+  colorMap.clear();
+  sorted.forEach((rsn, i) => {
+    colorMap.set(rsn, PALETTE[i % PALETTE.length]);
+  });
+}
+
 /** Display palette deterministically per RSN. */
 export function colorFor(rsn: string): string {
-  // hash → hue
-  let h = 0;
-  for (let i = 0; i < rsn.length; i++) h = (h * 31 + rsn.charCodeAt(i)) | 0;
-  const hue = Math.abs(h) % 360;
-  return `hsl(${hue} 70% 60%)`;
+  const known = colorMap.get(rsn);
+  if (known) return known;
+  // Fallback for unknown RSNs: FNV-1a hash → palette slot.
+  let h = 0x811c9dc5;
+  for (let i = 0; i < rsn.length; i++) {
+    h ^= rsn.charCodeAt(i);
+    h = Math.imul(h, 0x01000193);
+  }
+  return PALETTE[Math.abs(h) % PALETTE.length];
 }

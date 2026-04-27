@@ -1,8 +1,10 @@
 import { create } from "zustand";
-import { MAX_XP, SKILLS, xpToLevel } from "./skills";
+import { MAX_XP, SKILLS, registerPlayerColors, xpToLevel } from "./skills";
+import type { AccountType } from "./components/AccountBadge";
 
 export interface IndexEntry {
   rsn: string;
+  type: AccountType;
   file: string;
   totalXp: number;
   totalLevel: number;
@@ -51,6 +53,7 @@ export const useData = create<DataState>((set, get) => ({
     set({ loading: true, error: null });
     try {
       const idx = await fetchJson<IndexFile>("index.json");
+      registerPlayerColors(idx.players.map((p) => p.rsn));
       const results = await Promise.all(
         idx.players.map(async (p) => {
           try {
@@ -134,7 +137,9 @@ export function etaToMaxDays(pf: PlayerFile, skillIdx: number): number | null {
   if (!last) return null;
   const cur = last.s[skillIdx];
   if (cur < 0) return null;
-  if (cur >= MAX_XP) return 0;
+  // Overall (idx 0) caps at the sum of every skill at 99.
+  const target = skillIdx === 0 ? MAX_XP * (last.s.length - 1) : MAX_XP;
+  if (cur >= target) return 0;
 
   const cutoff = Date.now() - 7 * 24 * 3600_000;
   const pts = pf.snapshots
@@ -154,7 +159,7 @@ export function etaToMaxDays(pf: PlayerFile, skillIdx: number): number | null {
   if (den === 0) return null;
   const slope = num / den; // xp per ms
   if (slope <= 0) return null;
-  const remainingXp = MAX_XP - cur;
+  const remainingXp = target - cur;
   const ms = remainingXp / slope;
   return ms / (24 * 3600_000);
 }
@@ -178,6 +183,33 @@ export function skills99Count(s: number[]): number {
 
 export function skillNameToIdx(name: string): number {
   return SKILLS.indexOf(name as (typeof SKILLS)[number]);
+}
+
+/** Apply the global account-type filter (empty filter ⇒ pass everything). */
+export function filterByType<T extends { type: AccountType }>(
+  items: readonly T[],
+  filter: ReadonlySet<AccountType>,
+): T[] {
+  if (filter.size === 0) return [...items];
+  return items.filter((p) => filter.has(p.type));
+}
+
+/**
+ * Active hours in a range: sum of inter-snapshot intervals where overall XP
+ * actually grew. Bounded by the gap between snapshots, so a gap > 1d is still
+ * counted as one full day of activity if XP went up across it (best we can do
+ * without finer telemetry). Returns 0 when there's nothing to measure.
+ */
+export function activeHoursInRange(pf: PlayerFile, range: RangeKey): number {
+  const inR = snapshotsInRange(pf, range);
+  let hrs = 0;
+  for (let i = 1; i < inR.length; i++) {
+    const a = inR[i - 1].s[0];
+    const b = inR[i].s[0];
+    if (a < 0 || b < 0 || b === a) continue;
+    hrs += (Date.parse(inR[i].t) - Date.parse(inR[i - 1].t)) / 3600_000;
+  }
+  return hrs;
 }
 
 /** Streak (in hours) since the player's most recent XP gain across any skill. */

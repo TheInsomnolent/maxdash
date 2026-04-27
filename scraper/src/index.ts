@@ -14,12 +14,18 @@ import { SKILLS } from "./skills.js";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const DATA_DIR = path.resolve(__dirname, "../../data");
 
+interface PlayerConfig {
+  rsn: string;
+  type: "main" | "ironman" | "gim";
+}
+
 interface PlayersConfig {
-  players: string[];
+  players: Array<PlayerConfig | string>;
 }
 
 interface IndexEntry {
   rsn: string;
+  type: "main" | "ironman" | "gim";
   file: string;
   totalXp: number;
   totalLevel: number;
@@ -41,9 +47,13 @@ async function main(): Promise<void> {
   const cfg = JSON.parse(cfgRaw) as PlayersConfig;
   const ts = new Date().toISOString();
 
+  const players: PlayerConfig[] = cfg.players.map((p) =>
+    typeof p === "string" ? { rsn: p, type: "main" } : p,
+  );
+
   const entries: IndexEntry[] = [];
 
-  for (const rsn of cfg.players) {
+  for (const { rsn, type } of players) {
     process.stdout.write(`[snapshot] ${rsn} ... `);
     let pf: PlayerFile = (await readPlayerFile(DATA_DIR, rsn)) ?? {
       rsn,
@@ -64,6 +74,7 @@ async function main(): Promise<void> {
 
       entries.push({
         rsn,
+        type,
         file: rsnToFile(rsn),
         totalXp: overallXp,
         totalLevel: overallLevel,
@@ -87,6 +98,7 @@ async function main(): Promise<void> {
       await writePlayerFile(DATA_DIR, pf);
       entries.push({
         rsn,
+        type,
         file: rsnToFile(rsn),
         totalXp: pf.snapshots.at(-1)?.s[0] ?? 0,
         totalLevel: 0,

@@ -1,9 +1,9 @@
 export type AccountType = "main" | "ironman" | "gim";
 
 const BADGE_URL: Record<AccountType, string> = {
-  main: "https://oldschool.runescape.wiki/images/Grand_Exchange_logo.png",
-  ironman: "https://oldschool.runescape.wiki/images/Ironman_chat_badge.png",
-  gim: "https://oldschool.runescape.wiki/images/Group_ironman_chat_badge.png",
+  main: `${import.meta.env.BASE_URL}images/badges/main.png`,
+  ironman: `${import.meta.env.BASE_URL}images/badges/ironman.png`,
+  gim: `${import.meta.env.BASE_URL}images/badges/gim.png`,
 };
 
 const BADGE_LABEL: Record<AccountType, string> = {

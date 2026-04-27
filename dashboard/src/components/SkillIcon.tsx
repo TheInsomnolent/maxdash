@@ -1,6 +1,6 @@
 import type { CSSProperties } from "react";
 
-const BASE = "https://oldschool.runescape.wiki/images/";
+const BASE = `${import.meta.env.BASE_URL}images/skills/`;
 
 /** Wiki filename for each skill (PascalCase + `_icon.png`). */
 function fileFor(skill: string): string {

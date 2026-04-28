@@ -18,7 +18,7 @@ interface UIState {
   setHideInactive: (v: boolean) => void;
 }
 export const useUI = create<UIState>((set, get) => ({
-  range: "all",
+  range: "30d",
   setRange: (r) => set({ range: r }),
   typeFilter: new Set(),
   toggleType: (t) => {

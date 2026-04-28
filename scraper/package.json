@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "snapshot": "tsx src/index.ts",
+    "backfill": "tsx src/backfill-cli.ts",
     "typecheck": "tsc --noEmit"
   },
   "devDependencies": {

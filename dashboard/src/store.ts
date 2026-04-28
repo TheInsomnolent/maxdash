@@ -86,13 +86,19 @@ export function snapshotsInRange(pf: PlayerFile, range: RangeKey) {
   const opt = RANGE_OPTIONS.find((r) => r.key === range)!;
   if (!opt.ms) return pf.snapshots;
   const cutoff = Date.now() - opt.ms;
-  // Always include the snapshot just before cutoff so deltas are accurate.
   const snaps = pf.snapshots;
-  const startIdx = Math.max(
-    0,
-    snaps.findIndex((s) => Date.parse(s.t) >= cutoff) - 1,
-  );
-  return snaps.slice(startIdx === -1 ? 0 : startIdx);
+  const firstInRange = snaps.findIndex((s) => Date.parse(s.t) >= cutoff);
+  if (firstInRange === -1) {
+    // Nothing in range — surface the most recent snapshot, clamped to cutoff,
+    // so consumers (charts, deltas) still have a single point to anchor on.
+    const last = snaps.at(-1);
+    return last ? [{ ...last, t: new Date(cutoff).toISOString() }] : [];
+  }
+  if (firstInRange === 0) return snaps;
+  // Include the snapshot just before cutoff so deltas are accurate, but clamp
+  // its timestamp to the cutoff so charts don't stretch back to it.
+  const anchor = { ...snaps[firstInRange - 1], t: new Date(cutoff).toISOString() };
+  return [anchor, ...snaps.slice(firstInRange)];
 }
 
 export function latestSnapshot(pf: PlayerFile) {

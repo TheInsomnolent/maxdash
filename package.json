@@ -9,6 +9,7 @@
   ],
   "scripts": {
     "snapshot": "npm -w scraper run snapshot",
+    "backfill": "npm -w scraper run backfill --",
     "dev": "npm -w dashboard run dev",
     "build": "npm -w dashboard run build"
   },

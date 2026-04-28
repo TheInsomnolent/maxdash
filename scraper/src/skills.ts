@@ -30,6 +30,37 @@ export const SKILLS = [
 
 export type SkillName = (typeof SKILLS)[number];
 
+/**
+ * Skill metric keys used by the Wise Old Man API, indexed in the same order as
+ * `SKILLS`. Lowercased; note WOM uses `runecrafting` rather than `runecraft`.
+ */
+export const WOM_SKILL_KEYS: readonly string[] = [
+  "overall",
+  "attack",
+  "defence",
+  "strength",
+  "hitpoints",
+  "ranged",
+  "prayer",
+  "magic",
+  "cooking",
+  "woodcutting",
+  "fletching",
+  "fishing",
+  "firemaking",
+  "crafting",
+  "smithing",
+  "mining",
+  "herblore",
+  "agility",
+  "thieving",
+  "slayer",
+  "farming",
+  "runecrafting",
+  "hunter",
+  "construction",
+];
+
 /** XP cap per skill (level 99). */
 export const MAX_XP = 13_034_431;
 /** Number of trainable skills (excludes the synthetic "Overall"). */

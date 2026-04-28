@@ -5,11 +5,9 @@ import {
   ResponsiveContainer, Tooltip, XAxis, YAxis,
 } from "recharts";
 import { useUI } from "../App";
-import { useData, etaToMaxDays, snapshotsInRange, skillNameToIdx, filterPlayers } from "../store";
+import { useData, snapshotsInRange, skillNameToIdx, filterPlayers, RANGE_OPTIONS } from "../store";
 import { MAX_XP, SKILLS, TRAINABLE_SKILLS, TRAINABLE_SKILL_COUNT, MAX_TOTAL_LEVEL, colorFor, xpToLevel } from "../skills";
 import { SkillIcon } from "../components/SkillIcon";
-import { AccountBadge } from "../components/AccountBadge";
-import { PlayerImage } from "../components/PlayerImage";
 
 const SKILL_OPTIONS = ["Overall", ...TRAINABLE_SKILLS];
 
@@ -54,8 +52,8 @@ export function SkillRace() {
     return x >= 0 ? xpToLevel(x) : undefined;
   };
 
-  const data = useMemo(() => {
-    if (!index) return [];
+  const { data, projections } = useMemo(() => {
+    if (!index) return { data: [] as Array<Record<string, number | string>>, projections: [] as Array<{ rsn: string }> };
     const visible = filterPlayers(index.players, typeFilter, hideInactive);
     // Build timeline = union of all sample times across players in range.
     const tsSet = new Set<number>();
@@ -65,23 +63,71 @@ export function SkillRace() {
       for (const s of snapshotsInRange(pf, range)) tsSet.add(Date.parse(s.t));
     }
     const ts = [...tsSet].sort((a, b) => a - b);
-    return ts.map((t) => {
-      const row: Record<string, number | string> = { t, ts: new Date(t).toLocaleString() };
-      for (const p of visible) {
-        const pf = players[p.rsn];
-        if (!pf) continue;
-        // Use last snapshot at-or-before t
-        let v: number | undefined;
-        for (const s of pf.snapshots) {
-          const st = Date.parse(s.t);
-          if (st > t) break;
-          const computed = valueFromSnapshot(s);
+    const rowByT = new Map<number, Record<string, number | string>>();
+    for (const t of ts) {
+      rowByT.set(t, { t, ts: new Date(t).toLocaleString() });
+    }
+    for (const p of visible) {
+      const pf = players[p.rsn];
+      if (!pf) continue;
+      // Use last snapshot at-or-before each timeline t.
+      let v: number | undefined;
+      let cursor = 0;
+      const snaps = pf.snapshots;
+      for (const t of ts) {
+        while (cursor < snaps.length && Date.parse(snaps[cursor].t) <= t) {
+          const computed = valueFromSnapshot(snaps[cursor]);
           if (computed !== undefined) v = computed;
+          cursor++;
         }
-        if (v !== undefined) row[p.rsn] = v;
+        if (v !== undefined) rowByT.get(t)![p.rsn] = v;
       }
-      return row;
-    });
+    }
+
+    // Per-player linear-regression projection over the in-range snapshots.
+    // Extrapolate forward by exactly one period; "all" range caps at 1 year.
+    const rangeMs = RANGE_OPTIONS.find((r) => r.key === range)!.ms;
+    const extrapMs = rangeMs ?? 365 * 24 * 3600_000;
+    const now = Date.now();
+    const extrapEnd = now + extrapMs;
+    const projections: Array<{ rsn: string }> = [];
+    for (const p of visible) {
+      const pf = players[p.rsn];
+      if (!pf) continue;
+      const pts = snapshotsInRange(pf, range)
+        .map((s) => ({ x: Date.parse(s.t), y: valueFromSnapshot(s) }))
+        .filter((q): q is { x: number; y: number } => q.y !== undefined);
+      if (pts.length < 2) continue;
+      const n = pts.length;
+      const meanX = pts.reduce((a, q) => a + q.x, 0) / n;
+      const meanY = pts.reduce((a, q) => a + q.y, 0) / n;
+      let num = 0, den = 0;
+      for (const q of pts) {
+        num += (q.x - meanX) * (q.y - meanY);
+        den += (q.x - meanX) ** 2;
+      }
+      if (den === 0) continue;
+      const slope = num / den; // y per ms
+      const intercept = meanY - slope * meanX;
+      const last = pts[pts.length - 1];
+      if (last.y >= cap) continue; // already at / over the cap
+      // Where (if anywhere) does the regression cross the cap?
+      const capX = slope > 0 ? (cap - intercept) / slope : Infinity;
+      const endT = Math.min(extrapEnd, capX);
+      if (endT <= last.x) continue; // intercept is in the past — no useful projection
+      const endY = Math.min(cap, slope * endT + intercept);
+      const key = `${p.rsn}__pred`;
+      const startRow = rowByT.get(last.x) ?? { t: last.x, ts: new Date(last.x).toLocaleString() };
+      startRow[key] = last.y;
+      rowByT.set(last.x, startRow);
+      const endRow = rowByT.get(endT) ?? { t: endT, ts: new Date(endT).toLocaleString() };
+      endRow[key] = endY;
+      rowByT.set(endT, endRow);
+      projections.push({ rsn: p.rsn });
+    }
+
+    const out = [...rowByT.values()].sort((a, b) => (a.t as number) - (b.t as number));
+    return { data: out, projections };
   }, [index, players, range, idx, typeFilter, hideInactive, yMode, isOverall, cap]);
 
   if (!index) return null;
@@ -159,11 +205,25 @@ export function SkillRace() {
                 contentStyle={{ background: "#2b1f12", border: "2px solid #8a6b3d", color: "#f0e2c0" }}
                 labelStyle={{ color: "#ffb43b" }}
                 labelFormatter={(v) => new Date(Number(v)).toLocaleString()}
-                formatter={(v: number) => yMode === "level"
-                  ? (isOverall ? `total ${Math.round(v)}` : `level ${Math.round(v)}`)
-                  : `${v.toLocaleString()} xp`}
+                formatter={(v: number, name: string) => {
+                  const display = yMode === "level"
+                    ? (isOverall ? `total ${Math.round(v)}` : `level ${Math.round(v)}`)
+                    : `${v.toLocaleString()} xp`;
+                  if (name.endsWith("__pred")) {
+                    return [display + " (projected)", name.slice(0, -"__pred".length)];
+                  }
+                  return [display, name];
+                }}
               />
-              <Legend wrapperStyle={{ color: "#f0e2c0" }} />
+              <Legend
+                wrapperStyle={{ color: "#f0e2c0" }}
+                payload={visiblePlayers.map((p) => ({
+                  value: p.rsn,
+                  type: "line",
+                  id: p.rsn,
+                  color: colorFor(p.rsn),
+                }))}
+              />
               <ReferenceLine y={cap} stroke="#ffb43b" strokeDasharray="4 4" label={{ value: capLabel, fill: "#ffb43b", position: "right" }} />
               {visiblePlayers.map((p) => (
                 <Line
@@ -177,38 +237,24 @@ export function SkillRace() {
                   strokeWidth={2}
                 />
               ))}
+              {projections.map((pr) => (
+                <Line
+                  key={`${pr.rsn}__pred`}
+                  type="linear"
+                  dataKey={`${pr.rsn}__pred`}
+                  stroke={colorFor(pr.rsn)}
+                  strokeDasharray="4 4"
+                  strokeOpacity={0.7}
+                  dot={false}
+                  isAnimationActive={false}
+                  connectNulls
+                  strokeWidth={2}
+                  legendType="none"
+                />
+              ))}
             </LineChart>
           </ResponsiveContainer>
         )}
-      </div>
-
-      <div className="panel">
-        <h2><SkillIcon name={skill} size={20} /> ETA to {isOverall ? "max total XP" : "99"} — {skill}</h2>
-        <table>
-          <thead>
-            <tr><th>Player</th><th className="num">Current XP</th><th className="num">Days to 99</th><th>Projected</th></tr>
-          </thead>
-          <tbody>
-            {visiblePlayers.map((p) => {
-              const pf = players[p.rsn];
-              const last = pf?.snapshots.at(-1)?.s[idx] ?? -1;
-              const eta = pf ? etaToMaxDays(pf, idx) : null;
-              return (
-                <tr key={p.rsn}>
-                  <td>
-                    <PlayerImage rsn={p.rsn} size={24} />{" "}
-                    <span className="swatch" style={{ background: colorFor(p.rsn), color: colorFor(p.rsn) }} />
-                    <AccountBadge type={p.type} />{" "}
-                    {p.rsn}
-                  </td>
-                  <td className="num">{last < 0 ? "unranked" : last.toLocaleString()}</td>
-                  <td className="num">{eta == null ? "—" : eta === 0 ? "MAXED" : `${eta.toFixed(0)}d`}</td>
-                  <td>{eta == null || eta === 0 ? "—" : new Date(Date.now() + eta * 86400_000).toISOString().slice(0, 10)}</td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
       </div>
     </>
   );

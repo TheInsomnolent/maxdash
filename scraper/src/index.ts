@@ -10,6 +10,7 @@ import {
   type PlayerFile,
 } from "./store.js";
 import { SKILLS } from "./skills.js";
+import { backfillPlayer } from "./backfill.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const DATA_DIR = path.resolve(__dirname, "../../data");
@@ -55,11 +56,29 @@ async function main(): Promise<void> {
 
   for (const { rsn, type } of players) {
     process.stdout.write(`[snapshot] ${rsn} ... `);
-    let pf: PlayerFile = (await readPlayerFile(DATA_DIR, rsn)) ?? {
+    const existing = await readPlayerFile(DATA_DIR, rsn);
+    let pf: PlayerFile = existing ?? {
       rsn,
       firstSeen: ts,
       snapshots: [],
     };
+
+    // First-ever sighting of this RSN: try to backfill historical data from
+    // WOM + Temple before taking the live snapshot. Failures here must not
+    // block the live snapshot.
+    if (!existing) {
+      try {
+        const r = await backfillPlayer(DATA_DIR, rsn);
+        console.log(
+          `bootstrap wom=${r.womCount} temple=${r.templeCount} (+${r.added}) ... `,
+        );
+        pf = (await readPlayerFile(DATA_DIR, rsn)) ?? pf;
+      } catch (err) {
+        console.log(
+          `bootstrap failed (${err instanceof Error ? err.message : String(err)}) ... `,
+        );
+      }
+    }
 
     try {
       const snap = await fetchHiscores(rsn);

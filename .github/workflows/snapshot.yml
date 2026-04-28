@@ -3,7 +3,7 @@ name: snapshot
 on:
   schedule:
     # Once per day at 05:05 UTC.
-    - cron: "5 5 * * *"
+    - cron: "5 * * * *"
   workflow_dispatch:
 
 permissions:

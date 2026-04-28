@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
-  Area, AreaChart, CartesianGrid, Legend, Line, LineChart, ReferenceLine,
+  Area, AreaChart, CartesianGrid, Legend, Line, LineChart, ReferenceArea, ReferenceLine,
   ResponsiveContainer, Tooltip, XAxis, YAxis,
 } from "recharts";
 import { useData } from "../store";
@@ -118,7 +118,7 @@ function TotalProjection({ rsn }: { rsn: string }) {
       }
       const etaTs = regressionEtaTs(reg, MAX_XP);
       projections.push({ skill: SKILLS[i], etaTs, lastXp: reg.lastXp, slope: reg.slope });
-      if (etaTs && etaTs > horizonTs) horizonTs = Math.min(etaTs, now + 5 * 365 * 86400_000);
+      if (etaTs && etaTs > horizonTs) horizonTs = Math.min(etaTs, now + 365 * 86400_000);
     }
     if (horizonTs <= now) return rows;
     // Sample the future at 24 evenly-spaced points for smoothness.
@@ -149,11 +149,27 @@ function TotalProjection({ rsn }: { rsn: string }) {
     );
   }
 
+  // Capture x-axis bounds so the ReferenceArea covers the entire future band.
+  const nowTs = Date.now();
+  const lastTs = (data[data.length - 1] as { t: number } | undefined)?.t ?? nowTs;
+
   return (
     <div className="panel" style={{ height: 420 }}>
       <h2>Total XP projection (stacked, linear regression)</h2>
-      <ResponsiveContainer width="100%" height="90%">
+      <div style={{ color: "var(--text-dim)", fontSize: "0.85rem", marginTop: "-0.25rem", marginBottom: "0.5rem" }}>
+        <span style={{ display: "inline-block", width: 12, height: 12, background: "#8a6b3d", marginRight: 6, verticalAlign: "middle" }} />
+        Solid = actual XP to date
+        <span style={{ marginLeft: "1rem", display: "inline-block", width: 12, height: 12, background: "repeating-linear-gradient(45deg, #8a6b3d 0 3px, #2b1f12 3px 6px)", marginRight: 6, verticalAlign: "middle" }} />
+        Hatched = projected (linear regression)
+      </div>
+      <ResponsiveContainer width="100%" height="85%">
         <AreaChart data={data} margin={{ top: 10, right: 24, bottom: 0, left: 0 }}>
+          <defs>
+            <pattern id="future-hatch" patternUnits="userSpaceOnUse" width="8" height="8" patternTransform="rotate(45)">
+              <rect width="8" height="8" fill="#000" fillOpacity="0.35" />
+              <line x1="0" y1="0" x2="0" y2="8" stroke="#000" strokeOpacity="0.55" strokeWidth="3" />
+            </pattern>
+          </defs>
           <CartesianGrid stroke="#3a2614" strokeDasharray="3 3" />
           <XAxis
             dataKey="t"
@@ -169,10 +185,13 @@ function TotalProjection({ rsn }: { rsn: string }) {
           <Tooltip
             contentStyle={{ background: "#2b1f12", border: "2px solid #8a6b3d", color: "#f0e2c0" }}
             labelStyle={{ color: "#ffb43b" }}
-            labelFormatter={(v) => new Date(Number(v)).toLocaleDateString()}
+            labelFormatter={(v) => {
+              const ts = Number(v);
+              const tag = ts > nowTs ? " (projected)" : "";
+              return new Date(ts).toLocaleDateString() + tag;
+            }}
             formatter={(v: number, n: string) => [`${v.toLocaleString()} xp`, n]}
           />
-          <ReferenceLine x={Date.now()} stroke="#ffb43b" strokeDasharray="4 4" label={{ value: "today", fill: "#ffb43b", position: "insideTopRight" }} />
           {TRAINABLE_SKILLS.map((s, i) => (
             <Area
               key={s}
@@ -181,10 +200,28 @@ function TotalProjection({ rsn }: { rsn: string }) {
               stackId="1"
               stroke={colorFor(`__skill__${i}`)}
               fill={colorFor(`__skill__${i}`)}
-              fillOpacity={0.5}
+              fillOpacity={0.55}
               isAnimationActive={false}
             />
           ))}
+          {/* Overlay a hatched dark band over the projected future region so
+              it's instantly distinguishable from historical XP. */}
+          {lastTs > nowTs && (
+            <ReferenceArea
+              x1={nowTs}
+              x2={lastTs}
+              fill="url(#future-hatch)"
+              fillOpacity={1}
+              stroke="none"
+              ifOverflow="hidden"
+            />
+          )}
+          <ReferenceLine
+            x={nowTs}
+            stroke="#ffb43b"
+            strokeWidth={2}
+            label={{ value: "today", fill: "#ffb43b", position: "insideTopRight" }}
+          />
         </AreaChart>
       </ResponsiveContainer>
     </div>

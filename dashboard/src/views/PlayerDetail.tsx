@@ -7,6 +7,7 @@ import {
   latestSnapshot,
   snapshotsInRange,
   xpGainInRange,
+  filterPlayers,
 } from "../store";
 import { MAX_XP, SKILLS, TRAINABLE_SKILLS, colorFor, xpToLevel } from "../skills";
 import { SkillIcon } from "../components/SkillIcon";
@@ -18,9 +19,17 @@ export function PlayerDetail() {
   const nav = useNavigate();
   const { players, index } = useData();
   const range = useUI((s) => s.range);
+  const typeFilter = useUI((s) => s.typeFilter);
+  const hideInactive = useUI((s) => s.hideInactive);
 
   if (!index) return null;
-  const current = rsn && players[rsn] ? rsn : index.players[0]?.rsn;
+  // Apply the global type/active filters to the dropdown, but always keep the
+  // currently-selected player visible so deep links never appear empty.
+  const filtered = filterPlayers(index.players, typeFilter, hideInactive);
+  const dropdown = rsn && !filtered.some((p) => p.rsn === rsn) && index.players.find((p) => p.rsn === rsn)
+    ? [...filtered, index.players.find((p) => p.rsn === rsn)!]
+    : filtered;
+  const current = rsn && players[rsn] ? rsn : (filtered[0]?.rsn ?? index.players[0]?.rsn);
   if (!current) return <div className="empty">No players.</div>;
 
   const pf = players[current];
@@ -72,7 +81,7 @@ export function PlayerDetail() {
               </small>
             </h2>
             <select value={current} onChange={(e) => nav(`/players/${encodeURIComponent(e.target.value)}`)}>
-              {index.players.map((p) => (
+              {dropdown.map((p) => (
                 <option key={p.rsn} value={p.rsn}>{p.rsn}</option>
               ))}
             </select>

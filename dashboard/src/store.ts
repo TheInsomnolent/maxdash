@@ -194,6 +194,27 @@ export function filterByType<T extends { type: AccountType }>(
   return items.filter((p) => filter.has(p.type));
 }
 
+/** A player is considered inactive when there has been no XP change for 7+ days. */
+export const INACTIVE_THRESHOLD_MS = 7 * 24 * 3600_000;
+export function isInactive(p: Pick<IndexEntry, "lastChanged">): boolean {
+  if (!p.lastChanged) return true;
+  return Date.now() - Date.parse(p.lastChanged) > INACTIVE_THRESHOLD_MS;
+}
+
+/**
+ * Combined player filter applying both the account-type filter and the
+ * "hide inactive" toggle. Use this in views that render player rows/series.
+ */
+export function filterPlayers(
+  items: readonly IndexEntry[],
+  typeFilter: ReadonlySet<AccountType>,
+  hideInactive: boolean,
+): IndexEntry[] {
+  let out = filterByType(items, typeFilter);
+  if (hideInactive) out = out.filter((p) => !isInactive(p));
+  return out;
+}
+
 /**
  * Active hours in a range: sum of inter-snapshot intervals where overall XP
  * actually grew. Bounded by the gap between snapshots, so a gap > 1d is still

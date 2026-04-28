@@ -5,7 +5,7 @@ import {
   latestSnapshot,
   skills99Count,
   totalLevelFromSnapshot,
-  filterByType,
+  filterPlayers,
   activeHoursInRange,
   xpGainInRange,
   levelGainInRange,
@@ -45,12 +45,13 @@ export function Overall() {
   const { players, index } = useData();
   const range = useUI((s) => s.range);
   const typeFilter = useUI((s) => s.typeFilter);
+  const hideInactive = useUI((s) => s.hideInactive);
   const [sort, setSort] = useState<SortKey>("totalXp");
   const [dir, setDir] = useState<1 | -1>(-1);
 
   const rows = useMemo<Row[]>(() => {
     if (!index) return [];
-    return filterByType(index.players, typeFilter).map((p) => {
+    return filterPlayers(index.players, typeFilter, hideInactive).map((p) => {
       const pf = players[p.rsn];
       const last = pf ? latestSnapshot(pf) : null;
       const snap = last?.s ?? [];
@@ -70,7 +71,7 @@ export function Overall() {
         xpGained,
       };
     });
-  }, [index, players, typeFilter, range]);
+  }, [index, players, typeFilter, hideInactive, range]);
 
   const sorted = useMemo(() => {
     return [...rows].sort((a, b) => {
@@ -88,25 +89,25 @@ export function Overall() {
 
   const xpBoard = useMemo<BoardRow[]>(() => {
     if (!index) return [];
-    return filterByType(index.players, typeFilter)
+    return filterPlayers(index.players, typeFilter, hideInactive)
       .map((p) => ({
         rsn: p.rsn,
         type: p.type,
         value: players[p.rsn] ? xpGainInRange(players[p.rsn], 0, range) : 0,
       }))
       .sort((a, b) => b.value - a.value);
-  }, [index, players, range, typeFilter]);
+  }, [index, players, range, typeFilter, hideInactive]);
 
   const lvlBoard = useMemo<BoardRow[]>(() => {
     if (!index) return [];
-    return filterByType(index.players, typeFilter)
+    return filterPlayers(index.players, typeFilter, hideInactive)
       .map((p) => ({
         rsn: p.rsn,
         type: p.type,
         value: players[p.rsn] ? levelGainInRange(players[p.rsn], 0, range) : 0,
       }))
       .sort((a, b) => b.value - a.value);
-  }, [index, players, range, typeFilter]);
+  }, [index, players, range, typeFilter, hideInactive]);
 
   /**
    * Funny awards — every metric is scoped to the currently selected time range.
@@ -115,7 +116,7 @@ export function Overall() {
    */
   const awards = useMemo(() => {
     if (!index) return [];
-    const visible = filterByType(index.players, typeFilter);
+    const visible = filterPlayers(index.players, typeFilter, hideInactive);
     type Entry = { rsn: string; type: AccountType; value: number };
     // Skill index sets (matches order in skills.ts).
     const COMBAT = [1, 2, 3, 4, 5, 6, 7, 19]; // attack, def, str, hp, ranged, prayer, magic, slayer
@@ -209,11 +210,11 @@ export function Overall() {
       },
     ];
     return items;
-  }, [index, players, range, typeFilter]);
+  }, [index, players, range, typeFilter, hideInactive]);
 
   const efficiency = useMemo(() => {
     if (!index) return [];
-    return filterByType(index.players, typeFilter)
+    return filterPlayers(index.players, typeFilter, hideInactive)
       .map((p) => {
         const pf = players[p.rsn];
         if (!pf) return { rsn: p.rsn, type: p.type, xpPerActiveHr: 0 };
@@ -226,7 +227,7 @@ export function Overall() {
         };
       })
       .sort((a, b) => b.xpPerActiveHr - a.xpPerActiveHr);
-  }, [index, players, range, typeFilter]);
+  }, [index, players, range, typeFilter, hideInactive]);
 
   return (
     <>

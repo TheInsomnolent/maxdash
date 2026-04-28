@@ -5,7 +5,6 @@ import { create } from "zustand";
 import { Overall } from "./views/Overall";
 import { SkillRace } from "./views/SkillRace";
 import { PlayerDetail } from "./views/PlayerDetail";
-import { Predictions } from "./views/Predictions";
 import { AccountBadge, type AccountType } from "./components/AccountBadge";
 
 interface UIState {
@@ -14,6 +13,9 @@ interface UIState {
   /** Account-type filter; empty set ⇒ show all. */
   typeFilter: Set<AccountType>;
   toggleType: (t: AccountType) => void;
+  /** When true, players with no XP gain in the last 7 days are hidden everywhere. */
+  hideInactive: boolean;
+  setHideInactive: (v: boolean) => void;
 }
 export const useUI = create<UIState>((set, get) => ({
   range: "7d",
@@ -25,6 +27,8 @@ export const useUI = create<UIState>((set, get) => ({
     else cur.add(t);
     set({ typeFilter: cur });
   },
+  hideInactive: true,
+  setHideInactive: (v) => set({ hideInactive: v }),
 }));
 
 /** Helper hook: filter an array of {type} entries by the active type filter. */
@@ -40,6 +44,8 @@ export function App() {
   const setRange = useUI((s) => s.setRange);
   const typeFilter = useUI((s) => s.typeFilter);
   const toggleType = useUI((s) => s.toggleType);
+  const hideInactive = useUI((s) => s.hideInactive);
+  const setHideInactive = useUI((s) => s.setHideInactive);
 
   useEffect(() => {
     void load();
@@ -52,7 +58,6 @@ export function App() {
         <NavLink to="/" end>Overall</NavLink>
         <NavLink to="/skills">Skills</NavLink>
         <NavLink to="/players">Players</NavLink>
-        <NavLink to="/predictions">Predictions</NavLink>
         <span className="spacer" />
         <div className="range-bar" title="Account-type filter">
           {ACCOUNT_TYPES.map((t) => (
@@ -66,6 +71,14 @@ export function App() {
               {t === "gim" ? "GIM" : t}
             </button>
           ))}
+        </div>
+        <div className="range-bar" title="Hide players with no XP gain in the last 7 days">
+          <button
+            className={hideInactive ? "active" : ""}
+            onClick={() => setHideInactive(!hideInactive)}
+          >
+            {hideInactive ? "Hiding inactive" : "Showing all"}
+          </button>
         </div>
         <div className="range-bar">
           {RANGE_OPTIONS.map((opt) => (
@@ -94,8 +107,6 @@ export function App() {
             <Route path="/skills/:name" element={<SkillRace />} />
             <Route path="/players" element={<PlayerDetail />} />
             <Route path="/players/:rsn" element={<PlayerDetail />} />
-            <Route path="/predictions" element={<Predictions />} />
-            <Route path="/predictions/:rsn" element={<Predictions />} />
           </Routes>
         )}
       </main>

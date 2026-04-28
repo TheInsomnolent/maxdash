@@ -74,11 +74,15 @@ export const useData = create<DataState>((set, get) => ({
 
 // ----- selectors -----
 
-export type RangeKey = "24h" | "7d" | "30d" | "all";
+export type RangeKey = "24h" | "7d" | "30d" | "3m" | "6m" | "1y" | "2y" | "all";
 export const RANGE_OPTIONS: Array<{ key: RangeKey; label: string; ms: number | null }> = [
   { key: "24h", label: "24h", ms: 24 * 3600_000 },
   { key: "7d", label: "7d", ms: 7 * 24 * 3600_000 },
   { key: "30d", label: "30d", ms: 30 * 24 * 3600_000 },
+  { key: "3m", label: "3m", ms: 90 * 24 * 3600_000 },
+  { key: "6m", label: "6m", ms: 180 * 24 * 3600_000 },
+  { key: "1y", label: "1y", ms: 365 * 24 * 3600_000 },
+  { key: "2y", label: "2y", ms: 2 * 365 * 24 * 3600_000 },
   { key: "all", label: "All", ms: null },
 ];
 

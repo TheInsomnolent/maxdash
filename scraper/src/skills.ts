@@ -26,6 +26,7 @@ export const SKILLS = [
   "Runecraft",
   "Hunter",
   "Construction",
+  "Sailing",
 ] as const;
 
 export type SkillName = (typeof SKILLS)[number];
@@ -59,6 +60,7 @@ export const WOM_SKILL_KEYS: readonly string[] = [
   "runecrafting",
   "hunter",
   "construction",
+  "sailing",
 ];
 
 /** XP cap per skill (level 99). */

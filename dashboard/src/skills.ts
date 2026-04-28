@@ -24,6 +24,7 @@ export const SKILLS = [
   "Runecraft",
   "Hunter",
   "Construction",
+  "Sailing",
 ] as const;
 
 export type SkillName = (typeof SKILLS)[number];
@@ -32,6 +33,11 @@ export const TRAINABLE_SKILLS = SKILLS.slice(1);
 export const MAX_XP = 13_034_431;
 export const TRAINABLE_SKILL_COUNT = TRAINABLE_SKILLS.length;
 export const MAX_TOTAL_LEVEL = TRAINABLE_SKILL_COUNT * 99;
+/**
+ * Canonical "max total XP" as reported by OSRS Hiscores. The Overall row is
+ * counted in addition to the 23 trainable skills, giving 24 × MAX_XP.
+ */
+export const MAX_TOTAL_XP = 24 * MAX_XP;
 
 const XP_TABLE: number[] = (() => {
   const t: number[] = [0];

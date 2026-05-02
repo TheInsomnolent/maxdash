@@ -8,6 +8,7 @@ on:
 
 permissions:
   contents: write
+  actions: write
 
 concurrency:
   group: snapshot
@@ -41,3 +42,10 @@ jobs:
           fi
           git commit -m "data: snapshot $(date -u +%FT%TZ)"
           git push
+          echo "pushed=true" >> "$GITHUB_ENV"
+
+      - name: Trigger Pages deployment
+        if: env.pushed == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh workflow run pages.yml --ref main

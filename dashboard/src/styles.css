@@ -362,6 +362,391 @@ select option:hover {
   flex-shrink: 0;
 }
 
+/* === Activity heatmap === */
+
+/* Horizontal-strip layout: one row per player. Days fill the row's width via
+   a grid with `--days` column tracks, so the heatmap always uses the panel's
+   full horizontal space regardless of selected range. */
+.heatmap-strip-table {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 0.5rem;
+}
+.heatmap-strip-row {
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  gap: 0.5rem;
+  align-items: center;
+}
+.heatmap-strip-row.heatmap-strip-axis { align-items: end; min-height: 16px; }
+.heatmap-strip-label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  min-width: 0;
+  text-align: right;
+  padding-right: 0.4rem;
+}
+.heatmap-strip-name {
+  font-family: "RuneScape", serif;
+  font-size: 1rem;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.heatmap-strip-name:hover { color: var(--accent); text-decoration: none; }
+.heatmap-strip-totals {
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  font-variant-numeric: tabular-nums;
+}
+.heatmap-strip-cells {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(var(--days, 30), minmax(0, 1fr));
+  grid-auto-rows: 22px;
+  gap: 2px;
+  min-width: 0;
+}
+.heatmap-strip-cells.axis {
+  grid-auto-rows: 14px;
+  gap: 0;
+  background: transparent;
+}
+.heatmap-month-tick {
+  font-size: 0.7rem;
+  color: var(--text-dim);
+  white-space: nowrap;
+  align-self: end;
+  border-left: 1px dashed var(--border);
+  padding-left: 0.2rem;
+  line-height: 1;
+}
+.heatmap-cell {
+  height: 22px;
+  min-width: 0;
+  border-radius: 2px;
+  background: #1a0f06;
+  border: 1px solid #000;
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,0.3);
+  cursor: default;
+  transition: transform 0.05s ease;
+}
+.heatmap-cell:hover { transform: scaleY(1.15); z-index: 2; position: relative; }
+.heatmap-cell.future { border-color: transparent; box-shadow: none; background: transparent !important; }
+.heatmap-tooltip {
+  position: absolute;
+  top: -26px;
+  background: #2b1f12;
+  border: 1px solid var(--border-2);
+  padding: 0.15rem 0.45rem;
+  font-size: 0.8rem;
+  color: var(--text);
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 5;
+  transform: translateX(-50%);
+  border-radius: 3px;
+}
+.heatmap-legend {
+  display: flex;
+  gap: 0.4rem;
+  align-items: center;
+  margin-top: 0.6rem;
+  font-size: 0.8rem;
+  color: var(--text-dim);
+}
+.heatmap-legend-cell {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border-radius: 2px;
+  border: 1px solid #000;
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,0.3);
+}
+
+/* Hour-of-day / day-of-week bar charts */
+.bar-chart-h {
+  display: flex;
+  gap: 4px;
+  align-items: flex-end;
+  height: 120px;
+  padding: 0.25rem 0;
+  border-bottom: 1px solid var(--border);
+}
+.bar-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  height: 100%;
+  position: relative;
+  min-width: 14px;
+}
+.bar-col.wide { min-width: 30px; }
+.bar-fill {
+  width: 100%;
+  background: linear-gradient(180deg, #ffd56a 0%, #ff9520 100%);
+  border: 1px solid #000;
+  border-bottom: none;
+  min-height: 1px;
+  box-shadow: 0 0 6px rgba(255,180,59,0.35);
+}
+.bar-label {
+  position: absolute;
+  bottom: -18px;
+  font-size: 0.7rem;
+  color: var(--text-dim);
+  white-space: nowrap;
+}
+
+/* === Milestones timeline === */
+
+.milestone-new-pill {
+  display: inline-block;
+  margin-left: 0.5rem;
+  background: var(--accent);
+  color: #1a0f06;
+  font-family: "RuneScape", serif;
+  font-size: 0.75rem;
+  padding: 0.1rem 0.4rem;
+  border-radius: 3px;
+  text-shadow: none;
+  vertical-align: middle;
+  letter-spacing: 0.05em;
+  box-shadow: 0 0 6px rgba(255,180,59,0.5);
+}
+.milestone-new-pill.small {
+  font-size: 0.65rem;
+  padding: 0 0.3rem;
+  margin-left: 0.4rem;
+}
+.timeline { display: flex; flex-direction: column; gap: 1.25rem; }
+.timeline-day-header {
+  font-family: "RuneScape", serif;
+  color: var(--accent-2);
+  font-size: 1.05rem;
+  margin-bottom: 0.3rem;
+  border-bottom: 1px dashed var(--border-2);
+  padding-bottom: 0.2rem;
+}
+.timeline-items { display: flex; flex-direction: column; gap: 0.4rem; }
+.timeline-item {
+  display: grid;
+  grid-template-columns: 48px 1fr;
+  gap: 0.6rem;
+  align-items: center;
+  padding: 0.35rem 0.4rem;
+  border: 1px solid transparent;
+  border-radius: 3px;
+}
+.timeline-item:hover {
+  background: rgba(255,180,59,0.04);
+  border-color: var(--border);
+}
+.timeline-item.featured {
+  background: linear-gradient(90deg, rgba(255,180,59,0.12), transparent);
+  border-color: var(--border-2);
+}
+.timeline-item.is-new {
+  box-shadow: inset 4px 0 0 var(--accent);
+}
+.timeline-icon {
+  width: 44px; height: 44px;
+  display: flex; align-items: center; justify-content: center;
+  background: #1a0f06;
+  border: 2px solid var(--border-2);
+  border-radius: 4px;
+  box-shadow: inset 0 0 0 1px #000;
+}
+.timeline-icon-glyph {
+  font-family: "RuneScape", serif;
+  font-size: 1.5rem;
+  color: var(--accent);
+  text-shadow: 1px 1px 0 #000;
+  line-height: 1;
+}
+.timeline-title {
+  font-family: "RuneScape", serif;
+  color: var(--text);
+  font-size: 1.05rem;
+}
+.timeline-item.featured .timeline-title { color: var(--accent); font-size: 1.15rem; }
+.timeline-sub {
+  font-size: 0.85rem;
+  color: var(--text-dim);
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+.timeline-time { color: var(--text-dim); opacity: 0.7; }
+
+/* === Goals === */
+
+.btn {
+  background: linear-gradient(180deg, #3a2614, #221610);
+  border: 1px solid var(--border-2);
+  color: var(--text);
+  padding: 0.3rem 0.7rem;
+  border-radius: 3px;
+  cursor: pointer;
+  font-family: "RuneScape", serif;
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.btn:hover { color: var(--accent); border-color: var(--accent); }
+.btn.primary {
+  background: linear-gradient(180deg, #ffd56a 0%, #ff9520 100%);
+  color: #1a0f06;
+  border-color: var(--accent);
+  text-shadow: none;
+}
+.btn.primary:hover { color: #1a0f06; }
+.btn.small { padding: 0.15rem 0.5rem; font-size: 0.8rem; }
+.btn.danger { color: var(--bad); border-color: var(--bad); }
+.btn.danger:hover { color: #fff; background: var(--bad); }
+
+input[type="text"], input[type="number"] {
+  background: #1a0f06;
+  border: 1px solid var(--border-2);
+  color: var(--text);
+  padding: 0.3rem 0.5rem;
+  border-radius: 3px;
+  font-family: inherit;
+  font-size: 1rem;
+}
+input[type="text"]:focus, input[type="number"]:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 6px rgba(255,180,59,0.4);
+}
+
+.goal-form {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px dashed var(--border-2);
+}
+
+.goals-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+  gap: 1rem;
+}
+.goal-card { margin-bottom: 0; }
+.goal-card.complete {
+  border-color: var(--good);
+  box-shadow: inset 0 0 0 1px #000, 0 0 14px rgba(102,221,102,0.3);
+}
+.goal-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+.goal-title {
+  font-family: "RuneScape", serif;
+  font-weight: 700;
+  font-size: 1.15rem;
+  color: var(--accent);
+  text-shadow: 1px 1px 0 #000;
+  display: flex; align-items: center; gap: 0.4rem;
+  flex: 1;
+}
+.goal-actions { display: flex; gap: 0.3rem; flex-shrink: 0; }
+.goal-bar {
+  position: relative;
+  height: 18px;
+  background: #120a04;
+  border: 1px solid #000;
+  border-radius: 2px;
+  overflow: hidden;
+  box-shadow: inset 0 1px 3px #000;
+  margin-bottom: 0.4rem;
+}
+.goal-bar-fill {
+  height: 100%;
+  background: linear-gradient(180deg, #ffd56a 0%, #ff9520 100%);
+  box-shadow: 0 0 8px rgba(255,180,59,0.5);
+  transition: width 0.3s ease;
+}
+.goal-card.complete .goal-bar-fill {
+  background: linear-gradient(180deg, #a0e0a0 0%, #66dd66 100%);
+}
+.goal-bar-label {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "RuneScape", serif;
+  color: var(--text);
+  font-size: 0.85rem;
+  text-shadow: 1px 1px 0 #000;
+  pointer-events: none;
+}
+.goal-meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  font-size: 0.9rem;
+  color: var(--text-dim);
+  margin-bottom: 0.6rem;
+  flex-wrap: wrap;
+}
+.goal-meta strong { color: var(--accent-2); }
+.goal-contrib-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  border-top: 1px dashed var(--border);
+  padding-top: 0.5rem;
+}
+.goal-contrib {
+  display: grid;
+  grid-template-columns: 160px 1fr 90px;
+  gap: 0.5rem;
+  align-items: center;
+  font-size: 0.85rem;
+}
+.goal-contrib.done .goal-contrib-name { color: var(--good); }
+.goal-contrib-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: flex; align-items: center;
+}
+.goal-contrib-bar {
+  position: relative;
+  height: 8px;
+  background: #120a04;
+  border: 1px solid #000;
+  border-radius: 2px;
+  overflow: hidden;
+  box-shadow: inset 0 1px 2px #000;
+}
+.goal-contrib-fill {
+  height: 100%;
+  background: var(--accent);
+  transition: width 0.3s ease;
+}
+.goal-contrib-val {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-dim);
+  font-size: 0.8rem;
+}
+
+/* === Activity heatmap === */
+
 /* Player headshot */
 .player-img {
   display: inline-block;
@@ -371,4 +756,204 @@ select option:hover {
   background: #1a0f06;
   vertical-align: middle;
   image-rendering: pixelated;
+}
+
+/* === Race to Max === */
+.race-detail-row > td {
+  background: rgba(0,0,0,0.25);
+  padding: 0.6rem 0.8rem;
+  border-bottom: 1px solid #1a0f06;
+}
+.race-skill-list {
+  display: flex; flex-direction: column; gap: 0.25rem;
+  max-width: 980px;
+}
+.race-skill-row {
+  display: grid;
+  grid-template-columns: 180px 1fr 110px 80px;
+  gap: 0.6rem;
+  align-items: center;
+  font-size: 0.9rem;
+}
+.race-skill-name {
+  display: flex; align-items: center; gap: 0.35rem;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.race-skill-bar {
+  position: relative;
+  height: 12px;
+  background: #120a04;
+  border: 1px solid #000;
+  border-radius: 2px;
+  overflow: hidden;
+  box-shadow: inset 0 1px 2px #000;
+}
+.race-skill-fill {
+  height: 100%;
+  transition: width 0.3s ease;
+}
+.race-skill-eta {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+.race-skill-rem {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-dim);
+  font-size: 0.85rem;
+}
+
+.race-gantt {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-top: 0.5rem;
+}
+.race-gantt-axis-row {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 0.6rem;
+  align-items: end;
+  min-height: 22px;
+  margin-bottom: 0.2rem;
+}
+.race-gantt-axis {
+  position: relative;
+  height: 22px;
+  border-bottom: 1px dashed var(--border-2);
+}
+.race-gantt-tick {
+  position: absolute;
+  top: 0;
+  width: 0;
+}
+.race-gantt-tick-line {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1px;
+  height: 22px;
+  background: var(--border);
+}
+.race-gantt-tick-label {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  white-space: nowrap;
+}
+.race-gantt-row {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 0.6rem;
+  align-items: center;
+}
+.race-gantt-label {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  font-family: "RuneScape", serif;
+  font-size: 1rem;
+}
+.race-gantt-sub {
+  font-size: 0.7rem;
+  color: var(--text-dim);
+  margin-left: 1.1rem;
+}
+.race-gantt-track {
+  position: relative;
+  height: 22px;
+  background: #120a04;
+  border: 1px solid #000;
+  border-radius: 2px;
+  overflow: hidden;
+  box-shadow: inset 0 1px 2px #000;
+}
+.race-gantt-band {
+  position: absolute;
+  top: 0;
+  height: 100%;
+}
+.race-gantt-marker {
+  position: absolute;
+  top: 0;
+  width: 2px;
+  height: 100%;
+  z-index: 2;
+  box-shadow: 0 0 6px currentColor;
+}
+.race-gantt-maxed {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: var(--good);
+  font-family: "RuneScape", serif;
+  font-size: 0.9rem;
+}
+.race-gantt-legend {
+  font-size: 0.8rem;
+  color: var(--text-dim);
+  margin-top: 0.4rem;
+  text-align: right;
+}
+
+/* === Compare === */
+.compare-picker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.4rem;
+}
+.compare-chip {
+  background: linear-gradient(180deg, #3a2614, #221610);
+  border: 1px solid var(--border-2);
+  color: var(--text-dim);
+  padding: 0.3rem 0.6rem;
+  border-radius: 3px;
+  cursor: pointer;
+  font-family: "RuneScape", serif;
+  font-size: 0.95rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+.compare-chip:hover { color: var(--text); }
+.compare-chip.selected {
+  color: var(--accent);
+}
+.compare-chip.disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.compare-stats {
+  display: grid;
+  gap: 0.35rem 0.75rem;
+  align-items: center;
+}
+.compare-stat-label {
+  color: var(--text-dim);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-family: "RuneScape", serif;
+}
+.compare-stat-head {
+  font-family: "RuneScape", serif;
+  font-size: 1.05rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+.compare-stat-cell {
+  font-variant-numeric: tabular-nums;
+  font-family: "RuneScape", serif;
+  font-size: 1.05rem;
+  color: var(--text);
+}
+.compare-stat-cell.win {
+  color: var(--accent-2);
+  font-weight: 700;
+  text-shadow: 1px 1px 0 #000;
 }

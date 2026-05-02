@@ -5,6 +5,11 @@ import { create } from "zustand";
 import { Overall } from "./views/Overall";
 import { SkillRace } from "./views/SkillRace";
 import { PlayerDetail } from "./views/PlayerDetail";
+import { Activity } from "./views/Activity";
+import { Milestones } from "./views/Milestones";
+import { Goals } from "./views/Goals";
+import { Records } from "./views/Records";
+import { Compare } from "./views/Compare";
 import { AccountBadge, type AccountType } from "./components/AccountBadge";
 
 interface UIState {
@@ -58,6 +63,11 @@ export function App() {
         <NavLink to="/" end>Overall</NavLink>
         <NavLink to="/skills">Skills</NavLink>
         <NavLink to="/players">Players</NavLink>
+        <NavLink to="/activity">Activity</NavLink>
+        <NavLink to="/milestones">Milestones</NavLink>
+        <NavLink to="/goals">Goals</NavLink>
+        <NavLink to="/records">Records</NavLink>
+        <NavLink to="/compare">Compare</NavLink>
         <span className="spacer" />
         <div className="range-bar" title="Account-type filter">
           {ACCOUNT_TYPES.map((t) => (
@@ -104,6 +114,11 @@ export function App() {
           <Routes>
             <Route path="/" element={<Overall />} />
             <Route path="/skills" element={<SkillRace />} />
+            <Route path="/activity" element={<Activity />} />
+            <Route path="/milestones" element={<Milestones />} />
+            <Route path="/goals" element={<Goals />} />
+            <Route path="/records" element={<Records />} />
+            <Route path="/compare" element={<Compare />} />
             <Route path="/skills/:name" element={<SkillRace />} />
             <Route path="/players" element={<PlayerDetail />} />
             <Route path="/players/:rsn" element={<PlayerDetail />} />

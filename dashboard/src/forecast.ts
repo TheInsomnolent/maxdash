@@ -52,8 +52,14 @@ export interface ForecastResult {
   smooth: Array<{ dayMs: number; y: number }>;
   /** Raw observed daily buckets for scatter rendering. */
   observed: DailyBucket[];
-  /** Per-future-day P10/P50/P90, starting at `lastDayMs + 1 day`. */
-  forecast: Array<{ dayMs: number; p10: number; p50: number; p90: number }>;
+  /** Per-future-day quantile fan, starting at `lastDayMs + 1 day`.
+   *  Bands rendered (low→high): p05/p95, p20/p80, p35/p65; p50 is the median line. */
+  forecast: Array<{
+    dayMs: number;
+    p05: number; p20: number; p35: number;
+    p50: number;
+    p65: number; p80: number; p95: number;
+  }>;
   /** y value at the player's last observed day (anchor for the forecast). */
   lastY: number;
   /** Last observed day in ms. */
@@ -187,7 +193,7 @@ export function seedFrom(rsn: string, salt: number): number {
 
 /**
  * Run a bootstrapped Monte Carlo simulation. Returns one row per future day
- * (1..horizonDays after `lastDayMs`) with P10/P50/P90 of the simulated XP.
+ * (1..horizonDays after `lastDayMs`) with a 7-quantile fan of the simulated XP.
  * Returns null when there isn't enough material to bootstrap, the player is
  * already at cap, or the weights collapse to zero.
  */
@@ -200,7 +206,12 @@ export function simulate(
   cap: number,
   rng: () => number,
   runs = SIM_RUNS,
-): Array<{ dayMs: number; p10: number; p50: number; p90: number }> | null {
+): Array<{
+  dayMs: number;
+  p05: number; p20: number; p35: number;
+  p50: number;
+  p65: number; p80: number; p95: number;
+}> | null {
   if (lastY >= cap) return null;
   if (pool.length < 3) return null;
   if (horizonDays < 1) return null;
@@ -230,14 +241,20 @@ export function simulate(
     }
   }
 
-  const out: Array<{ dayMs: number; p10: number; p50: number; p90: number }> = new Array(horizonDays);
+  const out = new Array(horizonDays);
   for (let d = 0; d < horizonDays; d++) {
     const sorted = paths[d].slice().sort((a, b) => a - b);
+    const lo = sorted[0];
+    const hi = sorted[sorted.length - 1];
     out[d] = {
       dayMs: lastDayMs + (d + 1) * DAY_MS,
-      p10: quantileSorted(sorted, 0.1) ?? sorted[0],
-      p50: quantileSorted(sorted, 0.5) ?? sorted[0],
-      p90: quantileSorted(sorted, 0.9) ?? sorted[sorted.length - 1],
+      p05: quantileSorted(sorted, 0.05) ?? lo,
+      p20: quantileSorted(sorted, 0.20) ?? lo,
+      p35: quantileSorted(sorted, 0.35) ?? lo,
+      p50: quantileSorted(sorted, 0.50) ?? lo,
+      p65: quantileSorted(sorted, 0.65) ?? hi,
+      p80: quantileSorted(sorted, 0.80) ?? hi,
+      p95: quantileSorted(sorted, 0.95) ?? hi,
     };
   }
   return out;

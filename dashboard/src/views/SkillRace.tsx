@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
   Area, CartesianGrid, ComposedChart, Legend, Line, ReferenceLine,
-  ResponsiveContainer, Scatter, Tooltip, XAxis, YAxis,
+  ResponsiveContainer, Tooltip, XAxis, YAxis,
 } from "recharts";
 import { useUI } from "../App";
 import { useData, snapshotsInRange, skillNameToIdx, filterPlayers, RANGE_OPTIONS } from "../store";
@@ -26,7 +26,8 @@ export function SkillRace() {
   const isOverall = idx === 0;
   const [yMode, setYMode] = useState<"xp" | "level">("xp");
   const [yMin, setYMin] = useState<"zero" | "auto">("zero");
-  const [focusedRsn, setFocusedRsn] = useState<string | null>(null);
+  // Players the user has clicked off in the legend. Everyone is visible by default.
+  const [hiddenRsns, setHiddenRsns] = useState<Set<string>>(() => new Set());
   const cap = isOverall
     ? (yMode === "level" ? MAX_TOTAL_LEVEL : MAX_TOTAL_XP)
     : (yMode === "level" ? 99 : MAX_XP);
@@ -55,18 +56,17 @@ export function SkillRace() {
     return x >= 0 ? xpToLevel(x) : undefined;
   };
 
-  // Resolve which player gets the "detailed" treatment (fan + scatter + smoothed
-  // trendline). Manual focus wins; otherwise auto-focus when only one player is
-  // visible so a solo view doesn't lose the variance fan.
-  const visiblePlayers = useMemo(
+  // Roster of every player the current filter set considers — used to render
+  // the legend so toggled-off players are still listed and re-clickable.
+  const allPlayers = useMemo(
     () => index ? filterPlayers(index.players, typeFilter, hideInactive) : [],
     [index, typeFilter, hideInactive],
   );
-  const effectiveFocus = useMemo(() => {
-    if (focusedRsn && visiblePlayers.some((p) => p.rsn === focusedRsn)) return focusedRsn;
-    if (visiblePlayers.length === 1) return visiblePlayers[0].rsn;
-    return null;
-  }, [focusedRsn, visiblePlayers]);
+  // Players actually drawn on the chart this render.
+  const visiblePlayers = useMemo(
+    () => allPlayers.filter((p) => !hiddenRsns.has(p.rsn)),
+    [allPlayers, hiddenRsns],
+  );
 
   const { data, forecasts } = useMemo(() => {
     if (!index) return {
@@ -94,9 +94,9 @@ export function SkillRace() {
     }
 
     // Build the row-keyed timeline. Keys are timestamps (ms); each row holds
-    // the columns needed by every series (history, smooth, p10/p50/p90,
-    // observed scatter). Use null for absent values so Recharts skips them
-    // cleanly (vs. undefined which can confuse `connectNulls`).
+    // the columns needed by every series (history, smooth, p10/p50/p90).
+    // Use null for absent values so Recharts skips them cleanly (vs. undefined
+    // which can confuse `connectNulls`).
     const rowByT = new Map<number, Record<string, number | string | null>>();
     const rowAt = (t: number) => {
       let row = rowByT.get(t);
@@ -121,38 +121,52 @@ export function SkillRace() {
         }
         continue;
       }
-      // Daily-interpolated history line.
+      // Daily-interpolated history line + smoothed trendline for every visible
+      // player. The smoothed series is rendered subtly underneath the raw
+      // history so it reads as a "trend" rather than a competing line.
       for (const h of fc.history) rowAt(h.dayMs)[p.rsn] = h.y;
-      // Smoothed trendline + observed scatter for the focused player only.
-      if (p.rsn === effectiveFocus) {
-        for (const s of fc.smooth) rowAt(s.dayMs)[`${p.rsn}__smooth`] = s.y;
-        for (const o of fc.observed) rowAt(o.dayMs)[`${p.rsn}__obs`] = o.y;
-      }
-      // Median + fan (fan only on focus). Anchor the first forecast row at the
-      // last observed point so the dashed line meets the solid history line.
+      for (const s of fc.smooth) rowAt(s.dayMs)[`${p.rsn}__smooth`] = s.y;
+      // Median + fan. Anchor the first forecast row at the last observed point
+      // so the dashed line meets the solid history line.
       if (fc.forecast.length > 0) {
         const anchor = rowAt(fc.lastDayMs);
         anchor[`${p.rsn}__p50`] = fc.lastY;
-        if (p.rsn === effectiveFocus) {
-          anchor[`${p.rsn}__p10`] = fc.lastY;
-          anchor[`${p.rsn}__p90`] = fc.lastY;
-        }
+        anchor[`${p.rsn}__p05`] = fc.lastY;
+        anchor[`${p.rsn}__p20`] = fc.lastY;
+        anchor[`${p.rsn}__p35`] = fc.lastY;
+        anchor[`${p.rsn}__p65`] = fc.lastY;
+        anchor[`${p.rsn}__p80`] = fc.lastY;
+        anchor[`${p.rsn}__p95`] = fc.lastY;
         for (const f of fc.forecast) {
           const row = rowAt(f.dayMs);
+          row[`${p.rsn}__p05`] = f.p05;
+          row[`${p.rsn}__p20`] = f.p20;
+          row[`${p.rsn}__p35`] = f.p35;
           row[`${p.rsn}__p50`] = f.p50;
-          if (p.rsn === effectiveFocus) {
-            row[`${p.rsn}__p10`] = f.p10;
-            row[`${p.rsn}__p90`] = f.p90;
-          }
+          row[`${p.rsn}__p65`] = f.p65;
+          row[`${p.rsn}__p80`] = f.p80;
+          row[`${p.rsn}__p95`] = f.p95;
         }
       }
     }
 
     const out = [...rowByT.values()].sort((a, b) => (a.t as number) - (b.t as number));
     return { data: out, forecasts };
-  }, [index, players, range, idx, typeFilter, hideInactive, yMode, isOverall, cap, visiblePlayers, effectiveFocus]);
+  }, [index, players, range, idx, typeFilter, hideInactive, yMode, isOverall, cap, visiblePlayers]);
 
   if (!index) return null;
+
+  // Per-band opacity scales down as more players are visible so overlapping
+  // bands don't smother the lines underneath. Three bands stack to ~3x the
+  // base opacity at the median, giving a darker core that fades outward.
+  const bandOpacity = visiblePlayers.length > 0
+    ? Math.max(0.04, 0.13 - 0.012 * visiblePlayers.length)
+    : 0.10;
+  const FAN_BANDS: Array<{ lo: string; hi: string }> = [
+    { lo: "__p05", hi: "__p95" },
+    { lo: "__p20", hi: "__p80" },
+    { lo: "__p35", hi: "__p65" },
+  ];
 
   return (
     <>
@@ -182,15 +196,6 @@ export function SkillRace() {
                 onClick={() => setYMin("auto")}
               >Y: auto</button>
             </div>
-            {effectiveFocus && (
-              <div className="range-bar" title="Focused player">
-                <button
-                  className="active"
-                  onClick={() => setFocusedRsn(null)}
-                  title="Clear focus"
-                >FOCUS: {effectiveFocus} ✕</button>
-              </div>
-            )}
             <select
               value={skill}
               onChange={(e) => nav(`/skills/${encodeURIComponent(e.target.value)}`)}
@@ -240,10 +245,13 @@ export function SkillRace() {
                     ? (isOverall ? `total ${Math.round(v)}` : `level ${Math.round(v)}`)
                     : `${Math.round(v).toLocaleString()} xp`;
                   if (key.endsWith("__p50")) return [display + " (forecast P50)", key.slice(0, -"__p50".length)];
-                  if (key.endsWith("__p10")) return [display + " (forecast P10)", key.slice(0, -"__p10".length)];
-                  if (key.endsWith("__p90")) return [display + " (forecast P90)", key.slice(0, -"__p90".length)];
+                  if (key.endsWith("__p05")) return [display + " (forecast P5)", key.slice(0, -"__p05".length)];
+                  if (key.endsWith("__p20")) return [display + " (forecast P20)", key.slice(0, -"__p20".length)];
+                  if (key.endsWith("__p35")) return [display + " (forecast P35)", key.slice(0, -"__p35".length)];
+                  if (key.endsWith("__p65")) return [display + " (forecast P65)", key.slice(0, -"__p65".length)];
+                  if (key.endsWith("__p80")) return [display + " (forecast P80)", key.slice(0, -"__p80".length)];
+                  if (key.endsWith("__p95")) return [display + " (forecast P95)", key.slice(0, -"__p95".length)];
                   if (key.endsWith("__smooth")) return [display + " (7-day avg)", key.slice(0, -"__smooth".length)];
-                  if (key.endsWith("__obs")) return [display + " (observed)", key.slice(0, -"__obs".length)];
                   return [display, key];
                 }}
               />
@@ -252,80 +260,94 @@ export function SkillRace() {
                 onClick={(e: { value?: string }) => {
                   const v = e.value;
                   if (!v) return;
-                  setFocusedRsn((prev) => prev === v ? null : v);
+                  setHiddenRsns((prev) => {
+                    const next = new Set(prev);
+                    if (next.has(v)) next.delete(v);
+                    else next.add(v);
+                    return next;
+                  });
                 }}
-                payload={visiblePlayers.map((p) => ({
+                payload={allPlayers.map((p) => ({
                   value: p.rsn,
                   type: "line",
                   id: p.rsn,
-                  color: colorFor(p.rsn),
+                  // Inactive (hidden) entries get a desaturated swatch so the
+                  // user can see at a glance which series are toggled off.
+                  color: hiddenRsns.has(p.rsn) ? "#6b5a3d" : colorFor(p.rsn),
                 }))}
               />
               <ReferenceLine y={cap} stroke="#ffb43b" strokeDasharray="4 4" label={{ value: capLabel, fill: "#ffb43b", position: "right" }} />
 
-              {/* Variance fan — only for the focused player. Rendered first
-                  so it sits behind the lines. Uses a [low, high] tuple
-                  accessor so Recharts paints a true band (not stacked from 0). */}
-              {effectiveFocus && forecasts.get(effectiveFocus)?.forecast.length ? (
-                <Area
-                  key={`${effectiveFocus}__fan`}
-                  type="monotone"
-                  dataKey={(d: Record<string, number | null>) => {
-                    const lo = d[`${effectiveFocus}__p10`];
-                    const hi = d[`${effectiveFocus}__p90`];
-                    return lo == null || hi == null ? null : [lo, hi];
-                  }}
-                  name={`${effectiveFocus}__fan`}
-                  stroke="none"
-                  fill={colorFor(effectiveFocus)}
-                  fillOpacity={0.2}
-                  isAnimationActive={false}
-                  connectNulls
-                  legendType="none"
-                  activeDot={false}
-                />
-              ) : null}
-
-              {/* History lines — every visible player. Dim non-focused when a
-                  focus is set so the focused fan stays readable. */}
+              {/* Variance fans — three nested quantile bands per visible player
+                  (p05/p95, p20/p80, p35/p65). Rendered first so they sit
+                  behind the lines, and stacked at a low per-band opacity so
+                  the median region naturally appears darker. The dataKey
+                  accessor returns a [low, high] tuple so Recharts paints a
+                  true band rather than stacking from 0. */}
               {visiblePlayers.map((p) => {
-                const dimmed = effectiveFocus !== null && p.rsn !== effectiveFocus;
-                return (
-                  <Line
-                    key={p.rsn}
-                    type="monotone"
-                    dataKey={p.rsn}
-                    stroke={colorFor(p.rsn)}
-                    strokeOpacity={dimmed ? 0.35 : 1}
-                    dot={false}
-                    isAnimationActive={false}
-                    connectNulls
-                    strokeWidth={2}
-                  />
-                );
+                const fc = forecasts.get(p.rsn);
+                if (!fc || fc.forecast.length === 0) return null;
+                return FAN_BANDS.map((band) => {
+                  const loKey = `${p.rsn}${band.lo}`;
+                  const hiKey = `${p.rsn}${band.hi}`;
+                  return (
+                    <Area
+                      key={`${p.rsn}__fan${band.lo}`}
+                      type="monotone"
+                      dataKey={(d: Record<string, number | null>) => {
+                        const lo = d[loKey];
+                        const hi = d[hiKey];
+                        return lo == null || hi == null ? null : [lo, hi];
+                      }}
+                      name={`${p.rsn}__fan${band.lo}`}
+                      stroke="none"
+                      fill={colorFor(p.rsn)}
+                      fillOpacity={bandOpacity}
+                      isAnimationActive={false}
+                      connectNulls
+                      legendType="none"
+                      activeDot={false}
+                    />
+                  );
+                });
               })}
 
-              {/* Smoothed 7-day trendline — focused player only. */}
-              {effectiveFocus && (
+              {/* Smoothed 7-day trendline — every visible player. Drawn before
+                  the raw history so the solid line sits on top. */}
+              {visiblePlayers.map((p) => (
                 <Line
-                  key={`${effectiveFocus}__smooth`}
+                  key={`${p.rsn}__smooth`}
                   type="monotone"
-                  dataKey={`${effectiveFocus}__smooth`}
-                  stroke={colorFor(effectiveFocus)}
-                  strokeOpacity={0.55}
+                  dataKey={`${p.rsn}__smooth`}
+                  stroke={colorFor(p.rsn)}
+                  strokeOpacity={0.5}
                   strokeWidth={1}
                   dot={false}
                   isAnimationActive={false}
                   connectNulls
                   legendType="none"
                 />
-              )}
+              ))}
 
-              {/* Median forecast line — every non-maxed visible player. */}
+              {/* History lines — every visible player. */}
+              {visiblePlayers.map((p) => (
+                <Line
+                  key={p.rsn}
+                  type="monotone"
+                  dataKey={p.rsn}
+                  stroke={colorFor(p.rsn)}
+                  dot={false}
+                  isAnimationActive={false}
+                  connectNulls
+                  strokeWidth={2}
+                  legendType="none"
+                />
+              ))}
+
+              {/* Median forecast line — every visible non-maxed player. */}
               {visiblePlayers.map((p) => {
                 const fc = forecasts.get(p.rsn);
                 if (!fc || fc.forecast.length === 0) return null;
-                const dimmed = effectiveFocus !== null && p.rsn !== effectiveFocus;
                 return (
                   <Line
                     key={`${p.rsn}__p50`}
@@ -333,7 +355,7 @@ export function SkillRace() {
                     dataKey={`${p.rsn}__p50`}
                     stroke={colorFor(p.rsn)}
                     strokeDasharray="4 4"
-                    strokeOpacity={dimmed ? 0.35 : 0.85}
+                    strokeOpacity={0.85}
                     dot={false}
                     isAnimationActive={false}
                     connectNulls
@@ -342,18 +364,6 @@ export function SkillRace() {
                   />
                 );
               })}
-
-              {/* Raw observed daily points — focused player only. */}
-              {effectiveFocus && (
-                <Scatter
-                  key={`${effectiveFocus}__obs`}
-                  dataKey={`${effectiveFocus}__obs`}
-                  fill={colorFor(effectiveFocus)}
-                  isAnimationActive={false}
-                  legendType="none"
-                  shape="circle"
-                />
-              )}
             </ComposedChart>
           </ResponsiveContainer>
         )}

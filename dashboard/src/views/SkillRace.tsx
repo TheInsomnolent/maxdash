@@ -240,19 +240,53 @@ export function SkillRace() {
                 contentStyle={{ background: "#2b1f12", border: "2px solid #8a6b3d", color: "#f0e2c0" }}
                 labelStyle={{ color: "#ffb43b" }}
                 labelFormatter={(v) => new Date(Number(v)).toLocaleString()}
-                formatter={(v: number, key: string) => {
-                  const display = yMode === "level"
-                    ? (isOverall ? `total ${Math.round(v)}` : `level ${Math.round(v)}`)
-                    : `${Math.round(v).toLocaleString()} xp`;
-                  if (key.endsWith("__p50")) return [display + " (forecast P50)", key.slice(0, -"__p50".length)];
-                  if (key.endsWith("__p05")) return [display + " (forecast P5)", key.slice(0, -"__p05".length)];
-                  if (key.endsWith("__p20")) return [display + " (forecast P20)", key.slice(0, -"__p20".length)];
-                  if (key.endsWith("__p35")) return [display + " (forecast P35)", key.slice(0, -"__p35".length)];
-                  if (key.endsWith("__p65")) return [display + " (forecast P65)", key.slice(0, -"__p65".length)];
-                  if (key.endsWith("__p80")) return [display + " (forecast P80)", key.slice(0, -"__p80".length)];
-                  if (key.endsWith("__p95")) return [display + " (forecast P95)", key.slice(0, -"__p95".length)];
-                  if (key.endsWith("__smooth")) return [display + " (7-day avg)", key.slice(0, -"__smooth".length)];
-                  return [display, key];
+                // Custom content so we can suppress the forecast quantile
+                // bands and the smoothing line — otherwise the tooltip
+                // balloons to one row per band per visible player.
+                content={(props: {
+                  active?: boolean;
+                  label?: number | string;
+                  payload?: Array<{ dataKey?: string | number; name?: string; value?: number; color?: string }>;
+                }) => {
+                  if (!props.active || !props.payload || props.payload.length === 0) return null;
+                  // Keep the main per-player history line and the median
+                  // forecast line (__p50). Drop fan bands (__fan…) and the
+                  // 7-day smoothing line (__smooth). Fan Areas use a
+                  // function dataKey, so we match on `name` too.
+                  const rows = props.payload.filter((p) => {
+                    const name = typeof p.name === "string" ? p.name : "";
+                    const key = typeof p.dataKey === "string" ? p.dataKey : "";
+                    const tag = name.includes("__") ? name : key;
+                    if (!tag.includes("__")) return true;
+                    if (!tag.endsWith("__p50")) return false;
+                    // Only show the forecast row when it actually has a
+                    // value at this x — otherwise we'd render a stale "—"
+                    // for every player on historical samples.
+                    return typeof p.value === "number" && Number.isFinite(p.value);
+                  });
+                  if (rows.length === 0) return null;
+                  const labelText = props.label != null ? new Date(Number(props.label)).toLocaleString() : "";
+                  return (
+                    <div style={{ background: "#2b1f12", border: "2px solid #8a6b3d", color: "#f0e2c0", padding: "6px 10px" }}>
+                      <div style={{ color: "#ffb43b", marginBottom: 4 }}>{labelText}</div>
+                      {rows.map((r) => {
+                        const v = typeof r.value === "number" ? r.value : NaN;
+                        const name = typeof r.name === "string" ? r.name : "";
+                        const isForecast = name.endsWith("__p50");
+                        const rsn = isForecast ? name.slice(0, -"__p50".length) : (name || String(r.dataKey));
+                        const display = Number.isFinite(v)
+                          ? (yMode === "level"
+                              ? (isOverall ? `total ${Math.round(v)}` : `level ${Math.round(v)}`)
+                              : `${Math.round(v).toLocaleString()} xp`)
+                          : "—";
+                        return (
+                          <div key={String(r.dataKey) + name} style={{ color: r.color }}>
+                            {rsn} : {display}{isForecast ? " (forecast)" : ""}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  );
                 }}
               />
               <Legend

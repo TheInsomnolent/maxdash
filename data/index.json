@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-05-05T09:47:23.556Z",
+  "generatedAt": "2026-05-05T10:42:04.439Z",
   "skills": [
     "Overall",
     "Attack",
@@ -35,7 +35,7 @@
       "totalXp": 141635045,
       "totalLevel": 2130,
       "skills99": 2,
-      "lastChecked": "2026-05-05T09:47:23.556Z",
+      "lastChecked": "2026-05-05T10:42:04.439Z",
       "lastChanged": "2026-05-05T07:01:33.734Z",
       "status": "ok"
     },
@@ -46,7 +46,7 @@
       "totalXp": 24204946,
       "totalLevel": 1640,
       "skills99": 0,
-      "lastChecked": "2026-05-05T09:47:23.556Z",
+      "lastChecked": "2026-05-05T10:42:04.439Z",
       "lastChanged": "2026-05-01T01:11:19.951Z",
       "status": "ok"
     },
@@ -57,7 +57,7 @@
       "totalXp": 55863562,
       "totalLevel": 1900,
       "skills99": 0,
-      "lastChecked": "2026-05-05T09:47:23.556Z",
+      "lastChecked": "2026-05-05T10:42:04.439Z",
       "lastChanged": "2026-05-05T08:57:32.001Z",
       "status": "ok"
     },
@@ -68,7 +68,7 @@
       "totalXp": 218101567,
       "totalLevel": 2229,
       "skills99": 9,
-      "lastChecked": "2026-05-05T09:47:23.556Z",
+      "lastChecked": "2026-05-05T10:42:04.439Z",
       "lastChanged": "2026-05-05T01:45:06.917Z",
       "status": "ok"
     },
@@ -76,11 +76,11 @@
       "rsn": "Wuckedenergy",
       "type": "gim",
       "file": "wuckedenergy.json",
-      "totalXp": 303545727,
+      "totalXp": 303589221,
       "totalLevel": 2298,
       "skills99": 12,
-      "lastChecked": "2026-05-05T09:47:23.556Z",
-      "lastChanged": "2026-05-05T09:47:23.556Z",
+      "lastChecked": "2026-05-05T10:42:04.439Z",
+      "lastChanged": "2026-05-05T10:42:04.439Z",
       "status": "ok"
     },
     {
@@ -90,7 +90,7 @@
       "totalXp": 128502897,
       "totalLevel": 2014,
       "skills99": 6,
-      "lastChecked": "2026-05-05T09:47:23.556Z",
+      "lastChecked": "2026-05-05T10:42:04.439Z",
       "lastChanged": "2026-05-03T12:31:07.037Z",
       "status": "ok"
     },
@@ -101,7 +101,7 @@
       "totalXp": 12092183,
       "totalLevel": 1420,
       "skills99": 0,
-      "lastChecked": "2026-05-05T09:47:23.556Z",
+      "lastChecked": "2026-05-05T10:42:04.439Z",
       "lastChanged": "2026-05-05T07:01:33.734Z",
       "status": "ok"
     },
@@ -112,7 +112,7 @@
       "totalXp": 19017142,
       "totalLevel": 1539,
       "skills99": 0,
-      "lastChecked": "2026-05-05T09:47:23.556Z",
+      "lastChecked": "2026-05-05T10:42:04.439Z",
       "lastChanged": "2026-04-28T08:48:50.741Z",
       "status": "ok"
     }

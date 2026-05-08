@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-05-08T03:49:59.627Z",
+  "generatedAt": "2026-05-08T06:05:34.247Z",
   "skills": [
     "Overall",
     "Attack",
@@ -32,11 +32,11 @@
       "rsn": "Insomnolennt",
       "type": "main",
       "file": "insomnolennt.json",
-      "totalXp": 142969753,
+      "totalXp": 143028482,
       "totalLevel": 2132,
       "skills99": 2,
-      "lastChecked": "2026-05-08T03:49:59.627Z",
-      "lastChanged": "2026-05-08T03:49:59.627Z",
+      "lastChecked": "2026-05-08T06:05:34.247Z",
+      "lastChanged": "2026-05-08T06:05:34.247Z",
       "status": "ok"
     },
     {
@@ -46,7 +46,7 @@
       "totalXp": 24224021,
       "totalLevel": 1641,
       "skills99": 0,
-      "lastChecked": "2026-05-08T03:49:59.627Z",
+      "lastChecked": "2026-05-08T06:05:34.247Z",
       "lastChanged": "2026-05-06T18:47:04.572Z",
       "status": "ok"
     },
@@ -57,7 +57,7 @@
       "totalXp": 56346292,
       "totalLevel": 1901,
       "skills99": 0,
-      "lastChecked": "2026-05-08T03:49:59.627Z",
+      "lastChecked": "2026-05-08T06:05:34.247Z",
       "lastChanged": "2026-05-08T03:49:59.627Z",
       "status": "ok"
     },
@@ -65,11 +65,11 @@
       "rsn": "Iron Razekai",
       "type": "gim",
       "file": "iron_razekai.json",
-      "totalXp": 218283841,
+      "totalXp": 218387185,
       "totalLevel": 2229,
       "skills99": 9,
-      "lastChecked": "2026-05-08T03:49:59.627Z",
-      "lastChanged": "2026-05-08T03:49:59.627Z",
+      "lastChecked": "2026-05-08T06:05:34.247Z",
+      "lastChanged": "2026-05-08T06:05:34.247Z",
       "status": "ok"
     },
     {
@@ -79,7 +79,7 @@
       "totalXp": 304072569,
       "totalLevel": 2298,
       "skills99": 12,
-      "lastChecked": "2026-05-08T03:49:59.627Z",
+      "lastChecked": "2026-05-08T06:05:34.247Z",
       "lastChanged": "2026-05-07T22:11:50.833Z",
       "status": "ok"
     },
@@ -90,7 +90,7 @@
       "totalXp": 128570972,
       "totalLevel": 2015,
       "skills99": 6,
-      "lastChecked": "2026-05-08T03:49:59.627Z",
+      "lastChecked": "2026-05-08T06:05:34.247Z",
       "lastChanged": "2026-05-05T15:50:08.860Z",
       "status": "ok"
     },
@@ -101,7 +101,7 @@
       "totalXp": 12655493,
       "totalLevel": 1438,
       "skills99": 0,
-      "lastChecked": "2026-05-08T03:49:59.627Z",
+      "lastChecked": "2026-05-08T06:05:34.247Z",
       "lastChanged": "2026-05-08T03:49:59.627Z",
       "status": "ok"
     },
@@ -112,7 +112,7 @@
       "totalXp": 19017142,
       "totalLevel": 1539,
       "skills99": 0,
-      "lastChecked": "2026-05-08T03:49:59.627Z",
+      "lastChecked": "2026-05-08T06:05:34.247Z",
       "lastChanged": "2026-04-28T08:48:50.741Z",
       "status": "ok"
     }

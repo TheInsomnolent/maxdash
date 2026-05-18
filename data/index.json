@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-05-18T08:51:07.636Z",
+  "generatedAt": "2026-05-18T12:44:31.941Z",
   "skills": [
     "Overall",
     "Attack",
@@ -32,11 +32,11 @@
       "rsn": "Insomnolennt",
       "type": "main",
       "file": "insomnolennt.json",
-      "totalXp": 150446380,
+      "totalXp": 150556402,
       "totalLevel": 2143,
       "skills99": 2,
-      "lastChecked": "2026-05-18T08:51:07.636Z",
-      "lastChanged": "2026-05-18T08:51:07.636Z",
+      "lastChecked": "2026-05-18T12:44:31.941Z",
+      "lastChanged": "2026-05-18T12:44:31.941Z",
       "status": "ok"
     },
     {
@@ -46,7 +46,7 @@
       "totalXp": 24231896,
       "totalLevel": 1641,
       "skills99": 0,
-      "lastChecked": "2026-05-18T08:51:07.636Z",
+      "lastChecked": "2026-05-18T12:44:31.941Z",
       "lastChanged": "2026-05-11T19:05:19.880Z",
       "status": "ok"
     },
@@ -54,22 +54,22 @@
       "rsn": "Gloryyy Boy",
       "type": "ironman",
       "file": "gloryyy_boy.json",
-      "totalXp": 58250305,
+      "totalXp": 58265291,
       "totalLevel": 1912,
       "skills99": 0,
-      "lastChecked": "2026-05-18T08:51:07.636Z",
-      "lastChanged": "2026-05-18T08:51:07.636Z",
+      "lastChecked": "2026-05-18T12:44:31.941Z",
+      "lastChanged": "2026-05-18T12:44:31.941Z",
       "status": "ok"
     },
     {
       "rsn": "Iron Razekai",
       "type": "gim",
       "file": "iron_razekai.json",
-      "totalXp": 221745146,
+      "totalXp": 221982581,
       "totalLevel": 2233,
       "skills99": 9,
-      "lastChecked": "2026-05-18T08:51:07.636Z",
-      "lastChanged": "2026-05-17T07:40:14.297Z",
+      "lastChecked": "2026-05-18T12:44:31.941Z",
+      "lastChanged": "2026-05-18T12:44:31.941Z",
       "status": "ok"
     },
     {
@@ -79,7 +79,7 @@
       "totalXp": 306949479,
       "totalLevel": 2300,
       "skills99": 12,
-      "lastChecked": "2026-05-18T08:51:07.636Z",
+      "lastChecked": "2026-05-18T12:44:31.941Z",
       "lastChanged": "2026-05-17T09:57:00.801Z",
       "status": "ok"
     },
@@ -87,11 +87,11 @@
       "rsn": "Toke Feend",
       "type": "gim",
       "file": "toke_feend.json",
-      "totalXp": 129410516,
+      "totalXp": 129492120,
       "totalLevel": 2021,
       "skills99": 6,
-      "lastChecked": "2026-05-18T08:51:07.636Z",
-      "lastChanged": "2026-05-17T11:20:41.882Z",
+      "lastChecked": "2026-05-18T12:44:31.941Z",
+      "lastChanged": "2026-05-18T12:44:31.941Z",
       "status": "ok"
     },
     {
@@ -101,7 +101,7 @@
       "totalXp": 15296711,
       "totalLevel": 1513,
       "skills99": 0,
-      "lastChecked": "2026-05-18T08:51:07.636Z",
+      "lastChecked": "2026-05-18T12:44:31.941Z",
       "lastChanged": "2026-05-18T04:38:38.988Z",
       "status": "ok"
     },
@@ -112,7 +112,7 @@
       "totalXp": 19017142,
       "totalLevel": 1539,
       "skills99": 0,
-      "lastChecked": "2026-05-18T08:51:07.636Z",
+      "lastChecked": "2026-05-18T12:44:31.941Z",
       "lastChanged": "2026-04-28T08:48:50.741Z",
       "status": "ok"
     }

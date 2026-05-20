@@ -10,6 +10,7 @@ import { Milestones } from "./views/Milestones";
 import { Goals } from "./views/Goals";
 import { Records } from "./views/Records";
 import { Compare } from "./views/Compare";
+import { Tears } from "./views/Tears";
 import { AccountBadge, type AccountType } from "./components/AccountBadge";
 
 interface UIState {
@@ -67,6 +68,7 @@ export function App() {
         <NavLink to="/milestones">Milestones</NavLink>
         <NavLink to="/goals">Goals</NavLink>
         <NavLink to="/records">Records</NavLink>
+        <NavLink to="/tears">Tears</NavLink>
         <NavLink to="/compare">Compare</NavLink>
         <span className="spacer" />
         <div className="range-bar" title="Account-type filter">
@@ -118,6 +120,8 @@ export function App() {
             <Route path="/milestones" element={<Milestones />} />
             <Route path="/goals" element={<Goals />} />
             <Route path="/records" element={<Records />} />
+            <Route path="/tears" element={<Tears />} />
+            <Route path="/tears/:rsn" element={<Tears />} />
             <Route path="/compare" element={<Compare />} />
             <Route path="/skills/:name" element={<SkillRace />} />
             <Route path="/players" element={<PlayerDetail />} />

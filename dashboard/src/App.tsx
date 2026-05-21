@@ -12,6 +12,7 @@ import { Records } from "./views/Records";
 import { Compare } from "./views/Compare";
 import { Tears } from "./views/Tears";
 import { AccountBadge, type AccountType } from "./components/AccountBadge";
+import { LastScraped } from "./components/LastScraped";
 
 interface UIState {
   range: RangeKey;
@@ -71,6 +72,7 @@ export function App() {
         <NavLink to="/tears">Tears</NavLink>
         <NavLink to="/compare">Compare</NavLink>
         <span className="spacer" />
+        {index?.generatedAt && <LastScraped generatedAt={index.generatedAt} />}
         <div className="range-bar" title="Account-type filter">
           {ACCOUNT_TYPES.map((t) => (
             <button

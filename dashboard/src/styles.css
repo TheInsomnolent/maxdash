@@ -83,6 +83,16 @@ a:hover { color: var(--accent); text-decoration: underline; }
 }
 .nav .spacer { flex: 1; }
 
+.last-scraped {
+  color: var(--text-dim); font-size: 0.85rem;
+  font-family: "RuneScape", serif; letter-spacing: 0.04em;
+  padding: 0.25rem 0.5rem; cursor: help;
+  border: 1px dashed var(--border-2); border-radius: 3px;
+  white-space: nowrap;
+}
+.last-scraped:hover { color: var(--text); border-color: var(--accent-2); }
+.last-scraped-label { color: var(--accent-2); text-transform: uppercase; }
+
 .main { padding: 1.25rem; max-width: 1280px; margin: 0 auto; width: 100%; }
 
 /* Panels */

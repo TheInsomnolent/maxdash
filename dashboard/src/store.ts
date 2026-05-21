@@ -246,15 +246,27 @@ export const SNAPSHOT_CADENCE_HOURS = 1;
  * (as previously done) inflated long idle gaps that happened to bookend XP
  * gains into hours of fake "active" time, pushing "hours played" near 100% of
  * the window for any player who logged in once or twice a day.
+ *
+ * We intentionally walk the raw snapshot history (not `snapshotsInRange`) and
+ * credit an interval whenever its END snapshot falls within the range. The
+ * synthetic anchor that `snapshotsInRange` prepends has its timestamp clamped
+ * to `Date.now() - rangeMs`, which creeps forward between scrapes — using it
+ * here would make the first interval's `min(cadence, gap)` shrink with every
+ * render, causing "hours played" to visibly drop for active players between
+ * scrapes (see issues #1 and the follow-up).
  */
 export function activeHoursInRange(pf: PlayerFile, range: RangeKey): number {
-  const inR = snapshotsInRange(pf, range);
+  const opt = RANGE_OPTIONS.find((r) => r.key === range)!;
+  const cutoff = opt.ms ? Date.now() - opt.ms : -Infinity;
+  const snaps = pf.snapshots;
   let hrs = 0;
-  for (let i = 1; i < inR.length; i++) {
-    const a = inR[i - 1].s[0];
-    const b = inR[i].s[0];
+  for (let i = 1; i < snaps.length; i++) {
+    const tb = Date.parse(snaps[i].t);
+    if (tb < cutoff) continue;
+    const a = snaps[i - 1].s[0];
+    const b = snaps[i].s[0];
     if (a < 0 || b < 0 || b === a) continue;
-    const gapHrs = (Date.parse(inR[i].t) - Date.parse(inR[i - 1].t)) / 3600_000;
+    const gapHrs = (tb - Date.parse(snaps[i - 1].t)) / 3600_000;
     hrs += Math.min(SNAPSHOT_CADENCE_HOURS, gapHrs);
   }
   return hrs;

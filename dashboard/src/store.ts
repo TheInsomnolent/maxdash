@@ -226,10 +226,26 @@ export function filterPlayers(
 }
 
 /**
- * Active hours in a range: sum of inter-snapshot intervals where overall XP
- * actually grew. Bounded by the gap between snapshots, so a gap > 1d is still
- * counted as one full day of activity if XP went up across it (best we can do
- * without finer telemetry). Returns 0 when there's nothing to measure.
+ * Snapshot cadence (hours). The scraper attempts a snapshot once per hour and
+ * only appends one when overall XP changed since the previous attempt, so a
+ * stored snapshot proves activity occurred during (at most) the hour leading
+ * up to it — not for the entire gap since the previous snapshot, which may
+ * include long idle periods (sleep, work, etc.).
+ *
+ * Keep in sync with `.github/workflows/snapshot.yml` cron.
+ */
+export const SNAPSHOT_CADENCE_HOURS = 1;
+
+/**
+ * Active hours in a range: for each inter-snapshot interval where overall XP
+ * grew, credit at most one snapshot cadence (1h) of activity — bounded by the
+ * actual gap when it's shorter (e.g. the clamped anchor at range cutoff).
+ *
+ * Because the scraper deduplicates idle hours, a snapshot only attests to
+ * activity in the hour it was taken. Crediting the entire inter-snapshot delta
+ * (as previously done) inflated long idle gaps that happened to bookend XP
+ * gains into hours of fake "active" time, pushing "hours played" near 100% of
+ * the window for any player who logged in once or twice a day.
  */
 export function activeHoursInRange(pf: PlayerFile, range: RangeKey): number {
   const inR = snapshotsInRange(pf, range);
@@ -238,7 +254,8 @@ export function activeHoursInRange(pf: PlayerFile, range: RangeKey): number {
     const a = inR[i - 1].s[0];
     const b = inR[i].s[0];
     if (a < 0 || b < 0 || b === a) continue;
-    hrs += (Date.parse(inR[i].t) - Date.parse(inR[i - 1].t)) / 3600_000;
+    const gapHrs = (Date.parse(inR[i].t) - Date.parse(inR[i - 1].t)) / 3600_000;
+    hrs += Math.min(SNAPSHOT_CADENCE_HOURS, gapHrs);
   }
   return hrs;
 }

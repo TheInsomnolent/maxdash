@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-02T07:56:47.751Z",
+  "generatedAt": "2026-06-02T09:41:35.757Z",
   "skills": [
     "Overall",
     "Attack",
@@ -35,7 +35,7 @@
       "totalXp": 164365361,
       "totalLevel": 2158,
       "skills99": 3,
-      "lastChecked": "2026-06-02T07:56:47.751Z",
+      "lastChecked": "2026-06-02T09:41:35.757Z",
       "lastChanged": "2026-06-02T07:56:47.751Z",
       "status": "ok"
     },
@@ -46,7 +46,7 @@
       "totalXp": 24231896,
       "totalLevel": 1641,
       "skills99": 0,
-      "lastChecked": "2026-06-02T07:56:47.751Z",
+      "lastChecked": "2026-06-02T09:41:35.757Z",
       "lastChanged": "2026-05-11T19:05:19.880Z",
       "status": "ok"
     },
@@ -54,33 +54,33 @@
       "rsn": "Gloryyy Boy",
       "type": "ironman",
       "file": "gloryyy_boy.json",
-      "totalXp": 61657211,
+      "totalXp": 61674943,
       "totalLevel": 1924,
       "skills99": 0,
-      "lastChecked": "2026-06-02T07:56:47.751Z",
-      "lastChanged": "2026-06-02T07:56:47.751Z",
+      "lastChecked": "2026-06-02T09:41:35.757Z",
+      "lastChanged": "2026-06-02T09:41:35.757Z",
       "status": "ok"
     },
     {
       "rsn": "Iron Razekai",
       "type": "gim",
       "file": "iron_razekai.json",
-      "totalXp": 225051496,
+      "totalXp": 225164641,
       "totalLevel": 2236,
       "skills99": 9,
-      "lastChecked": "2026-06-02T07:56:47.751Z",
-      "lastChanged": "2026-05-31T11:40:39.074Z",
+      "lastChecked": "2026-06-02T09:41:35.757Z",
+      "lastChanged": "2026-06-02T09:41:35.757Z",
       "status": "ok"
     },
     {
       "rsn": "Wuckedenergy",
       "type": "gim",
       "file": "wuckedenergy.json",
-      "totalXp": 308405756,
+      "totalXp": 308441512,
       "totalLevel": 2300,
       "skills99": 12,
-      "lastChecked": "2026-06-02T07:56:47.751Z",
-      "lastChanged": "2026-06-02T07:56:47.751Z",
+      "lastChecked": "2026-06-02T09:41:35.757Z",
+      "lastChanged": "2026-06-02T09:41:35.757Z",
       "status": "ok"
     },
     {
@@ -90,7 +90,7 @@
       "totalXp": 130324610,
       "totalLevel": 2027,
       "skills99": 6,
-      "lastChecked": "2026-06-02T07:56:47.751Z",
+      "lastChecked": "2026-06-02T09:41:35.757Z",
       "lastChanged": "2026-06-01T15:18:10.799Z",
       "status": "ok"
     },
@@ -98,11 +98,11 @@
       "rsn": "CdeSafeTCam",
       "type": "gim",
       "file": "cdesafetcam.json",
-      "totalXp": 20426006,
-      "totalLevel": 1584,
+      "totalXp": 20489424,
+      "totalLevel": 1585,
       "skills99": 0,
-      "lastChecked": "2026-06-02T07:56:47.751Z",
-      "lastChanged": "2026-06-02T07:56:47.751Z",
+      "lastChecked": "2026-06-02T09:41:35.757Z",
+      "lastChanged": "2026-06-02T09:41:35.757Z",
       "status": "ok"
     },
     {
@@ -112,7 +112,7 @@
       "totalXp": 19017142,
       "totalLevel": 1539,
       "skills99": 0,
-      "lastChecked": "2026-06-02T07:56:47.751Z",
+      "lastChecked": "2026-06-02T09:41:35.757Z",
       "lastChanged": "2026-04-28T08:48:50.741Z",
       "status": "ok"
     }

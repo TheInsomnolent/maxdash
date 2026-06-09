@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-09T11:13:23.165Z",
+  "generatedAt": "2026-06-09T13:15:35.227Z",
   "skills": [
     "Overall",
     "Attack",
@@ -33,12 +33,11 @@
       "type": "main",
       "file": "insomnolennt.json",
       "totalXp": 167465248,
-      "totalLevel": 0,
-      "skills99": 0,
-      "lastChecked": "2026-06-09T11:13:23.165Z",
+      "totalLevel": 2160,
+      "skills99": 3,
+      "lastChecked": "2026-06-09T13:15:35.227Z",
       "lastChanged": "2026-06-09T03:21:54.439Z",
-      "status": "error",
-      "error": "502"
+      "status": "ok"
     },
     {
       "rsn": "Sir_Newtone",
@@ -47,82 +46,76 @@
       "totalXp": 24360911,
       "totalLevel": 0,
       "skills99": 0,
-      "lastChecked": "2026-06-09T11:13:23.165Z",
+      "lastChecked": "2026-06-09T13:15:35.227Z",
       "lastChanged": "2026-06-07T12:46:21.696Z",
       "status": "error",
-      "error": "502"
+      "error": "404"
     },
     {
       "rsn": "Gloryyy Boy",
       "type": "ironman",
       "file": "gloryyy_boy.json",
       "totalXp": 63204119,
-      "totalLevel": 0,
+      "totalLevel": 1930,
       "skills99": 0,
-      "lastChecked": "2026-06-09T11:13:23.165Z",
+      "lastChecked": "2026-06-09T13:15:35.227Z",
       "lastChanged": "2026-06-09T05:33:45.932Z",
-      "status": "error",
-      "error": "504"
+      "status": "ok"
     },
     {
       "rsn": "Iron Razekai",
       "type": "gim",
       "file": "iron_razekai.json",
       "totalXp": 226175760,
-      "totalLevel": 0,
-      "skills99": 0,
-      "lastChecked": "2026-06-09T11:13:23.165Z",
+      "totalLevel": 2238,
+      "skills99": 9,
+      "lastChecked": "2026-06-09T13:15:35.227Z",
       "lastChanged": "2026-06-08T13:46:27.687Z",
-      "status": "error",
-      "error": "502"
+      "status": "ok"
     },
     {
       "rsn": "Wuckedenergy",
       "type": "gim",
       "file": "wuckedenergy.json",
       "totalXp": 308732438,
-      "totalLevel": 0,
-      "skills99": 0,
-      "lastChecked": "2026-06-09T11:13:23.165Z",
+      "totalLevel": 2301,
+      "skills99": 12,
+      "lastChecked": "2026-06-09T13:15:35.227Z",
       "lastChanged": "2026-06-05T09:23:08.820Z",
-      "status": "error",
-      "error": "504"
+      "status": "ok"
     },
     {
       "rsn": "Toke Feend",
       "type": "gim",
       "file": "toke_feend.json",
       "totalXp": 130451499,
-      "totalLevel": 0,
-      "skills99": 0,
-      "lastChecked": "2026-06-09T11:13:23.165Z",
+      "totalLevel": 2028,
+      "skills99": 6,
+      "lastChecked": "2026-06-09T13:15:35.227Z",
       "lastChanged": "2026-06-06T10:45:47.847Z",
-      "status": "error",
-      "error": "504"
+      "status": "ok"
     },
     {
       "rsn": "CdeSafeTCam",
       "type": "gim",
       "file": "cdesafetcam.json",
       "totalXp": 21722772,
-      "totalLevel": 0,
+      "totalLevel": 1603,
       "skills99": 0,
-      "lastChecked": "2026-06-09T11:13:23.165Z",
+      "lastChecked": "2026-06-09T13:15:35.227Z",
       "lastChanged": "2026-06-08T15:18:09.016Z",
-      "status": "error",
-      "error": "502"
+      "status": "ok"
     },
     {
       "rsn": "Savage32Fe",
       "type": "gim",
       "file": "savage32fe.json",
       "totalXp": 19017142,
-      "totalLevel": 0,
+      "totalLevel": 1539,
       "skills99": 0,
-      "lastChecked": "2026-06-09T11:13:23.165Z",
+      "lastChecked": "2026-06-09T13:15:35.227Z",
       "lastChanged": "2026-04-28T08:48:50.741Z",
-      "status": "error",
-      "error": "502"
+      "status": "ok"
     }
   ]
 }

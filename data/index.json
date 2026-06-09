@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-09T09:22:36.728Z",
+  "generatedAt": "2026-06-09T11:13:23.165Z",
   "skills": [
     "Overall",
     "Attack",
@@ -35,7 +35,7 @@
       "totalXp": 167465248,
       "totalLevel": 0,
       "skills99": 0,
-      "lastChecked": "2026-06-09T09:22:36.728Z",
+      "lastChecked": "2026-06-09T11:13:23.165Z",
       "lastChanged": "2026-06-09T03:21:54.439Z",
       "status": "error",
       "error": "502"
@@ -47,7 +47,7 @@
       "totalXp": 24360911,
       "totalLevel": 0,
       "skills99": 0,
-      "lastChecked": "2026-06-09T09:22:36.728Z",
+      "lastChecked": "2026-06-09T11:13:23.165Z",
       "lastChanged": "2026-06-07T12:46:21.696Z",
       "status": "error",
       "error": "502"
@@ -59,10 +59,10 @@
       "totalXp": 63204119,
       "totalLevel": 0,
       "skills99": 0,
-      "lastChecked": "2026-06-09T09:22:36.728Z",
+      "lastChecked": "2026-06-09T11:13:23.165Z",
       "lastChanged": "2026-06-09T05:33:45.932Z",
       "status": "error",
-      "error": "502"
+      "error": "504"
     },
     {
       "rsn": "Iron Razekai",
@@ -71,7 +71,7 @@
       "totalXp": 226175760,
       "totalLevel": 0,
       "skills99": 0,
-      "lastChecked": "2026-06-09T09:22:36.728Z",
+      "lastChecked": "2026-06-09T11:13:23.165Z",
       "lastChanged": "2026-06-08T13:46:27.687Z",
       "status": "error",
       "error": "502"
@@ -83,10 +83,10 @@
       "totalXp": 308732438,
       "totalLevel": 0,
       "skills99": 0,
-      "lastChecked": "2026-06-09T09:22:36.728Z",
+      "lastChecked": "2026-06-09T11:13:23.165Z",
       "lastChanged": "2026-06-05T09:23:08.820Z",
       "status": "error",
-      "error": "502"
+      "error": "504"
     },
     {
       "rsn": "Toke Feend",
@@ -95,10 +95,10 @@
       "totalXp": 130451499,
       "totalLevel": 0,
       "skills99": 0,
-      "lastChecked": "2026-06-09T09:22:36.728Z",
+      "lastChecked": "2026-06-09T11:13:23.165Z",
       "lastChanged": "2026-06-06T10:45:47.847Z",
       "status": "error",
-      "error": "502"
+      "error": "504"
     },
     {
       "rsn": "CdeSafeTCam",
@@ -107,7 +107,7 @@
       "totalXp": 21722772,
       "totalLevel": 0,
       "skills99": 0,
-      "lastChecked": "2026-06-09T09:22:36.728Z",
+      "lastChecked": "2026-06-09T11:13:23.165Z",
       "lastChanged": "2026-06-08T15:18:09.016Z",
       "status": "error",
       "error": "502"
@@ -119,7 +119,7 @@
       "totalXp": 19017142,
       "totalLevel": 0,
       "skills99": 0,
-      "lastChecked": "2026-06-09T09:22:36.728Z",
+      "lastChecked": "2026-06-09T11:13:23.165Z",
       "lastChanged": "2026-04-28T08:48:50.741Z",
       "status": "error",
       "error": "502"

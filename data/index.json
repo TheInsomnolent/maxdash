@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-06T13:26:46.326Z",
+  "generatedAt": "2026-07-06T15:12:18.525Z",
   "skills": [
     "Overall",
     "Attack",
@@ -32,11 +32,11 @@
       "rsn": "Insomnolennt",
       "type": "main",
       "file": "insomnolennt.json",
-      "totalXp": 173204258,
-      "totalLevel": 2166,
+      "totalXp": 173298764,
+      "totalLevel": 2167,
       "skills99": 3,
-      "lastChecked": "2026-07-06T13:26:46.326Z",
-      "lastChanged": "2026-07-06T13:26:46.326Z",
+      "lastChecked": "2026-07-06T15:12:18.525Z",
+      "lastChanged": "2026-07-06T15:12:18.525Z",
       "status": "ok"
     },
     {
@@ -46,7 +46,7 @@
       "totalXp": 24360911,
       "totalLevel": 1643,
       "skills99": 0,
-      "lastChecked": "2026-07-06T13:26:46.326Z",
+      "lastChecked": "2026-07-06T15:12:18.525Z",
       "lastChanged": "2026-06-07T12:46:21.696Z",
       "status": "ok"
     },
@@ -57,7 +57,7 @@
       "totalXp": 65349901,
       "totalLevel": 1936,
       "skills99": 0,
-      "lastChecked": "2026-07-06T13:26:46.326Z",
+      "lastChecked": "2026-07-06T15:12:18.525Z",
       "lastChanged": "2026-06-30T09:20:36.841Z",
       "status": "ok"
     },
@@ -68,7 +68,7 @@
       "totalXp": 229617689,
       "totalLevel": 2240,
       "skills99": 9,
-      "lastChecked": "2026-07-06T13:26:46.326Z",
+      "lastChecked": "2026-07-06T15:12:18.525Z",
       "lastChanged": "2026-07-06T13:26:46.326Z",
       "status": "ok"
     },
@@ -79,7 +79,7 @@
       "totalXp": 308835048,
       "totalLevel": 2301,
       "skills99": 12,
-      "lastChecked": "2026-07-06T13:26:46.326Z",
+      "lastChecked": "2026-07-06T15:12:18.525Z",
       "lastChanged": "2026-07-06T11:39:21.675Z",
       "status": "ok"
     },
@@ -90,7 +90,7 @@
       "totalXp": 130451499,
       "totalLevel": 2028,
       "skills99": 6,
-      "lastChecked": "2026-07-06T13:26:46.326Z",
+      "lastChecked": "2026-07-06T15:12:18.525Z",
       "lastChanged": "2026-06-06T10:45:47.847Z",
       "status": "ok"
     },
@@ -98,11 +98,11 @@
       "rsn": "CdeSafeTCam",
       "type": "gim",
       "file": "cdesafetcam.json",
-      "totalXp": 29285954,
-      "totalLevel": 1730,
+      "totalXp": 29479686,
+      "totalLevel": 1734,
       "skills99": 0,
-      "lastChecked": "2026-07-06T13:26:46.326Z",
-      "lastChanged": "2026-07-06T09:33:17.264Z",
+      "lastChecked": "2026-07-06T15:12:18.525Z",
+      "lastChanged": "2026-07-06T15:12:18.525Z",
       "status": "ok"
     },
     {
@@ -112,7 +112,7 @@
       "totalXp": 19017142,
       "totalLevel": 1539,
       "skills99": 0,
-      "lastChecked": "2026-07-06T13:26:46.326Z",
+      "lastChecked": "2026-07-06T15:12:18.525Z",
       "lastChanged": "2026-04-28T08:48:50.741Z",
       "status": "ok"
     }

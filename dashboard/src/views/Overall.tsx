@@ -17,6 +17,7 @@ import {
 } from "../skills";
 import { AccountBadge, type AccountType } from "../components/AccountBadge";
 import { PlayerImage } from "../components/PlayerImage";
+import { WeeklyRace } from "../components/WeeklyRace";
 import { useUI } from "../App";
 
 interface Row {
@@ -271,7 +272,9 @@ export function Overall() {
       </div>
 
       <Board title={`MVP — XP gained (${range})`} rows={xpBoard} suffix=" xp" />
+      <WeeklyRace mode="xp" />
       <Board title={`MVP — Levels gained (${range})`} rows={lvlBoard} suffix=" lvls" />
+      <WeeklyRace mode="level" />
 
       <div className="panel">
         <h2>Awards</h2>

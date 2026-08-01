@@ -39,6 +39,42 @@ export const MAX_TOTAL_LEVEL = TRAINABLE_SKILL_COUNT * 99;
  */
 export const MAX_TOTAL_XP = 24 * MAX_XP;
 
+/**
+ * Per-skill colors, roughly matching each skill's in-game icon. Used by the
+ * weekly race stacked columns (player colors stay reserved for the lines).
+ */
+export const SKILL_COLORS: Record<string, string> = {
+  Agility: "#223A70",
+  Attack: "#9B2007",
+  Construction: "#C9AA73",
+  Cooking: "#492454",
+  Crafting: "#6E5033",
+  Defence: "#6192CA",
+  Farming: "#2C7A1D",
+  Firemaking: "#E15814",
+  Fishing: "#648BA7",
+  Fletching: "#016A65",
+  Herblore: "#086915",
+  Hitpoints: "#C22F26",
+  Hunter: "#625946",
+  Magic: "#32527B",
+  Mining: "#567995",
+  Prayer: "#EFEFEF",
+  Ranged: "#4E7812",
+  Runecraft: "#EAB844",
+  Sailing: "#1B5E80",
+  Slayer: "#1C1C1C",
+  Smithing: "#424036",
+  Strength: "#187A2E",
+  Thieving: "#422B47",
+  Woodcutting: "#2A5722",
+};
+
+/** Color for a skill's chart segment, falling back to a neutral brown. */
+export function skillColor(name: string): string {
+  return SKILL_COLORS[name] ?? "#8a6b3d";
+}
+
 const XP_TABLE: number[] = (() => {
   const t: number[] = [0];
   let pts = 0;

@@ -119,6 +119,40 @@ export function xpGainInRange(pf: PlayerFile, skillIdx: number, range: RangeKey)
   return Math.max(0, b - a);
 }
 
+/**
+ * XP in a skill that still counts towards maxing: XP past level 99 is ignored,
+ * and unranked skills count as 0.
+ */
+export function cappedXp(xp: number): number {
+  if (xp < 0) return 0;
+  return Math.min(xp, MAX_XP);
+}
+
+/** Total XP across trainable skills, with each skill capped at level 99. */
+export function cappedTotalXpFromSnapshot(s: number[]): number {
+  let xp = 0;
+  for (let i = 1; i < s.length; i++) xp += cappedXp(s[i]);
+  return xp;
+}
+
+/**
+ * XP gain over a range counting only progress towards level 99 — XP earned in
+ * a skill that is already maxed never contributes. `skillIdx` 0 means the sum
+ * over every trainable skill (the Overall row itself includes post-99 XP, so
+ * it can't be used here).
+ */
+export function cappedXpGainInRange(pf: PlayerFile, skillIdx: number, range: RangeKey): number {
+  const snaps = snapshotsInRange(pf, range);
+  if (snaps.length < 2) return 0;
+  const a = snaps[0].s;
+  const b = snaps.at(-1)!.s;
+  if (skillIdx === 0) {
+    return Math.max(0, cappedTotalXpFromSnapshot(b) - cappedTotalXpFromSnapshot(a));
+  }
+  if (a[skillIdx] < 0 || b[skillIdx] < 0) return 0;
+  return Math.max(0, cappedXp(b[skillIdx]) - cappedXp(a[skillIdx]));
+}
+
 /** Level gain over a range. */
 export function levelGainInRange(pf: PlayerFile, skillIdx: number, range: RangeKey): number {
   const snaps = snapshotsInRange(pf, range);

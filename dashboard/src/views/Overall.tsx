@@ -7,7 +7,8 @@ import {
   totalLevelFromSnapshot,
   filterPlayers,
   activeHoursInRange,
-  xpGainInRange,
+  cappedXpGainInRange,
+  cappedTotalXpFromSnapshot,
   levelGainInRange,
 } from "../store";
 import {
@@ -56,11 +57,11 @@ export function Overall() {
       const pf = players[p.rsn];
       const last = pf ? latestSnapshot(pf) : null;
       const snap = last?.s ?? [];
-      const totalXp = snap[0] ?? 0;
+      const totalXp = snap.length ? cappedTotalXpFromSnapshot(snap) : 0;
       const totalLevel = snap.length ? totalLevelFromSnapshot(snap) : 0;
       const s99 = snap.length ? skills99Count(snap) : 0;
       const hoursActive = pf ? activeHoursInRange(pf, range) : 0;
-      const xpGained = pf ? xpGainInRange(pf, 0, range) : 0;
+      const xpGained = pf ? cappedXpGainInRange(pf, 0, range) : 0;
       return {
         rsn: p.rsn,
         type: p.type,
@@ -94,7 +95,7 @@ export function Overall() {
       .map((p) => ({
         rsn: p.rsn,
         type: p.type,
-        value: players[p.rsn] ? xpGainInRange(players[p.rsn], 0, range) : 0,
+        value: players[p.rsn] ? cappedXpGainInRange(players[p.rsn], 0, range) : 0,
       }))
       .sort((a, b) => b.value - a.value);
   }, [index, players, range, typeFilter, hideInactive]);
@@ -146,7 +147,7 @@ export function Overall() {
           const hrs = activeHoursInRange(pf, range);
           if (hrs <= 0) return null;
           let xp = 0;
-          for (const i of skillIdxs) xp += xpGainInRange(pf, i, range);
+          for (const i of skillIdxs) xp += cappedXpGainInRange(pf, i, range);
           if (xp <= 0) return null;
           return { rsn: p.rsn, type: p.type, value: xp / hrs };
         })
@@ -156,7 +157,7 @@ export function Overall() {
       visible.map((p) => {
         const pf = players[p.rsn];
         let xp = 0;
-        if (pf) for (const i of skillIdxs) xp += xpGainInRange(pf, i, range);
+        if (pf) for (const i of skillIdxs) xp += cappedXpGainInRange(pf, i, range);
         return { rsn: p.rsn, type: p.type, value: xp };
       });
 
@@ -220,7 +221,7 @@ export function Overall() {
         const pf = players[p.rsn];
         if (!pf) return { rsn: p.rsn, type: p.type, xpPerActiveHr: 0 };
         const hrs = activeHoursInRange(pf, range);
-        const xp = xpGainInRange(pf, 0, range);
+        const xp = cappedXpGainInRange(pf, 0, range);
         return {
           rsn: p.rsn,
           type: p.type,
@@ -239,11 +240,11 @@ export function Overall() {
             <tr>
               <th>#</th>
               <th>Player</th>
-              <th onClick={() => setSortKey("totalXp")} className="num">Total XP</th>
+              <th onClick={() => setSortKey("totalXp")} className="num" title="XP towards maxing — XP past level 99 in a skill is excluded">Total XP</th>
               <th onClick={() => setSortKey("totalLevel")} className="num">Total Lvl</th>
               <th onClick={() => setSortKey("skills99")} className="num">99s</th>
               <th onClick={() => setSortKey("pctMaxed")}>% Maxed</th>
-              <th onClick={() => setSortKey("xpGained")} className="num">XP gained</th>
+              <th onClick={() => setSortKey("xpGained")} className="num" title="XP towards maxing — XP past level 99 in a skill is excluded">XP gained</th>
               <th onClick={() => setSortKey("hoursActive")} className="num">Hours played</th>
             </tr>
           </thead>

@@ -51,13 +51,11 @@ export const XP_RATES: Record<TrainableSkillName, SkillXpRate> = {
 export type RateMode = "afk" | "active";
 
 /** Hours left to reach 99 in one skill at the given cadence. */
-export function hoursToMaxSkill(skill: SkillName, xp: number, mode: RateMode): number {
-  const rate = XP_RATES[skill as TrainableSkillName];
-  if (!rate) return 0;
+export function hoursToMaxSkill(skill: TrainableSkillName, xp: number, mode: RateMode): number {
   // Unranked players (xp === -1) are treated as having no XP at all.
   const remaining = MAX_XP - Math.max(0, xp);
   if (remaining <= 0) return 0;
-  return remaining / rate[mode];
+  return remaining / XP_RATES[skill][mode];
 }
 
 /**
@@ -66,7 +64,7 @@ export function hoursToMaxSkill(skill: SkillName, xp: number, mode: RateMode): n
  */
 export function hoursToMax(snapshot: readonly number[], mode: RateMode): number {
   return TRAINABLE_SKILLS.reduce(
-    (sum, skill, i) => sum + hoursToMaxSkill(skill, snapshot[i + 1] ?? -1, mode),
+    (sum, skill, i) => sum + hoursToMaxSkill(skill as TrainableSkillName, snapshot[i + 1] ?? -1, mode),
     0,
   );
 }

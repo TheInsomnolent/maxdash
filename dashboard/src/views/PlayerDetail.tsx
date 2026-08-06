@@ -13,6 +13,7 @@ import { MAX_XP, SKILLS, TRAINABLE_SKILLS, colorFor, xpToLevel } from "../skills
 import { SkillIcon } from "../components/SkillIcon";
 import { AccountBadge, BADGE_LABEL, type AccountType } from "../components/AccountBadge";
 import { Sparkline } from "../components/Sparkline";
+import { formatHours, hoursToMax } from "../xprates";
 
 export function PlayerDetail() {
   const { rsn } = useParams();
@@ -41,6 +42,10 @@ export function PlayerDetail() {
   const totalLevel = snap.slice(1).reduce((a, x) => a + (x >= 0 ? xpToLevel(x) : 1), 0);
   const skills99 = snap.slice(1).filter((x) => x >= MAX_XP).length;
   const xpGainOverall = xpGainInRange(pf, 0, range);
+
+  // Effective play-time left to max, using reference xp/hr rates per skill.
+  const afkHours = hoursToMax(snap, "afk");
+  const sweatyHours = hoursToMax(snap, "active");
 
   const inRange = snapshotsInRange(pf, range);
   const days = inRange.length >= 2
@@ -91,6 +96,8 @@ export function PlayerDetail() {
             <Kpi label="Total Level" value={`${totalLevel} / 2277`} />
             <Kpi label="99s" value={`${skills99} / ${TRAINABLE_SKILLS.length}`} />
             <Kpi label={`XP / day (${range})`} value={Math.round(xpPerDay).toLocaleString()} />
+            <Kpi label="AFK hours to max" value={formatHours(afkHours)} />
+            <Kpi label="Sweaty hours to max" value={formatHours(sweatyHours)} />
             <Kpi
               label="Next 99"
               value={nextSkill ? `${nextSkill.name} • ${nextSkill.eta.toFixed(0)}d` : "—"}

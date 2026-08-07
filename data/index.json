@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-07T07:36:52.508Z",
+  "generatedAt": "2026-08-07T08:31:12.380Z",
   "skills": [
     "Overall",
     "Attack",
@@ -35,7 +35,7 @@
       "totalXp": 186932794,
       "totalLevel": 2189,
       "skills99": 4,
-      "lastChecked": "2026-08-07T07:36:52.508Z",
+      "lastChecked": "2026-08-07T08:31:12.380Z",
       "lastChanged": "2026-08-07T07:36:52.508Z",
       "status": "ok"
     },
@@ -46,7 +46,7 @@
       "totalXp": 24360911,
       "totalLevel": 1643,
       "skills99": 0,
-      "lastChecked": "2026-08-07T07:36:52.508Z",
+      "lastChecked": "2026-08-07T08:31:12.380Z",
       "lastChanged": "2026-06-07T12:46:21.696Z",
       "status": "ok"
     },
@@ -57,7 +57,7 @@
       "totalXp": 65487298,
       "totalLevel": 1937,
       "skills99": 0,
-      "lastChecked": "2026-08-07T07:36:52.508Z",
+      "lastChecked": "2026-08-07T08:31:12.380Z",
       "lastChanged": "2026-07-27T11:11:42.125Z",
       "status": "ok"
     },
@@ -68,7 +68,7 @@
       "totalXp": 232040993,
       "totalLevel": 2242,
       "skills99": 9,
-      "lastChecked": "2026-08-07T07:36:52.508Z",
+      "lastChecked": "2026-08-07T08:31:12.380Z",
       "lastChanged": "2026-08-07T05:39:54.423Z",
       "status": "ok"
     },
@@ -79,7 +79,7 @@
       "totalXp": 311606204,
       "totalLevel": 2303,
       "skills99": 12,
-      "lastChecked": "2026-08-07T07:36:52.508Z",
+      "lastChecked": "2026-08-07T08:31:12.380Z",
       "lastChanged": "2026-08-07T06:32:50.282Z",
       "status": "ok"
     },
@@ -90,7 +90,7 @@
       "totalXp": 130503765,
       "totalLevel": 2028,
       "skills99": 6,
-      "lastChecked": "2026-08-07T07:36:52.508Z",
+      "lastChecked": "2026-08-07T08:31:12.380Z",
       "lastChanged": "2026-07-18T12:26:42.702Z",
       "status": "ok"
     },
@@ -98,11 +98,11 @@
       "rsn": "CdeSafeTCam",
       "type": "gim",
       "file": "cdesafetcam.json",
-      "totalXp": 40245061,
+      "totalXp": 40328896,
       "totalLevel": 1826,
       "skills99": 0,
-      "lastChecked": "2026-08-07T07:36:52.508Z",
-      "lastChanged": "2026-08-07T06:32:50.282Z",
+      "lastChecked": "2026-08-07T08:31:12.380Z",
+      "lastChanged": "2026-08-07T08:31:12.380Z",
       "status": "ok"
     },
     {
@@ -112,7 +112,7 @@
       "totalXp": 19017142,
       "totalLevel": 1539,
       "skills99": 0,
-      "lastChecked": "2026-08-07T07:36:52.508Z",
+      "lastChecked": "2026-08-07T08:31:12.380Z",
       "lastChanged": "2026-04-28T08:48:50.741Z",
       "status": "ok"
     }

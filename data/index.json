@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-07T10:25:04.359Z",
+  "generatedAt": "2026-08-07T11:23:55.868Z",
   "skills": [
     "Overall",
     "Attack",
@@ -35,7 +35,7 @@
       "totalXp": 186970957,
       "totalLevel": 2189,
       "skills99": 4,
-      "lastChecked": "2026-08-07T10:25:04.359Z",
+      "lastChecked": "2026-08-07T11:23:55.868Z",
       "lastChanged": "2026-08-07T09:27:40.441Z",
       "status": "ok"
     },
@@ -46,7 +46,7 @@
       "totalXp": 24360911,
       "totalLevel": 1643,
       "skills99": 0,
-      "lastChecked": "2026-08-07T10:25:04.359Z",
+      "lastChecked": "2026-08-07T11:23:55.868Z",
       "lastChanged": "2026-06-07T12:46:21.696Z",
       "status": "ok"
     },
@@ -57,7 +57,7 @@
       "totalXp": 65487298,
       "totalLevel": 1937,
       "skills99": 0,
-      "lastChecked": "2026-08-07T10:25:04.359Z",
+      "lastChecked": "2026-08-07T11:23:55.868Z",
       "lastChanged": "2026-07-27T11:11:42.125Z",
       "status": "ok"
     },
@@ -68,7 +68,7 @@
       "totalXp": 232050737,
       "totalLevel": 2242,
       "skills99": 9,
-      "lastChecked": "2026-08-07T10:25:04.359Z",
+      "lastChecked": "2026-08-07T11:23:55.868Z",
       "lastChanged": "2026-08-07T10:25:04.359Z",
       "status": "ok"
     },
@@ -76,11 +76,11 @@
       "rsn": "Wuckedenergy",
       "type": "gim",
       "file": "wuckedenergy.json",
-      "totalXp": 311631276,
+      "totalXp": 311717227,
       "totalLevel": 2303,
       "skills99": 12,
-      "lastChecked": "2026-08-07T10:25:04.359Z",
-      "lastChanged": "2026-08-07T10:25:04.359Z",
+      "lastChecked": "2026-08-07T11:23:55.868Z",
+      "lastChanged": "2026-08-07T11:23:55.868Z",
       "status": "ok"
     },
     {
@@ -90,7 +90,7 @@
       "totalXp": 130503765,
       "totalLevel": 2028,
       "skills99": 6,
-      "lastChecked": "2026-08-07T10:25:04.359Z",
+      "lastChecked": "2026-08-07T11:23:55.868Z",
       "lastChanged": "2026-07-18T12:26:42.702Z",
       "status": "ok"
     },
@@ -98,11 +98,11 @@
       "rsn": "CdeSafeTCam",
       "type": "gim",
       "file": "cdesafetcam.json",
-      "totalXp": 40404546,
-      "totalLevel": 1826,
+      "totalXp": 40412379,
+      "totalLevel": 1827,
       "skills99": 0,
-      "lastChecked": "2026-08-07T10:25:04.359Z",
-      "lastChanged": "2026-08-07T10:25:04.359Z",
+      "lastChecked": "2026-08-07T11:23:55.868Z",
+      "lastChanged": "2026-08-07T11:23:55.868Z",
       "status": "ok"
     },
     {
@@ -112,7 +112,7 @@
       "totalXp": 19017142,
       "totalLevel": 1539,
       "skills99": 0,
-      "lastChecked": "2026-08-07T10:25:04.359Z",
+      "lastChecked": "2026-08-07T11:23:55.868Z",
       "lastChanged": "2026-04-28T08:48:50.741Z",
       "status": "ok"
     }

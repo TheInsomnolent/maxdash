@@ -5,10 +5,15 @@ import {
   ResponsiveContainer, Tooltip, XAxis, YAxis,
 } from "recharts";
 import { useUI } from "../App";
-import { useData, snapshotsInRange, skillNameToIdx, filterPlayers, RANGE_OPTIONS } from "../store";
+import { useData, latestSnapshot, snapshotsInRange, skillNameToIdx, filterPlayers, RANGE_OPTIONS } from "../store";
 import { MAX_XP, MAX_TOTAL_XP, SKILLS, TRAINABLE_SKILLS, TRAINABLE_SKILL_COUNT, MAX_TOTAL_LEVEL, colorFor, xpToLevel } from "../skills";
 import { SkillIcon } from "../components/SkillIcon";
 import { buildForecast, MAX_HORIZON_DAYS, type ForecastResult } from "../forecast";
+import { XP_RATES, formatHours, type TrainableSkillName } from "../xprates";
+import {
+  formatDays, methodProjection, projectionSeries,
+  remainingXpForOverall, remainingXpForSkill,
+} from "../projection";
 
 const SKILL_OPTIONS = ["Overall", ...TRAINABLE_SKILLS];
 const DAY_MS = 86_400_000;
@@ -28,6 +33,10 @@ export function SkillRace() {
   const [yMin, setYMin] = useState<"zero" | "auto">("zero");
   // Players the user has clicked off in the legend. Everyone is visible by default.
   const [hiddenRsns, setHiddenRsns] = useState<Set<string>>(() => new Set());
+  // Method projection inputs — kept as strings so the fields can be emptied.
+  const [projRsn, setProjRsn] = useState("");
+  const [projRate, setProjRate] = useState("");
+  const [projHoursPerDay, setProjHoursPerDay] = useState("");
   const cap = isOverall
     ? (yMode === "level" ? MAX_TOTAL_LEVEL : MAX_TOTAL_XP)
     : (yMode === "level" ? 99 : MAX_XP);
@@ -68,18 +77,47 @@ export function SkillRace() {
     [allPlayers, hiddenRsns],
   );
 
+  // Forecast/projection horizon = currently selected range length, capped at 1y.
+  const horizonDays = useMemo(() => {
+    const rangeMs = RANGE_OPTIONS.find((r) => r.key === range)!.ms;
+    return Math.min(
+      MAX_HORIZON_DAYS,
+      Math.max(1, Math.round((rangeMs ?? MAX_HORIZON_DAYS * DAY_MS) / DAY_MS)),
+    );
+  }, [range]);
+
+  // Method projection — a flat XP rate for one player, optionally converted to
+  // calendar time via an hours-per-day grind.
+  const projection = useMemo(() => {
+    if (!index || !projRsn) return null;
+    const pf = players[projRsn];
+    const snap = pf ? latestSnapshot(pf) : null;
+    if (!snap) return null;
+    const remainingXp = isOverall ? remainingXpForOverall(snap.s) : remainingXpForSkill(snap.s[idx]);
+    const summary = methodProjection(
+      remainingXp,
+      Number(projRate),
+      Number(projHoursPerDay),
+      Date.parse(snap.t),
+    );
+    if (!summary) return null;
+    return { ...summary, currentXp: Math.max(0, snap.s[idx]) };
+  }, [index, players, projRsn, projRate, projHoursPerDay, idx, isOverall]);
+
+  // The projected line can only be drawn where a flat XP rate maps onto the
+  // y-axis: total level can't be derived from a lump of untargeted XP.
+  const canDrawProjection = yMode === "xp" || !isOverall;
+  const methodRsn = projection && projection.daysToMax !== null && canDrawProjection && !hiddenRsns.has(projRsn)
+    ? projRsn
+    : null;
+  /** Reference rates for the selected skill, offered as one-click presets. */
+  const referenceRate = isOverall ? null : XP_RATES[skill as TrainableSkillName];
+
   const { data, forecasts } = useMemo(() => {
     if (!index) return {
       data: [] as Array<Record<string, number | string | null>>,
       forecasts: new Map<string, ForecastResult>(),
     };
-
-    // Forecast horizon = currently selected range length, capped at 1y.
-    const rangeMs = RANGE_OPTIONS.find((r) => r.key === range)!.ms;
-    const horizonDays = Math.min(
-      MAX_HORIZON_DAYS,
-      Math.max(1, Math.round((rangeMs ?? MAX_HORIZON_DAYS * DAY_MS) / DAY_MS)),
-    );
 
     const forecasts = new Map<string, ForecastResult>();
     for (const p of visiblePlayers) {
@@ -127,8 +165,9 @@ export function SkillRace() {
       for (const h of fc.history) rowAt(h.dayMs)[p.rsn] = h.y;
       for (const s of fc.smooth) rowAt(s.dayMs)[`${p.rsn}__smooth`] = s.y;
       // Median + fan. Anchor the first forecast row at the last observed point
-      // so the dashed line meets the solid history line.
-      if (fc.forecast.length > 0) {
+      // so the dashed line meets the solid history line. Skipped for the player
+      // being projected — their fit line is replaced by the method line.
+      if (fc.forecast.length > 0 && p.rsn !== methodRsn) {
         const anchor = rowAt(fc.lastDayMs);
         anchor[`${p.rsn}__p50`] = fc.lastY;
         anchor[`${p.rsn}__p05`] = fc.lastY;
@@ -150,9 +189,31 @@ export function SkillRace() {
       }
     }
 
+    // Method projection line — a straight climb from the projected player's
+    // last observed day at their effective (rate × hours/day) pace.
+    if (methodRsn && projection && projection.daysToMax !== null) {
+      const fc = forecasts.get(methodRsn);
+      if (fc) {
+        const toY = (xp: number) =>
+          yMode === "level" ? xpToLevel(xp) : Math.min(xp, cap);
+        const series = projectionSeries(
+          fc.lastDayMs,
+          projection.currentXp,
+          projection.remainingXp,
+          projection.xpPerDay,
+          horizonDays,
+          toY,
+        );
+        for (const pt of series) rowAt(pt.dayMs)[`${methodRsn}__method`] = pt.y;
+      }
+    }
+
     const out = [...rowByT.values()].sort((a, b) => (a.t as number) - (b.t as number));
     return { data: out, forecasts };
-  }, [index, players, range, idx, typeFilter, hideInactive, yMode, isOverall, cap, visiblePlayers]);
+  }, [
+    index, players, range, idx, typeFilter, hideInactive, yMode, isOverall, cap,
+    visiblePlayers, horizonDays, methodRsn, projection,
+  ]);
 
   if (!index) return null;
 
@@ -258,7 +319,7 @@ export function SkillRace() {
                     const key = typeof p.dataKey === "string" ? p.dataKey : "";
                     const tag = name.includes("__") ? name : key;
                     if (!tag.includes("__")) return true;
-                    if (!tag.endsWith("__p50")) return false;
+                    if (!tag.endsWith("__p50") && !tag.endsWith("__method")) return false;
                     // Only show the forecast row when it actually has a
                     // value at this x — otherwise we'd render a stale "—"
                     // for every player on historical samples.
@@ -273,7 +334,10 @@ export function SkillRace() {
                         const v = typeof r.value === "number" ? r.value : NaN;
                         const name = typeof r.name === "string" ? r.name : "";
                         const isForecast = name.endsWith("__p50");
-                        const rsn = isForecast ? name.slice(0, -"__p50".length) : (name || String(r.dataKey));
+                        const isProjection = name.endsWith("__method");
+                        const rsn = isForecast ? name.slice(0, -"__p50".length)
+                          : isProjection ? name.slice(0, -"__method".length)
+                          : (name || String(r.dataKey));
                         const display = Number.isFinite(v)
                           ? (yMode === "level"
                               ? (isOverall ? `total ${Math.round(v)}` : `level ${Math.round(v)}`)
@@ -281,7 +345,7 @@ export function SkillRace() {
                           : "—";
                         return (
                           <div key={String(r.dataKey) + name} style={{ color: r.color }}>
-                            {rsn} : {display}{isForecast ? " (forecast)" : ""}
+                            {rsn} : {display}{isForecast ? " (forecast)" : isProjection ? " (projection)" : ""}
                           </div>
                         );
                       })}
@@ -320,6 +384,7 @@ export function SkillRace() {
                   true band rather than stacking from 0. */}
               {visiblePlayers.map((p) => {
                 const fc = forecasts.get(p.rsn);
+                if (p.rsn === methodRsn) return null;
                 if (!fc || fc.forecast.length === 0) return null;
                 return FAN_BANDS.map((band) => {
                   const loKey = `${p.rsn}${band.lo}`;
@@ -378,9 +443,11 @@ export function SkillRace() {
                 />
               ))}
 
-              {/* Median forecast line — every visible non-maxed player. */}
+              {/* Median forecast line — every visible non-maxed player, except
+                  the one whose fit line is replaced by a method projection. */}
               {visiblePlayers.map((p) => {
                 const fc = forecasts.get(p.rsn);
+                if (p.rsn === methodRsn) return null;
                 if (!fc || fc.forecast.length === 0) return null;
                 return (
                   <Line
@@ -398,8 +465,129 @@ export function SkillRace() {
                   />
                 );
               })}
+
+              {/* Method projection line — flat effective rate for one player. */}
+              {methodRsn && (
+                <Line
+                  key={`${methodRsn}__method`}
+                  type="linear"
+                  dataKey={`${methodRsn}__method`}
+                  stroke={colorFor(methodRsn)}
+                  strokeDasharray="8 3"
+                  dot={false}
+                  isAnimationActive={false}
+                  connectNulls
+                  strokeWidth={2}
+                  legendType="none"
+                />
+              )}
             </ComposedChart>
           </ResponsiveContainer>
+        )}
+      </div>
+
+      <div className="panel">
+        <h3 style={{ margin: "0 0 0.25rem" }}>Method projection</h3>
+        <p style={{ margin: 0, color: "var(--text-dim)", fontSize: "0.9rem" }}>
+          Pick a player and an XP/hr rate to see how many hours of grinding are left.
+          Add hours per day to swap their forecast fit line for one matching that
+          effective rate, and get a day count{isOverall ? " to max" : " until 99"}.
+        </p>
+
+        <div className="goal-form">
+          <select value={projRsn} onChange={(e) => setProjRsn(e.target.value)}>
+            <option value="">Select player…</option>
+            {allPlayers.map((p) => (
+              <option key={p.rsn} value={p.rsn}>{p.rsn}</option>
+            ))}
+          </select>
+          <input
+            type="number"
+            min={0}
+            step={1000}
+            value={projRate}
+            onChange={(e) => setProjRate(e.target.value)}
+            placeholder="XP per hour"
+            style={{ width: 140 }}
+          />
+          <input
+            type="number"
+            min={0}
+            step={0.5}
+            value={projHoursPerDay}
+            onChange={(e) => setProjHoursPerDay(e.target.value)}
+            placeholder="Hours per day (optional)"
+            style={{ width: 190 }}
+          />
+          {referenceRate && (
+            <>
+              <button
+                className="btn"
+                onClick={() => setProjRate(String(referenceRate.afk))}
+                title={`AFK: ${referenceRate.afkMethod}`}
+              >AFK {Math.round(referenceRate.afk / 1000).toLocaleString()}k</button>
+              <button
+                className="btn"
+                onClick={() => setProjRate(String(referenceRate.active))}
+                title={`Active: ${referenceRate.activeMethod}`}
+              >Active {Math.round(referenceRate.active / 1000).toLocaleString()}k</button>
+            </>
+          )}
+          {(projRsn || projRate || projHoursPerDay) && (
+            <button
+              className="btn"
+              onClick={() => { setProjRsn(""); setProjRate(""); setProjHoursPerDay(""); }}
+            >Clear</button>
+          )}
+        </div>
+
+        {projection && (
+          <>
+            <div className="kpis" style={{ marginTop: "0.75rem" }}>
+              <div className="kpi">
+                <div className="label">XP remaining</div>
+                <div className="value">
+                  {projection.remainingXp >= 1_000_000
+                    ? `${(projection.remainingXp / 1_000_000).toFixed(1)}M`
+                    : projection.remainingXp.toLocaleString()}
+                </div>
+              </div>
+              <div className="kpi">
+                <div className="label">Hours {isOverall ? "to max" : "to 99"}</div>
+                <div className="value">{formatHours(projection.hoursToMax)}</div>
+              </div>
+              {projection.daysToMax !== null && (
+                <div className="kpi">
+                  <div className="label">Days {isOverall ? "to max" : "to 99"}</div>
+                  <div className="value">{formatDays(projection.daysToMax)}</div>
+                </div>
+              )}
+              {projection.etaMs !== null && (
+                <div className="kpi">
+                  <div className="label">Projected finish</div>
+                  <div className="value" style={{ fontSize: "1.15rem" }}>
+                    {new Date(projection.etaMs).toLocaleDateString()}
+                  </div>
+                </div>
+              )}
+            </div>
+            {projection.daysToMax !== null && !canDrawProjection && (
+              <p style={{ margin: "0.5rem 0 0", color: "var(--text-dim)", fontSize: "0.85rem" }}>
+                Switch the y-axis to XP to see the projected line for Overall.
+              </p>
+            )}
+            {methodRsn && projection.daysToMax !== null && projection.daysToMax > horizonDays && (
+              <p style={{ margin: "0.5rem 0 0", color: "var(--text-dim)", fontSize: "0.85rem" }}>
+                The projected line stops at the end of the chart horizon ({horizonDays} days) —
+                pick a longer range to follow it all the way.
+              </p>
+            )}
+            {projection.daysToMax !== null && hiddenRsns.has(projRsn) && (
+              <p style={{ margin: "0.5rem 0 0", color: "var(--text-dim)", fontSize: "0.85rem" }}>
+                {projRsn} is hidden — click them in the legend to see the projected line.
+              </p>
+            )}
+          </>
         )}
       </div>
     </>

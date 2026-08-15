@@ -194,14 +194,13 @@ export function SkillRace() {
     if (methodRsn && projection && projection.daysToMax !== null) {
       const fc = forecasts.get(methodRsn);
       if (fc) {
-        const xpPerDay = Number(projRate) * Number(projHoursPerDay);
         const toY = (xp: number) =>
           yMode === "level" ? xpToLevel(xp) : Math.min(xp, cap);
         const series = projectionSeries(
           fc.lastDayMs,
           projection.currentXp,
           projection.remainingXp,
-          xpPerDay,
+          projection.xpPerDay,
           horizonDays,
           toY,
         );
@@ -213,7 +212,7 @@ export function SkillRace() {
     return { data: out, forecasts };
   }, [
     index, players, range, idx, typeFilter, hideInactive, yMode, isOverall, cap,
-    visiblePlayers, horizonDays, methodRsn, projection, projRate, projHoursPerDay,
+    visiblePlayers, horizonDays, methodRsn, projection,
   ]);
 
   if (!index) return null;

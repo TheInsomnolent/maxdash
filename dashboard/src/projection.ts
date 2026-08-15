@@ -15,6 +15,8 @@ export interface MethodProjection {
   hoursToMax: number;
   /** Calendar days left once the daily play time is applied (null if unset). */
   daysToMax: number | null;
+  /** Effective XP per calendar day (0 when no daily play time was given). */
+  xpPerDay: number;
   /** Estimated completion timestamp in ms (null when `daysToMax` is null). */
   etaMs: number | null;
 }
@@ -54,6 +56,7 @@ export function methodProjection(
   return {
     remainingXp: remaining,
     hoursToMax,
+    xpPerDay: perDay > 0 ? xpPerHour * perDay : 0,
     daysToMax,
     etaMs: daysToMax === null ? null : fromMs + daysToMax * DAY_MS,
   };
@@ -89,8 +92,8 @@ export function projectionSeries(
   return out;
 }
 
-/** Compact display for a day count ("0.5 days", "84 days"). */
+/** Compact display for a day count ("0.5 days", "1 day", "84 days"). */
 export function formatDays(days: number): string {
-  if (days < 10) return `${days.toFixed(1)} days`;
-  return `${Math.round(days).toLocaleString()} days`;
+  const text = days < 10 ? days.toFixed(1) : Math.round(days).toLocaleString();
+  return `${text} ${text === "1.0" || text === "1" ? "day" : "days"}`;
 }

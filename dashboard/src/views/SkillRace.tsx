@@ -57,14 +57,10 @@ export function SkillRace() {
         }
         // Sum each skill's XP capped at level 99 individually — a single
         // skill trained well past 99 shouldn't inflate progress towards
-        // "maxed" (see #15).
-        let total = 0;
-        let any = false;
-        for (let i = 1; i < SKILLS.length; i++) {
-          const x = s.s[i];
-          if (x >= 0) { total += Math.min(x, MAX_XP); any = true; }
-        }
-        return any ? total : undefined;
+        // "maxed" (see #15). Reuses the same helper as the Overall table
+        // and the method-projection anchor below, so the three stay in sync.
+        const any = s.s.slice(1).some((x) => x >= 0);
+        return any ? cappedTotalXpFromSnapshot(s.s) : undefined;
       }
       const x = s.s[idx];
       return x >= 0 ? Math.min(x, cap) : undefined;

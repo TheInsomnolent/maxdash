@@ -5,7 +5,7 @@ import {
   ResponsiveContainer, Tooltip, XAxis, YAxis,
 } from "recharts";
 import { useUI } from "../App";
-import { useData, latestSnapshot, snapshotsInRange, skillNameToIdx, filterPlayers, RANGE_OPTIONS } from "../store";
+import { useData, latestSnapshot, snapshotsInRange, skillNameToIdx, filterPlayers, cappedTotalXpFromSnapshot, RANGE_OPTIONS } from "../store";
 import { MAX_XP, MAX_TOTAL_XP, SKILLS, TRAINABLE_SKILLS, TRAINABLE_SKILL_COUNT, MAX_TOTAL_LEVEL, colorFor, xpToLevel } from "../skills";
 import { SkillIcon } from "../components/SkillIcon";
 import { buildForecast, MAX_HORIZON_DAYS, type ForecastResult } from "../forecast";
@@ -31,6 +31,9 @@ export function SkillRace() {
   const isOverall = idx === 0;
   const [yMode, setYMode] = useState<"xp" | "level">("xp");
   const [yMin, setYMin] = useState<"zero" | "auto">("zero");
+  // Whether each skill's XP contribution is capped at level 99 (13,034,431).
+  // Enabled by default so "maxing" progress isn't skewed by post-99 XP.
+  const [capXp, setCapXp] = useState(true);
   // Players the user has clicked off in the legend. Everyone is visible by default.
   const [hiddenRsns, setHiddenRsns] = useState<Set<string>>(() => new Set());
   // Method projection inputs — kept as strings so the fields can be emptied.
@@ -38,8 +41,8 @@ export function SkillRace() {
   const [projRate, setProjRate] = useState("");
   const [projHoursPerDay, setProjHoursPerDay] = useState("");
   const cap = isOverall
-    ? (yMode === "level" ? MAX_TOTAL_LEVEL : MAX_TOTAL_XP)
-    : (yMode === "level" ? 99 : MAX_XP);
+    ? (yMode === "level" ? MAX_TOTAL_LEVEL : (capXp ? MAX_TOTAL_XP : Infinity))
+    : (yMode === "level" ? 99 : (capXp ? MAX_XP : Infinity));
   const capLabel = isOverall
     ? (yMode === "level" ? `MAX / ${MAX_TOTAL_LEVEL}` : `MAX / ${(MAX_TOTAL_XP / 1_000_000).toFixed(0)}M`)
     : (yMode === "level" ? "99" : "99 / 13.0M");
@@ -47,6 +50,22 @@ export function SkillRace() {
   /** Convert a snapshot's raw skill array into the y-axis value for the active mode. */
   const valueFromSnapshot = (s: { s: number[] }): number | undefined => {
     if (yMode === "xp") {
+      if (isOverall) {
+        if (!capXp) {
+          const x = s.s[0];
+          return x >= 0 ? x : undefined;
+        }
+        // Sum each skill's XP capped at level 99 individually — a single
+        // skill trained well past 99 shouldn't inflate progress towards
+        // "maxed" (see #15).
+        let total = 0;
+        let any = false;
+        for (let i = 1; i < SKILLS.length; i++) {
+          const x = s.s[i];
+          if (x >= 0) { total += Math.min(x, MAX_XP); any = true; }
+        }
+        return any ? total : undefined;
+      }
       const x = s.s[idx];
       return x >= 0 ? Math.min(x, cap) : undefined;
     }
@@ -101,7 +120,11 @@ export function SkillRace() {
       Date.parse(snap.t),
     );
     if (!summary) return null;
-    return { ...summary, currentXp: Math.max(0, snap.s[idx]) };
+    // For Overall, anchor the projection at the capped total (each skill's XP
+    // capped at 99) so it lines up with remainingXp and the plotted history —
+    // otherwise post-99 XP in any one skill would offset the starting point.
+    const currentXp = isOverall ? cappedTotalXpFromSnapshot(snap.s) : Math.max(0, snap.s[idx]);
+    return { ...summary, currentXp };
   }, [index, players, projRsn, projRate, projHoursPerDay, idx, isOverall]);
 
   // The projected line can only be drawn where a flat XP rate maps onto the
@@ -211,7 +234,7 @@ export function SkillRace() {
     const out = [...rowByT.values()].sort((a, b) => (a.t as number) - (b.t as number));
     return { data: out, forecasts };
   }, [
-    index, players, range, idx, typeFilter, hideInactive, yMode, isOverall, cap,
+    index, players, range, idx, typeFilter, hideInactive, yMode, isOverall, cap, capXp,
     visiblePlayers, horizonDays, methodRsn, projection,
   ]);
 
@@ -257,6 +280,19 @@ export function SkillRace() {
                 onClick={() => setYMin("auto")}
               >Y: auto</button>
             </div>
+            <div
+              className="range-bar"
+              title="Cap each skill's XP contribution at level 99 (13,034,431) — off shows raw XP and switches the Y-axis max to auto"
+            >
+              <button
+                className={capXp ? "active" : ""}
+                onClick={() => setCapXp(true)}
+              >Capped</button>
+              <button
+                className={!capXp ? "active" : ""}
+                onClick={() => setCapXp(false)}
+              >Uncapped</button>
+            </div>
             <select
               value={skill}
               onChange={(e) => nav(`/skills/${encodeURIComponent(e.target.value)}`)}
@@ -293,7 +329,7 @@ export function SkillRace() {
                   yMin === "auto"
                     ? ("dataMin" as const)
                     : (yMode === "level" ? (isOverall ? TRAINABLE_SKILL_COUNT : 1) : 0),
-                  yMin === "auto" ? ("dataMax" as const) : cap,
+                  yMin === "auto" || !Number.isFinite(cap) ? ("dataMax" as const) : cap,
                 ]}
                 allowDecimals={false}
               />
@@ -374,7 +410,9 @@ export function SkillRace() {
                   color: hiddenRsns.has(p.rsn) ? "#6b5a3d" : colorFor(p.rsn),
                 }))}
               />
-              <ReferenceLine y={cap} stroke="#ffb43b" strokeDasharray="4 4" label={{ value: capLabel, fill: "#ffb43b", position: "right" }} />
+              {Number.isFinite(cap) && (
+                <ReferenceLine y={cap} stroke="#ffb43b" strokeDasharray="4 4" label={{ value: capLabel, fill: "#ffb43b", position: "right" }} />
+              )}
 
               {/* Variance fans — three nested quantile bands per visible player
                   (p05/p95, p20/p80, p35/p65). Rendered first so they sit

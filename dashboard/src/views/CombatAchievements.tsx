@@ -809,7 +809,7 @@ function TaskRow({
       <td className="num ca-dim">{order}</td>
       <td className="ca-task-cell">
         <a href={wikiUrl(task.name)} target="_blank" rel="noreferrer">
-          {task.name}
+          🔗 {task.name}
         </a>
         <div className="ca-task-desc" title={task.description}>
           {task.description}

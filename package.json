@@ -10,6 +10,8 @@
   "scripts": {
     "snapshot": "npm -w scraper run snapshot",
     "backfill": "npm -w scraper run backfill --",
+    "ca": "npm -w scraper run ca --",
+    "ca:completion": "npm -w scraper run ca:completion",
     "dev": "npm -w dashboard run dev",
     "build": "npm -w dashboard run build"
   },

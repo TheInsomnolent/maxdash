@@ -990,3 +990,135 @@ input[type="text"]:focus, input[type="number"]:focus {
 .weekly-legend-item {
   display: inline-flex; align-items: center; gap: 0.3rem;
 }
+
+/* --- combat achievements --- */
+.ca-head {
+  display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap;
+  margin-bottom: 0.75rem; padding-bottom: 0.4rem;
+  border-bottom: 1px dashed var(--border-2);
+}
+.ca-head .spacer { flex: 1; }
+.ca-account-picker {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  color: var(--text-dim); font-size: 0.85rem;
+  text-transform: uppercase; letter-spacing: 0.04em;
+}
+.ca-updated {
+  color: var(--text-dim); font-size: 0.85rem;
+  font-family: "RuneScape", serif; letter-spacing: 0.04em;
+}
+.ca-dim { color: var(--text-dim); font-size: 0.85rem; }
+.ca-good { color: var(--good); }
+
+.ca-two-col {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+/* The KPI strip and the two-column block sit directly above panels, so they
+   need the same gutter a panel would leave behind it. */
+.ca-kpis { margin-bottom: 1rem; }
+.ca-two-col > .panel { margin-bottom: 0; }
+
+.ca-kpi-sub { color: var(--text-dim); font-size: 1rem; }
+.ca-kpi-tier { display: flex; align-items: center; gap: 0.4rem; }
+.ca-kpi-note { color: var(--text-dim); font-size: 0.85rem; margin: 0.15rem 0 0.3rem; }
+
+/* Missing-datastore warning */
+.ca-warning {
+  background: linear-gradient(180deg, rgba(255,180,59,0.14), rgba(255,180,59,0.04));
+  border: 2px solid var(--accent);
+  border-radius: 4px; padding: 0.7rem 0.9rem; margin-bottom: 1rem;
+  box-shadow: inset 0 0 0 1px #000;
+  font-size: 0.95rem;
+}
+.ca-warning code {
+  color: var(--accent-2); background: rgba(0,0,0,0.35);
+  padding: 0 0.2rem; border-radius: 2px;
+}
+.ca-warning-list {
+  display: flex; flex-wrap: wrap; gap: 0.3rem;
+  margin-top: 0.5rem; color: var(--text-dim); font-size: 0.85rem;
+}
+.ca-warning-list span {
+  border: 1px dashed var(--border-2); border-radius: 3px;
+  padding: 0.05rem 0.35rem;
+}
+
+/* Not-linked prompt */
+.ca-notlinked .ca-steps { margin: 0.5rem 0 0.75rem; padding-left: 1.2rem; line-height: 1.6; }
+.ca-warn-inline {
+  border-left: 3px solid var(--accent);
+  padding: 0.35rem 0 0.35rem 0.6rem;
+  color: var(--accent-2); font-size: 0.95rem;
+}
+
+/* Filters */
+.ca-filter-group { margin-bottom: 0.9rem; }
+.ca-filter-label {
+  color: var(--text-dim); font-size: 0.85rem; margin-bottom: 0.3rem;
+  text-transform: uppercase; letter-spacing: 0.04em;
+}
+.ca-monster-tools { display: flex; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 0.5rem; }
+.ca-monster-tools input[type="text"] { flex: 1; min-width: 180px; }
+.ca-monster-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  gap: 0.15rem 0.6rem;
+  max-height: 320px; overflow-y: auto;
+  border: 1px solid var(--border); border-radius: 3px;
+  padding: 0.4rem 0.5rem; background: rgba(0,0,0,0.2);
+}
+.ca-monster {
+  display: flex; align-items: center; gap: 0.4rem;
+  font-size: 0.9rem; cursor: pointer; padding: 0.1rem 0.2rem;
+}
+.ca-monster:hover { background: rgba(255,180,59,0.08); }
+.ca-monster.excluded .ca-monster-name { color: var(--text-dim); text-decoration: line-through; }
+.ca-monster-name {
+  flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+
+/* Plan grid */
+.ca-plan td { vertical-align: top; }
+.ca-plan .ca-task-cell { white-space: normal; min-width: 260px; }
+.ca-task-desc {
+  color: var(--text-dim); font-size: 0.8rem;
+  max-width: 460px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.ca-plan tr.ca-missing td { background: rgba(255,180,59,0.08); }
+.ca-goal-row td {
+  background: linear-gradient(180deg, rgba(255,180,59,0.22), rgba(255,180,59,0.06)) !important;
+  border-top: 2px solid var(--accent); border-bottom: 2px solid var(--accent);
+  color: var(--accent-2); white-space: normal;
+}
+.ca-goal-row td strong { color: var(--accent); margin-left: 0.4rem; }
+.ca-goal-row.unreachable td {
+  background: linear-gradient(180deg, rgba(214,59,59,0.22), rgba(214,59,59,0.06)) !important;
+  border-color: var(--bad); color: #f0b9b9;
+}
+.ca-goal-row.unreachable td strong { color: var(--bad); }
+.ca-goal-meta { color: var(--text-dim); margin-left: 0.6rem; font-size: 0.9rem; }
+
+/* Grouped ("pivot") plan: reward tier → monster → tasks */
+.ca-caret {
+  display: inline-block; width: 1rem;
+  color: var(--accent); font-size: 0.9rem;
+}
+.ca-group-row { cursor: pointer; }
+.ca-group-row:hover td { filter: brightness(1.15); }
+.ca-monster-row { cursor: pointer; }
+.ca-monster-row td {
+  background: rgba(255,180,59,0.07) !important;
+  border-bottom: 1px solid var(--border);
+  color: var(--text);
+}
+.ca-monster-row:hover td { background: rgba(255,180,59,0.13) !important; }
+.ca-monster-row td strong { color: var(--accent-2); }
+.ca-plan tr.ca-nested td:first-child { padding-left: 1.6rem; }
+.ca-plan tr.ca-nested .ca-task-cell { padding-left: 1.2rem; }
+/* Grid items default to min-width:auto, which lets wide tables stretch the
+   whole page. Allow shrinking so `.ca-scroll` scrolls internally instead. */
+.app > .main { min-width: 0; }
+.ca-scroll { overflow-x: auto; min-width: 0; }

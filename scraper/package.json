@@ -6,6 +6,8 @@
   "scripts": {
     "snapshot": "tsx src/index.ts",
     "backfill": "tsx src/backfill-cli.ts",
+    "ca": "tsx src/ca-cli.ts",
+    "ca:completion": "tsx src/ca-completion-cli.ts",
     "typecheck": "tsc --noEmit"
   },
   "devDependencies": {

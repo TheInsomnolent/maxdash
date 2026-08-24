@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-24T01:39:22.671Z",
+  "generatedAt": "2026-08-24T02:35:45.817Z",
   "skills": [
     "Overall",
     "Attack",
@@ -32,11 +32,11 @@
       "rsn": "Insomnolennt",
       "type": "main",
       "file": "insomnolennt.json",
-      "totalXp": 206895007,
+      "totalXp": 206907771,
       "totalLevel": 2211,
       "skills99": 6,
-      "lastChecked": "2026-08-24T01:39:22.671Z",
-      "lastChanged": "2026-08-23T16:11:52.556Z",
+      "lastChecked": "2026-08-24T02:35:45.817Z",
+      "lastChanged": "2026-08-24T02:35:45.817Z",
       "status": "ok"
     },
     {
@@ -46,7 +46,7 @@
       "totalXp": 24409583,
       "totalLevel": 1644,
       "skills99": 0,
-      "lastChecked": "2026-08-24T01:39:22.671Z",
+      "lastChecked": "2026-08-24T02:35:45.817Z",
       "lastChanged": "2026-08-23T09:13:11.110Z",
       "status": "ok"
     },
@@ -57,7 +57,7 @@
       "totalXp": 65527996,
       "totalLevel": 1937,
       "skills99": 0,
-      "lastChecked": "2026-08-24T01:39:22.671Z",
+      "lastChecked": "2026-08-24T02:35:45.817Z",
       "lastChanged": "2026-08-18T08:15:48.341Z",
       "status": "ok"
     },
@@ -68,7 +68,7 @@
       "totalXp": 234442391,
       "totalLevel": 2244,
       "skills99": 9,
-      "lastChecked": "2026-08-24T01:39:22.671Z",
+      "lastChecked": "2026-08-24T02:35:45.817Z",
       "lastChanged": "2026-08-23T12:12:30.051Z",
       "status": "ok"
     },
@@ -79,7 +79,7 @@
       "totalXp": 313474954,
       "totalLevel": 2305,
       "skills99": 12,
-      "lastChecked": "2026-08-24T01:39:22.671Z",
+      "lastChecked": "2026-08-24T02:35:45.817Z",
       "lastChanged": "2026-08-23T11:11:39.741Z",
       "status": "ok"
     },
@@ -90,7 +90,7 @@
       "totalXp": 130503765,
       "totalLevel": 2028,
       "skills99": 6,
-      "lastChecked": "2026-08-24T01:39:22.671Z",
+      "lastChecked": "2026-08-24T02:35:45.817Z",
       "lastChanged": "2026-07-18T12:26:42.702Z",
       "status": "ok"
     },
@@ -101,7 +101,7 @@
       "totalXp": 46015603,
       "totalLevel": 1872,
       "skills99": 0,
-      "lastChecked": "2026-08-24T01:39:22.671Z",
+      "lastChecked": "2026-08-24T02:35:45.817Z",
       "lastChanged": "2026-08-24T00:23:53.755Z",
       "status": "ok"
     },
@@ -112,7 +112,7 @@
       "totalXp": 19017142,
       "totalLevel": 1539,
       "skills99": 0,
-      "lastChecked": "2026-08-24T01:39:22.671Z",
+      "lastChecked": "2026-08-24T02:35:45.817Z",
       "lastChanged": "2026-04-28T08:48:50.741Z",
       "status": "ok"
     }

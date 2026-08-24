@@ -37,7 +37,16 @@
       "skills99": 6,
       "lastChecked": "2026-08-24T13:27:10.335Z",
       "lastChanged": "2026-08-24T11:14:12.609Z",
-      "status": "ok"
+      "status": "ok",
+      "ca": {
+        "file": "ca/insomnolennt.json",
+        "status": "ok",
+        "totalPoints": 548,
+        "tierReached": "Hard",
+        "completed": 188,
+        "total": 646,
+        "updatedAt": "2026-08-24T13:14:20.733Z"
+      }
     },
     {
       "rsn": "Sir_Newtone",
@@ -48,7 +57,17 @@
       "skills99": 0,
       "lastChecked": "2026-08-24T13:27:10.335Z",
       "lastChanged": "2026-08-23T09:13:11.110Z",
-      "status": "ok"
+      "status": "ok",
+      "ca": {
+        "file": "ca/sir_newtone.json",
+        "status": "unlinked",
+        "totalPoints": 0,
+        "tierReached": null,
+        "completed": 0,
+        "total": 0,
+        "updatedAt": "2026-08-24T13:14:22.191Z",
+        "error": "Account not found (404)"
+      }
     },
     {
       "rsn": "Gloryyy Boy",
@@ -59,7 +78,17 @@
       "skills99": 0,
       "lastChecked": "2026-08-24T13:27:10.335Z",
       "lastChanged": "2026-08-18T08:15:48.341Z",
-      "status": "ok"
+      "status": "ok",
+      "ca": {
+        "file": "ca/gloryyy_boy.json",
+        "status": "unlinked",
+        "totalPoints": 0,
+        "tierReached": null,
+        "completed": 0,
+        "total": 0,
+        "updatedAt": "2026-08-24T13:14:22.950Z",
+        "error": "Account not found (404)"
+      }
     },
     {
       "rsn": "Iron Razekai",
@@ -70,7 +99,17 @@
       "skills99": 9,
       "lastChecked": "2026-08-24T13:27:10.335Z",
       "lastChanged": "2026-08-23T12:12:30.051Z",
-      "status": "ok"
+      "status": "ok",
+      "ca": {
+        "file": "ca/iron_razekai.json",
+        "status": "unlinked",
+        "totalPoints": 0,
+        "tierReached": null,
+        "completed": 0,
+        "total": 0,
+        "updatedAt": "2026-08-24T13:14:23.727Z",
+        "error": "Account not found (404)"
+      }
     },
     {
       "rsn": "Wuckedenergy",
@@ -81,7 +120,17 @@
       "skills99": 12,
       "lastChecked": "2026-08-24T13:27:10.335Z",
       "lastChanged": "2026-08-24T10:20:15.690Z",
-      "status": "ok"
+      "status": "ok",
+      "ca": {
+        "file": "ca/wuckedenergy.json",
+        "status": "unlinked",
+        "totalPoints": 0,
+        "tierReached": null,
+        "completed": 0,
+        "total": 0,
+        "updatedAt": "2026-08-24T13:14:24.500Z",
+        "error": "Account not found (404)"
+      }
     },
     {
       "rsn": "Toke Feend",
@@ -92,7 +141,17 @@
       "skills99": 6,
       "lastChecked": "2026-08-24T13:27:10.335Z",
       "lastChanged": "2026-07-18T12:26:42.702Z",
-      "status": "ok"
+      "status": "ok",
+      "ca": {
+        "file": "ca/toke_feend.json",
+        "status": "unlinked",
+        "totalPoints": 0,
+        "tierReached": null,
+        "completed": 0,
+        "total": 0,
+        "updatedAt": "2026-08-24T13:14:25.260Z",
+        "error": "Account not found (404)"
+      }
     },
     {
       "rsn": "CdeSafeTCam",
@@ -103,7 +162,17 @@
       "skills99": 0,
       "lastChecked": "2026-08-24T13:27:10.335Z",
       "lastChanged": "2026-08-24T00:23:53.755Z",
-      "status": "ok"
+      "status": "ok",
+      "ca": {
+        "file": "ca/cdesafetcam.json",
+        "status": "unlinked",
+        "totalPoints": 0,
+        "tierReached": null,
+        "completed": 0,
+        "total": 0,
+        "updatedAt": "2026-08-24T13:14:26.029Z",
+        "error": "Account not found (404)"
+      }
     },
     {
       "rsn": "Savage32Fe",
@@ -114,7 +183,17 @@
       "skills99": 0,
       "lastChecked": "2026-08-24T13:27:10.335Z",
       "lastChanged": "2026-04-28T08:48:50.741Z",
-      "status": "ok"
+      "status": "ok",
+      "ca": {
+        "file": "ca/savage32fe.json",
+        "status": "unlinked",
+        "totalPoints": 0,
+        "tierReached": null,
+        "completed": 0,
+        "total": 0,
+        "updatedAt": "2026-08-24T13:14:26.785Z",
+        "error": "Account not found (404)"
+      }
     }
   ]
 }

@@ -11,6 +11,7 @@ import { Goals } from "./views/Goals";
 import { Records } from "./views/Records";
 import { Compare } from "./views/Compare";
 import { Tears } from "./views/Tears";
+import { CombatAchievements } from "./views/CombatAchievements";
 import { AccountBadge, type AccountType } from "./components/AccountBadge";
 import { LastScraped } from "./components/LastScraped";
 
@@ -68,6 +69,7 @@ export function App() {
         <NavLink to="/activity">Activity</NavLink>
         <NavLink to="/milestones">Milestones</NavLink>
         <NavLink to="/goals">Goals</NavLink>
+        <NavLink to="/combat-achievements">Combat achievements</NavLink>
         <NavLink to="/records">Records</NavLink>
         <NavLink to="/tears">Tears</NavLink>
         <NavLink to="/compare">Compare</NavLink>
@@ -121,6 +123,7 @@ export function App() {
             <Route path="/activity" element={<Activity />} />
             <Route path="/milestones" element={<Milestones />} />
             <Route path="/goals" element={<Goals />} />
+            <Route path="/combat-achievements" element={<CombatAchievements />} />
             <Route path="/records" element={<Records />} />
             <Route path="/tears" element={<Tears />} />
             <Route path="/tears/:rsn" element={<Tears />} />

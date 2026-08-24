@@ -11,6 +11,7 @@ import {
 } from "./store.js";
 import { SKILLS } from "./skills.js";
 import { backfillPlayer } from "./backfill.js";
+import { snapshotCombatAchievements, type CaIndexEntry } from "./ca.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const DATA_DIR = path.resolve(__dirname, "../../data");
@@ -35,6 +36,7 @@ interface IndexEntry {
   lastChanged: string | null;
   status: "ok" | "unranked" | "error";
   error?: string;
+  ca?: CaIndexEntry;
 }
 
 interface IndexFile {
@@ -131,6 +133,15 @@ async function main(): Promise<void> {
 
     // Be polite to the Hiscores endpoint.
     await sleep(500);
+
+    // Combat Achievements come from RuneProfile, which is only populated for
+    // players running the RuneProfile plugin. A missing profile is expected,
+    // not an error.
+    process.stdout.write(`[ca] ${rsn} ... `);
+    const ca = await snapshotCombatAchievements(DATA_DIR, rsn, ts);
+    const entry = entries.at(-1);
+    if (entry) entry.ca = ca;
+    await sleep(500);
   }
 
   const index: IndexFile = {
@@ -149,6 +160,22 @@ async function main(): Promise<void> {
     console.warn(
       `[snapshot] ${errors.length} player(s) errored: ${errors
         .map((e) => `${e.rsn} (${e.error})`)
+        .join(", ")}`,
+    );
+  }
+  const caErrors = entries.filter((e) => e.ca?.status === "error");
+  if (caErrors.length) {
+    console.warn(
+      `[snapshot] ${caErrors.length} player(s) had Combat Achievement errors: ${caErrors
+        .map((e) => `${e.rsn} (${e.ca?.error})`)
+        .join(", ")}`,
+    );
+  }
+  const unlinked = entries.filter((e) => e.ca?.status === "unlinked");
+  if (unlinked.length) {
+    console.log(
+      `[snapshot] ${unlinked.length} player(s) not linked to RuneProfile: ${unlinked
+        .map((e) => e.rsn)
         .join(", ")}`,
     );
   }

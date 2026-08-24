@@ -2,6 +2,50 @@ import { create } from "zustand";
 import { MAX_XP, SKILLS, registerPlayerColors, xpToLevel } from "./skills";
 import type { AccountType } from "./components/AccountBadge";
 
+export type CaStatus = "ok" | "unlinked" | "error";
+
+/** Combat Achievement summary carried on each index entry. */
+export interface CaIndexEntry {
+  file: string;
+  status: CaStatus;
+  totalPoints: number;
+  tierReached: string | null;
+  completed: number;
+  total: number;
+  updatedAt: string;
+  error?: string;
+}
+
+export interface CaTierSummary {
+  id: number;
+  name: string;
+  completed: number;
+  total: number;
+}
+
+export interface CaTask {
+  index: number;
+  tierId: number;
+  tierName: string;
+  name: string;
+  description: string;
+  type: string;
+  monster: string;
+  completed: boolean;
+}
+
+export interface CaFile {
+  rsn: string;
+  status: CaStatus;
+  updatedAt: string;
+  error?: string;
+  totalPoints: number;
+  tierReached: string | null;
+  tiers: CaTierSummary[];
+  tasks: CaTask[];
+  history: Array<{ t: string; points: number; completed: number[] }>;
+}
+
 export interface IndexEntry {
   rsn: string;
   type: AccountType;
@@ -13,6 +57,7 @@ export interface IndexEntry {
   lastChanged: string | null;
   status: "ok" | "unranked" | "error";
   error?: string;
+  ca?: CaIndexEntry;
 }
 
 export interface IndexFile {
@@ -68,6 +113,49 @@ export const useData = create<DataState>((set, get) => ({
       set({ index: idx, players, loading: false });
     } catch (err) {
       set({ error: (err as Error).message, loading: false });
+    }
+  },
+}));
+
+// ----- combat achievements -----
+
+interface CaState {
+  files: Record<string, CaFile>;
+  loading: Record<string, boolean>;
+  errors: Record<string, string>;
+  /** Lazily fetch one player's CA file; no-ops once loaded or in flight. */
+  loadCa: (rsn: string, file: string) => Promise<void>;
+}
+
+/**
+ * CA task lists are large (~150 KB per player), so they're fetched on demand
+ * for whichever account the Combat Achievements view is showing rather than
+ * eagerly with the rest of the dashboard data.
+ */
+export const useCaData = create<CaState>((set, get) => ({
+  files: {},
+  loading: {},
+  errors: {},
+  async loadCa(rsn, file) {
+    const s = get();
+    if (s.files[rsn] || s.loading[rsn]) return;
+    set({ loading: { ...s.loading, [rsn]: true } });
+    try {
+      const cf = await fetchJson<CaFile>(file);
+      set((st) => {
+        const errors = { ...st.errors };
+        delete errors[rsn];
+        return {
+          files: { ...st.files, [rsn]: cf },
+          loading: { ...st.loading, [rsn]: false },
+          errors,
+        };
+      });
+    } catch (err) {
+      set((st) => ({
+        loading: { ...st.loading, [rsn]: false },
+        errors: { ...st.errors, [rsn]: (err as Error).message },
+      }));
     }
   },
 }));

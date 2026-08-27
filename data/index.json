@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-26T22:05:49.701Z",
+  "generatedAt": "2026-08-27T00:16:15.581Z",
   "skills": [
     "Overall",
     "Attack",
@@ -35,7 +35,7 @@
       "totalXp": 208383550,
       "totalLevel": 2212,
       "skills99": 6,
-      "lastChecked": "2026-08-26T22:05:49.701Z",
+      "lastChecked": "2026-08-27T00:16:15.581Z",
       "lastChanged": "2026-08-26T16:33:33.570Z",
       "status": "ok",
       "ca": {
@@ -55,7 +55,7 @@
       "totalXp": 24409583,
       "totalLevel": 1644,
       "skills99": 0,
-      "lastChecked": "2026-08-26T22:05:49.701Z",
+      "lastChecked": "2026-08-27T00:16:15.581Z",
       "lastChanged": "2026-08-23T09:13:11.110Z",
       "status": "ok",
       "ca": {
@@ -76,7 +76,7 @@
       "totalXp": 65527996,
       "totalLevel": 1937,
       "skills99": 0,
-      "lastChecked": "2026-08-26T22:05:49.701Z",
+      "lastChecked": "2026-08-27T00:16:15.581Z",
       "lastChanged": "2026-08-18T08:15:48.341Z",
       "status": "ok",
       "ca": {
@@ -97,7 +97,7 @@
       "totalXp": 234833611,
       "totalLevel": 2244,
       "skills99": 9,
-      "lastChecked": "2026-08-26T22:05:49.701Z",
+      "lastChecked": "2026-08-27T00:16:15.581Z",
       "lastChanged": "2026-08-26T04:20:26.712Z",
       "status": "ok",
       "ca": {
@@ -117,7 +117,7 @@
       "totalXp": 313658756,
       "totalLevel": 2305,
       "skills99": 12,
-      "lastChecked": "2026-08-26T22:05:49.701Z",
+      "lastChecked": "2026-08-27T00:16:15.581Z",
       "lastChanged": "2026-08-26T20:56:56.574Z",
       "status": "ok",
       "ca": {
@@ -138,7 +138,7 @@
       "totalXp": 130503765,
       "totalLevel": 2028,
       "skills99": 6,
-      "lastChecked": "2026-08-26T22:05:49.701Z",
+      "lastChecked": "2026-08-27T00:16:15.581Z",
       "lastChanged": "2026-07-18T12:26:42.702Z",
       "status": "ok",
       "ca": {
@@ -156,11 +156,11 @@
       "rsn": "CdeSafeTCam",
       "type": "gim",
       "file": "cdesafetcam.json",
-      "totalXp": 46589538,
+      "totalXp": 46597358,
       "totalLevel": 1874,
       "skills99": 0,
-      "lastChecked": "2026-08-26T22:05:49.701Z",
-      "lastChanged": "2026-08-26T20:56:56.574Z",
+      "lastChecked": "2026-08-27T00:16:15.581Z",
+      "lastChanged": "2026-08-27T00:16:15.581Z",
       "status": "ok",
       "ca": {
         "file": "ca/cdesafetcam.json",
@@ -180,7 +180,7 @@
       "totalXp": 19017142,
       "totalLevel": 1539,
       "skills99": 0,
-      "lastChecked": "2026-08-26T22:05:49.701Z",
+      "lastChecked": "2026-08-27T00:16:15.581Z",
       "lastChanged": "2026-04-28T08:48:50.741Z",
       "status": "ok",
       "ca": {

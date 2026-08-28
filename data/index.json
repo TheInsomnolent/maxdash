@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-28T10:40:05.219Z",
+  "generatedAt": "2026-08-28T15:08:48.548Z",
   "skills": [
     "Overall",
     "Attack",
@@ -32,20 +32,20 @@
       "rsn": "Insomnolennt",
       "type": "main",
       "file": "insomnolennt.json",
-      "totalXp": 209476346,
+      "totalXp": 209525936,
       "totalLevel": 2214,
       "skills99": 6,
-      "lastChecked": "2026-08-28T10:40:05.219Z",
-      "lastChanged": "2026-08-28T10:40:05.219Z",
+      "lastChecked": "2026-08-28T15:08:48.548Z",
+      "lastChanged": "2026-08-28T15:08:48.548Z",
       "status": "ok",
       "ca": {
         "file": "ca/insomnolennt.json",
         "status": "ok",
-        "totalPoints": 626,
+        "totalPoints": 646,
         "tierReached": "Hard",
-        "completed": 216,
+        "completed": 220,
         "total": 655,
-        "updatedAt": "2026-08-26T12:16:15.117Z"
+        "updatedAt": "2026-08-28T15:08:48.548Z"
       }
     },
     {
@@ -55,7 +55,7 @@
       "totalXp": 24503183,
       "totalLevel": 1647,
       "skills99": 0,
-      "lastChecked": "2026-08-28T10:40:05.219Z",
+      "lastChecked": "2026-08-28T15:08:48.548Z",
       "lastChanged": "2026-08-28T03:20:56.739Z",
       "status": "ok",
       "ca": {
@@ -76,7 +76,7 @@
       "totalXp": 65527996,
       "totalLevel": 1937,
       "skills99": 0,
-      "lastChecked": "2026-08-28T10:40:05.219Z",
+      "lastChecked": "2026-08-28T15:08:48.548Z",
       "lastChanged": "2026-08-18T08:15:48.341Z",
       "status": "ok",
       "ca": {
@@ -94,20 +94,20 @@
       "rsn": "Iron Razekai",
       "type": "gim",
       "file": "iron_razekai.json",
-      "totalXp": 235085324,
+      "totalXp": 235435797,
       "totalLevel": 2244,
       "skills99": 9,
-      "lastChecked": "2026-08-28T10:40:05.219Z",
-      "lastChanged": "2026-08-28T06:43:59.413Z",
+      "lastChecked": "2026-08-28T15:08:48.548Z",
+      "lastChanged": "2026-08-28T15:08:48.548Z",
       "status": "ok",
       "ca": {
         "file": "ca/iron_razekai.json",
         "status": "ok",
-        "totalPoints": 706,
+        "totalPoints": 748,
         "tierReached": "Hard",
-        "completed": 246,
+        "completed": 258,
         "total": 655,
-        "updatedAt": "2026-08-27T11:34:13.764Z"
+        "updatedAt": "2026-08-28T15:08:48.548Z"
       }
     },
     {
@@ -117,7 +117,7 @@
       "totalXp": 313664220,
       "totalLevel": 2305,
       "skills99": 12,
-      "lastChecked": "2026-08-28T10:40:05.219Z",
+      "lastChecked": "2026-08-28T15:08:48.548Z",
       "lastChanged": "2026-08-28T10:40:05.219Z",
       "status": "ok",
       "ca": {
@@ -138,7 +138,7 @@
       "totalXp": 130503765,
       "totalLevel": 2028,
       "skills99": 6,
-      "lastChecked": "2026-08-28T10:40:05.219Z",
+      "lastChecked": "2026-08-28T15:08:48.548Z",
       "lastChanged": "2026-07-18T12:26:42.702Z",
       "status": "ok",
       "ca": {
@@ -159,7 +159,7 @@
       "totalXp": 46920706,
       "totalLevel": 1876,
       "skills99": 0,
-      "lastChecked": "2026-08-28T10:40:05.219Z",
+      "lastChecked": "2026-08-28T15:08:48.548Z",
       "lastChanged": "2026-08-28T06:43:59.413Z",
       "status": "ok",
       "ca": {
@@ -180,7 +180,7 @@
       "totalXp": 19017142,
       "totalLevel": 1539,
       "skills99": 0,
-      "lastChecked": "2026-08-28T10:40:05.219Z",
+      "lastChecked": "2026-08-28T15:08:48.548Z",
       "lastChanged": "2026-04-28T08:48:50.741Z",
       "status": "ok",
       "ca": {

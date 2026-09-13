@@ -305,8 +305,9 @@ export function CombatAchievements() {
               <strong>⚠ {missingData.length} task(s) missing completion data.</strong>{" "}
               RuneProfile is reporting tasks that aren't in
               <code> data/combat-achievements.csv</code>, so they're ranked at
-              the bottom of the plan. Update the CSV and re-run
-              <code> npm run ca:completion</code> to fix the ordering.
+              the bottom of the plan. Re-run
+              <code> npm run ca:completion</code> to refresh the rates from the
+              wiki and fix the ordering.
               <div className="ca-warning-list">
                 {missingData.slice(0, 15).map((t) => (
                   <span key={t.name}>{t.name}</span>

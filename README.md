@@ -69,17 +69,24 @@ npm run ca -- --player "Rsn"    # one player
 
 The RuneProfile API doesn't expose how many players have completed each task,
 which is what the dashboard uses to order the "easiest path" to-do list. That
-data is a manual wiki export kept in `data/combat-achievements.csv` and compiled
-into `dashboard/src/data/caCompletion.ts`:
+data lives on the [OSRS Wiki](https://oldschool.runescape.wiki/w/Combat_Achievements/All_tasks).
+`npm run ca:completion` scrapes the wiki's task table into
+`data/combat-achievements.csv` and compiles it into
+`dashboard/src/data/caCompletion.ts`:
 
 ```sh
 npm run ca:completion
 ```
 
-When RuneProfile reports a task that isn't in the CSV, the dashboard shows a
-warning banner naming the missing tasks and ranks them last (0.1% below the
-lowest known rate, same as tasks the wiki reports as `N/A`) — that's the cue to
-refresh the CSV and re-run the script.
+You can also run it from GitHub without a local checkout: trigger the
+**ca-completion** workflow (Actions → ca-completion → Run workflow), which scrapes
+the wiki and commits the refreshed CSV and generated table back to the repo.
+
+Pass `--no-scrape` (e.g. `npm run ca:completion -- --no-scrape`) to recompile the
+existing CSV without hitting the wiki. When RuneProfile reports a task that isn't
+in the CSV, the dashboard shows a warning banner naming the missing tasks and
+ranks them last (0.1% below the lowest known rate, same as tasks the wiki reports
+as `N/A`) — that's the cue to re-run the script.
 
 ### To-do list views
 

@@ -1,0 +1,48 @@
+name: ca-completion
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: ca-completion
+  cancel-in-progress: false
+
+jobs:
+  ca-completion:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - run: npm ci
+
+      - run: npm run ca:completion
+
+      - name: Commit completion rates
+        run: |
+          git config user.name "maxdash-bot"
+          git config user.email "maxdash-bot@users.noreply.github.com"
+          git add data/combat-achievements.csv dashboard/src/data/caCompletion.ts
+          if git diff --cached --quiet; then
+            echo "No completion-rate changes to commit."
+            exit 0
+          fi
+          git commit -m "data: refresh CA completion rates $(date -u +%FT%TZ)"
+          git push
+          echo "pushed=true" >> "$GITHUB_ENV"
+
+      - name: Trigger Pages deployment
+        if: env.pushed == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh workflow run pages.yml --ref main

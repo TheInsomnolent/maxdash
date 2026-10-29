@@ -68,7 +68,7 @@ export const MAX_XP = 13_034_431;
 /** Number of trainable skills (excludes the synthetic "Overall"). */
 export const TRAINABLE_SKILL_COUNT = SKILLS.length - 1;
 /** Sum of every trainable skill at 99. */
-export const MAX_TOTAL_LEVEL = TRAINABLE_SKILL_COUNT * 99; // 2277
+export const MAX_TOTAL_LEVEL = TRAINABLE_SKILL_COUNT * 99; // 2376 
 
 /**
  * Cumulative XP required for each level 1..99 (and 100 for the cap boundary).

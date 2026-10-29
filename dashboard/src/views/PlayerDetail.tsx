@@ -93,7 +93,7 @@ export function PlayerDetail() {
           </div>
           <div className="kpis" style={{ marginTop: "0.75rem" }}>
             <Kpi label="Total XP" value={totalXp.toLocaleString()} />
-            <Kpi label="Total Level" value={`${totalLevel} / 2277`} />
+            <Kpi label="Total Level" value={`${totalLevel} / 2376 `} />
             <Kpi label="99s" value={`${skills99} / ${TRAINABLE_SKILLS.length}`} />
             <Kpi label={`XP / day (${range})`} value={Math.round(xpPerDay).toLocaleString()} />
             <Kpi label="AFK hours to max" value={formatHours(afkHours)} />

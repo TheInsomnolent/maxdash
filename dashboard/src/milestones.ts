@@ -22,7 +22,7 @@ export interface Milestone {
 
 /** Level breakpoints we treat as celebration-worthy. */
 const SKILL_LEVEL_STEPS = [50, 60, 70, 80, 85, 90, 92, 94, 96, 98];
-const TOTAL_LEVEL_STEPS = [1500, 1700, 1800, 1900, 2000, 2100, 2150, 2200, 2250, 2275, 2277];
+const TOTAL_LEVEL_STEPS = [1500, 1700, 1800, 1900, 2000, 2100, 2150, 2200, 2250, 2275, 2277, 2376];
 const TOTAL_XP_STEPS = [
   50_000_000, 100_000_000, 150_000_000, 200_000_000, 300_000_000,
   500_000_000, 750_000_000, 1_000_000_000, 1_500_000_000, 2_000_000_000,

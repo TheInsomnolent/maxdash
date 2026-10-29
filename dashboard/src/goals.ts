@@ -13,7 +13,7 @@ export type Goal =
       kind: "everyoneReachesLevel";
       title: string;
       skill: string;     // a SKILLS name, including "Overall" → uses total level
-      level: number;     // 2..99 (or 2..2277 when skill === "Overall")
+      level: number;     // 2..99 (or 2..2376  when skill === "Overall")
     }
   | {
       id: string;

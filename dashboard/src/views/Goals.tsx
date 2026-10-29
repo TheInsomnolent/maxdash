@@ -116,7 +116,7 @@ export function Goals() {
             <input
               type="number"
               min={2}
-              max={draft.skill === "Overall" ? 2277 : 99}
+              max={draft.skill === "Overall" ? 2376  : 99}
               value={draft.level}
               onChange={(e) => setDraft({ ...draft, level: Math.max(2, Number(e.target.value) || 0) })}
               placeholder="Target level"
@@ -254,7 +254,7 @@ function draftToGoal(draft: Draft, editingId: string | null): Goal | null {
   switch (draft.kind) {
     case "everyoneReachesLevel": {
       if (draft.level < 2) return null;
-      const cap = draft.skill === "Overall" ? 2277 : 99;
+      const cap = draft.skill === "Overall" ? 2376  : 99;
       const lvl = Math.min(cap, draft.level);
       return {
         id, kind: "everyoneReachesLevel",

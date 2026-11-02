@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-02T06:29:43.414Z",
+  "generatedAt": "2026-11-02T07:16:33.167Z",
   "skills": [
     "Overall",
     "Attack",
@@ -35,7 +35,7 @@
       "totalXp": 245842117,
       "totalLevel": 2251,
       "skills99": 11,
-      "lastChecked": "2026-11-02T06:29:43.414Z",
+      "lastChecked": "2026-11-02T07:16:33.167Z",
       "lastChanged": "2026-11-02T03:17:27.567Z",
       "status": "ok",
       "ca": {
@@ -55,7 +55,7 @@
       "totalXp": 25126529,
       "totalLevel": 1654,
       "skills99": 0,
-      "lastChecked": "2026-11-02T06:29:43.414Z",
+      "lastChecked": "2026-11-02T07:16:33.167Z",
       "lastChanged": "2026-10-05T05:34:12.519Z",
       "status": "ok",
       "ca": {
@@ -74,12 +74,11 @@
       "type": "ironman",
       "file": "gloryyy_boy.json",
       "totalXp": 65746588,
-      "totalLevel": 0,
+      "totalLevel": 1938,
       "skills99": 0,
-      "lastChecked": "2026-11-02T06:29:43.414Z",
+      "lastChecked": "2026-11-02T07:16:33.167Z",
       "lastChanged": "2026-10-27T08:29:36.918Z",
-      "status": "error",
-      "error": "502",
+      "status": "ok",
       "ca": {
         "file": "ca/gloryyy_boy.json",
         "status": "unlinked",
@@ -98,7 +97,7 @@
       "totalXp": 249271054,
       "totalLevel": 2246,
       "skills99": 9,
-      "lastChecked": "2026-11-02T06:29:43.414Z",
+      "lastChecked": "2026-11-02T07:16:33.167Z",
       "lastChanged": "2026-11-02T06:29:43.414Z",
       "status": "ok",
       "ca": {
@@ -118,7 +117,7 @@
       "totalXp": 314115344,
       "totalLevel": 2305,
       "skills99": 12,
-      "lastChecked": "2026-11-02T06:29:43.414Z",
+      "lastChecked": "2026-11-02T07:16:33.167Z",
       "lastChanged": "2026-10-24T09:19:45.556Z",
       "status": "ok",
       "ca": {
@@ -139,7 +138,7 @@
       "totalXp": 130503765,
       "totalLevel": 2028,
       "skills99": 6,
-      "lastChecked": "2026-11-02T06:29:43.414Z",
+      "lastChecked": "2026-11-02T07:16:33.167Z",
       "lastChanged": "2026-07-18T12:26:42.702Z",
       "status": "ok",
       "ca": {
@@ -160,7 +159,7 @@
       "totalXp": 60217058,
       "totalLevel": 1940,
       "skills99": 0,
-      "lastChecked": "2026-11-02T06:29:43.414Z",
+      "lastChecked": "2026-11-02T07:16:33.167Z",
       "lastChanged": "2026-11-01T11:10:37.875Z",
       "status": "ok",
       "ca": {
@@ -180,7 +179,7 @@
       "totalXp": 19017142,
       "totalLevel": 1539,
       "skills99": 0,
-      "lastChecked": "2026-11-02T06:29:43.414Z",
+      "lastChecked": "2026-11-02T07:16:33.167Z",
       "lastChanged": "2026-04-28T08:48:50.741Z",
       "status": "ok",
       "ca": {

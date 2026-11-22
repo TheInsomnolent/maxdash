@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-22T18:14:45.138Z",
+  "generatedAt": "2026-11-22T19:10:43.515Z",
   "skills": [
     "Overall",
     "Attack",
@@ -35,7 +35,7 @@
       "totalXp": 253721908,
       "totalLevel": 2254,
       "skills99": 11,
-      "lastChecked": "2026-11-22T18:14:45.138Z",
+      "lastChecked": "2026-11-22T19:10:43.515Z",
       "lastChanged": "2026-11-22T16:13:07.782Z",
       "status": "ok",
       "ca": {
@@ -55,7 +55,7 @@
       "totalXp": 25126529,
       "totalLevel": 1654,
       "skills99": 0,
-      "lastChecked": "2026-11-22T18:14:45.138Z",
+      "lastChecked": "2026-11-22T19:10:43.515Z",
       "lastChanged": "2026-10-05T05:34:12.519Z",
       "status": "ok",
       "ca": {
@@ -74,11 +74,12 @@
       "type": "ironman",
       "file": "gloryyy_boy.json",
       "totalXp": 65771011,
-      "totalLevel": 1938,
+      "totalLevel": 0,
       "skills99": 0,
-      "lastChecked": "2026-11-22T18:14:45.138Z",
+      "lastChecked": "2026-11-22T19:10:43.515Z",
       "lastChanged": "2026-11-21T13:11:17.291Z",
-      "status": "ok",
+      "status": "error",
+      "error": "502",
       "ca": {
         "file": "ca/gloryyy_boy.json",
         "status": "unlinked",
@@ -97,7 +98,7 @@
       "totalXp": 252512208,
       "totalLevel": 2246,
       "skills99": 9,
-      "lastChecked": "2026-11-22T18:14:45.138Z",
+      "lastChecked": "2026-11-22T19:10:43.515Z",
       "lastChanged": "2026-11-18T05:13:40.591Z",
       "status": "ok",
       "ca": {
@@ -117,7 +118,7 @@
       "totalXp": 314129757,
       "totalLevel": 2305,
       "skills99": 12,
-      "lastChecked": "2026-11-22T18:14:45.138Z",
+      "lastChecked": "2026-11-22T19:10:43.515Z",
       "lastChanged": "2026-11-06T10:13:24.461Z",
       "status": "ok",
       "ca": {
@@ -138,7 +139,7 @@
       "totalXp": 130503765,
       "totalLevel": 2028,
       "skills99": 6,
-      "lastChecked": "2026-11-22T18:14:45.138Z",
+      "lastChecked": "2026-11-22T19:10:43.515Z",
       "lastChanged": "2026-07-18T12:26:42.702Z",
       "status": "ok",
       "ca": {
@@ -157,11 +158,12 @@
       "type": "gim",
       "file": "cdesafetcam.json",
       "totalXp": 60573759,
-      "totalLevel": 1942,
+      "totalLevel": 0,
       "skills99": 0,
-      "lastChecked": "2026-11-22T18:14:45.138Z",
+      "lastChecked": "2026-11-22T19:10:43.515Z",
       "lastChanged": "2026-11-15T10:11:54.765Z",
-      "status": "ok",
+      "status": "error",
+      "error": "502",
       "ca": {
         "file": "ca/cdesafetcam.json",
         "status": "ok",
@@ -179,7 +181,7 @@
       "totalXp": 19017142,
       "totalLevel": 1539,
       "skills99": 0,
-      "lastChecked": "2026-11-22T18:14:45.138Z",
+      "lastChecked": "2026-11-22T19:10:43.515Z",
       "lastChanged": "2026-04-28T08:48:50.741Z",
       "status": "ok",
       "ca": {

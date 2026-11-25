@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-25T03:16:53.572Z",
+  "generatedAt": "2026-11-25T04:16:11.417Z",
   "skills": [
     "Overall",
     "Attack",
@@ -35,7 +35,7 @@
       "totalXp": 254527004,
       "totalLevel": 2254,
       "skills99": 11,
-      "lastChecked": "2026-11-25T03:16:53.572Z",
+      "lastChecked": "2026-11-25T04:16:11.417Z",
       "lastChanged": "2026-11-24T15:13:30.446Z",
       "status": "ok",
       "ca": {
@@ -55,7 +55,7 @@
       "totalXp": 25126529,
       "totalLevel": 1654,
       "skills99": 0,
-      "lastChecked": "2026-11-25T03:16:53.572Z",
+      "lastChecked": "2026-11-25T04:16:11.417Z",
       "lastChanged": "2026-10-05T05:34:12.519Z",
       "status": "ok",
       "ca": {
@@ -76,7 +76,7 @@
       "totalXp": 65771811,
       "totalLevel": 1938,
       "skills99": 0,
-      "lastChecked": "2026-11-25T03:16:53.572Z",
+      "lastChecked": "2026-11-25T04:16:11.417Z",
       "lastChanged": "2026-11-24T12:20:32.611Z",
       "status": "ok",
       "ca": {
@@ -97,7 +97,7 @@
       "totalXp": 252512208,
       "totalLevel": 0,
       "skills99": 0,
-      "lastChecked": "2026-11-25T03:16:53.572Z",
+      "lastChecked": "2026-11-25T04:16:11.417Z",
       "lastChanged": "2026-11-18T05:13:40.591Z",
       "status": "error",
       "error": "502",
@@ -118,7 +118,7 @@
       "totalXp": 314129757,
       "totalLevel": 2305,
       "skills99": 12,
-      "lastChecked": "2026-11-25T03:16:53.572Z",
+      "lastChecked": "2026-11-25T04:16:11.417Z",
       "lastChanged": "2026-11-06T10:13:24.461Z",
       "status": "ok",
       "ca": {
@@ -137,12 +137,11 @@
       "type": "gim",
       "file": "toke_feend.json",
       "totalXp": 130503765,
-      "totalLevel": 0,
-      "skills99": 0,
-      "lastChecked": "2026-11-25T03:16:53.572Z",
+      "totalLevel": 2028,
+      "skills99": 6,
+      "lastChecked": "2026-11-25T04:16:11.417Z",
       "lastChanged": "2026-07-18T12:26:42.702Z",
-      "status": "error",
-      "error": "502",
+      "status": "ok",
       "ca": {
         "file": "ca/toke_feend.json",
         "status": "unlinked",
@@ -161,7 +160,7 @@
       "totalXp": 60573759,
       "totalLevel": 1942,
       "skills99": 0,
-      "lastChecked": "2026-11-25T03:16:53.572Z",
+      "lastChecked": "2026-11-25T04:16:11.417Z",
       "lastChanged": "2026-11-15T10:11:54.765Z",
       "status": "ok",
       "ca": {
@@ -179,12 +178,11 @@
       "type": "gim",
       "file": "savage32fe.json",
       "totalXp": 19017142,
-      "totalLevel": 0,
+      "totalLevel": 1539,
       "skills99": 0,
-      "lastChecked": "2026-11-25T03:16:53.572Z",
+      "lastChecked": "2026-11-25T04:16:11.417Z",
       "lastChanged": "2026-04-28T08:48:50.741Z",
-      "status": "error",
-      "error": "502",
+      "status": "ok",
       "ca": {
         "file": "ca/savage32fe.json",
         "status": "unlinked",

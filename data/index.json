@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-27T14:14:14.710Z",
+  "generatedAt": "2026-11-27T15:13:01.317Z",
   "skills": [
     "Overall",
     "Attack",
@@ -33,11 +33,12 @@
       "type": "main",
       "file": "insomnolennt.json",
       "totalXp": 255921098,
-      "totalLevel": 2255,
-      "skills99": 11,
-      "lastChecked": "2026-11-27T14:14:14.710Z",
+      "totalLevel": 0,
+      "skills99": 0,
+      "lastChecked": "2026-11-27T15:13:01.317Z",
       "lastChanged": "2026-11-27T13:13:16.236Z",
-      "status": "ok",
+      "status": "error",
+      "error": "502",
       "ca": {
         "file": "ca/insomnolennt.json",
         "status": "ok",
@@ -55,7 +56,7 @@
       "totalXp": 25126529,
       "totalLevel": 1654,
       "skills99": 0,
-      "lastChecked": "2026-11-27T14:14:14.710Z",
+      "lastChecked": "2026-11-27T15:13:01.317Z",
       "lastChanged": "2026-10-05T05:34:12.519Z",
       "status": "ok",
       "ca": {
@@ -76,7 +77,7 @@
       "totalXp": 65771811,
       "totalLevel": 1938,
       "skills99": 0,
-      "lastChecked": "2026-11-27T14:14:14.710Z",
+      "lastChecked": "2026-11-27T15:13:01.317Z",
       "lastChanged": "2026-11-24T12:20:32.611Z",
       "status": "ok",
       "ca": {
@@ -97,7 +98,7 @@
       "totalXp": 252691929,
       "totalLevel": 2246,
       "skills99": 9,
-      "lastChecked": "2026-11-27T14:14:14.710Z",
+      "lastChecked": "2026-11-27T15:13:01.317Z",
       "lastChanged": "2026-11-27T12:19:53.211Z",
       "status": "ok",
       "ca": {
@@ -117,7 +118,7 @@
       "totalXp": 314129757,
       "totalLevel": 2305,
       "skills99": 12,
-      "lastChecked": "2026-11-27T14:14:14.710Z",
+      "lastChecked": "2026-11-27T15:13:01.317Z",
       "lastChanged": "2026-11-06T10:13:24.461Z",
       "status": "ok",
       "ca": {
@@ -138,7 +139,7 @@
       "totalXp": 130503765,
       "totalLevel": 2028,
       "skills99": 6,
-      "lastChecked": "2026-11-27T14:14:14.710Z",
+      "lastChecked": "2026-11-27T15:13:01.317Z",
       "lastChanged": "2026-07-18T12:26:42.702Z",
       "status": "ok",
       "ca": {
@@ -159,7 +160,7 @@
       "totalXp": 60573759,
       "totalLevel": 0,
       "skills99": 0,
-      "lastChecked": "2026-11-27T14:14:14.710Z",
+      "lastChecked": "2026-11-27T15:13:01.317Z",
       "lastChanged": "2026-11-15T10:11:54.765Z",
       "status": "error",
       "error": "502",
@@ -178,11 +179,12 @@
       "type": "gim",
       "file": "savage32fe.json",
       "totalXp": 19017142,
-      "totalLevel": 1539,
+      "totalLevel": 0,
       "skills99": 0,
-      "lastChecked": "2026-11-27T14:14:14.710Z",
+      "lastChecked": "2026-11-27T15:13:01.317Z",
       "lastChanged": "2026-04-28T08:48:50.741Z",
-      "status": "ok",
+      "status": "error",
+      "error": "502",
       "ca": {
         "file": "ca/savage32fe.json",
         "status": "unlinked",
